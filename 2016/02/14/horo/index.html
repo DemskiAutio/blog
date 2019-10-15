@@ -1,0 +1,1154 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="ヴェルフェゴールのため息">
+    <title>Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox - ヴェルフェゴールのため息</title>
+    <meta name="author" content="Demski Autio">
+    
+        <meta name="keywords" content="hexo,javascript,プログラミング,">
+    
+    
+        <link rel="icon" href="https://demskiautio.github.io/demski/assets/images/favicon.ico">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"目的FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。「Stylish」の使い方も含め，メモとして残しておきます。\n\n\n月島ほろ01\n月島ほろ02\n\n前提条件\nHTML/CSSの予備知識\nFirebugの基本的な使い方\n\n用意するもの\nFireFox\nStylish\n背景にしたい画像\n\n「Stylish」をFireFoxにインストールまずは，これが無ければ何も始まらない。ということで，下記でdownload。\nFireFoxStylish :: Add-ons for Firefox   \n今回使う「Stylish」は，ブラウザ側に保存された所謂「ユーザースタイルシート」を使ってサイトを上書きしています。別に，googleのサイトをハッキングしたりとかはしてるわけではありませんのでご安心を。\n「stylish」の使い方Google用のスキンをGetまずは，スタイルを書き換えたいサイトを表示しましょう。今回の場合ならGoogleですね。続いて，ステータスバーにあるStylishのアイコンを右クリックして，「このサイト用のスタイルを探す」 をクリックします。\n  \n\n\nそうすると，userstyles.org というコミュニティーサイトに飛びます。しかも，既に「Google」用に作られたスタイルの検索結果が表示されます。その中の気に入った物をクリックし,詳細を確認（殆ど英語ですが^^;）。ページの右上にある 「Install with Stylish」 をクリックすると，そのスタイルが影響するサイトのURLを確認するアラートの後,ダウンロードされStylishから使えるようになります。見事に書き換えられたら,成功です。\n stylish例\n ※『google space beer』というスタイルを適用した様子\n解除したい時はStylish アイコンのメニューから，当該のテーマ名のチェックを外せば，適用が解除されます。このように既に用意されているスタイルを探して使うだけでも充分楽しめますね。(もちろん，テーマのある他サイトでもOK)\n術式用言語について先にも述べたように，「Stylish」はCSSを使ってサイトを上書きしています。CSSは，簡単に述べるとホームページのデザインを定義する言語です。(因みに，HTMLは文章構造を定義しています。)まぁ，この辺りは説明しだすと長いんで，下記に示す参考サイトなり書籍なりGoogle大先生に聞くなりしてください。\n参考サイト\nとほほのWWW入門\nHTMLクイックリファレンス\n\nFirebugにつてさて，召喚魔法の為の最後の道具は「Firebug」というこれまたFireFoxのアドオンです。\nFirebug:: Add-ons for Firefox  \nこのアドオンは，FireFoxでWeb開発するうえで，色々な便利機能を追加してくれます。ほかにも，WebDeveloperツールとか色々ありますけど，Firebugが一番有名(＝日本語情報が豊富)なので，今回はこれを使用します。  \nインストールが終わると，ツールバーにハチのアイコンが出てくるのでそれをクリックすれば起動します。すると，ブラウザ内にFirebugeの画面が現れます。通常は右にHTMLのソースが，左にCSSのソース等が表示されると思います。この画面を使ってGoogleさんを分析していきます。  \n参考サイト\nWeb八分儀\n\nGoogleサイトのHTMLを分析まずは，Googleのサイトを表示しつつFirebugを起動します。そして，Firebugのハチアイコンの横にある長方形に矢印のあるボタンをクリックします。  \nfirebug2\n\n\nそのままGoogleの画面にカーソルを持ってくると，青い枠で特定のエリアが囲われます。\n要素調査\n\nそれをクリックすれば，「要素」が選ばれ，Firebugの右画面にはその「要素」に関連付けられているCSSが表示されます。このCSSをStylishで上書きしていくわけです。手順としては，変更したい「要素」の「ID」or「class」を調べ，その「ID」or「class」をStylishで上書きしていくという作業になります。\nStylishで術式を書くでは，早速書いていきます。Googleさんを表示した状態で，Stylishのアイコンから「新しいスタイルを書く→　このサイト専用」を選びます。すると，下記の「おまじない」が書かれた画面が開くと思います。\n[おまじない] []12345@namespace url(http://www.w3.org/1999/xhtml);@-moz-document domain(\"google.co.jp\") &#123;&#125;\n\n\nこの{　}の中にCSSを書いていきます。  \nまず簡単に，下記を入力してみてください。\n[背景色を変更] []123body&#123;    backuground-color: #000000;&#125;\n\n「保存」または「お試し」を押してみてください。そしてGoogleを見てみると，背景が黒くなっていたら成功です。\nほろちゃん召喚さて，いよいよわれらが「月島ほろ」を呼び出してみたいと思います。まずは，公式ホームページやTwitterから公式画像をダウンロードしましょう。\n[月島ほろ公式ホームページ] 活動停止により閉鎖;;\n月島ほろ公式Twitter\n画像をダウンロードしたら，PCの任意の場所に保存しましょう。そして，そのまま画像をドロップでブラウザに放り込みます。するとURL欄に次の形式で画像までのルートが記載されます。  \n[背景色を変更] []123file:///ドライブ名:（例 D:）/フォルダ名/画像ファイル名\n\nこのURLをコピーして，stylishのbodyに次の形式で貼り付けます。\n[背景に画像表示] []123body&#123;    background-image:(\"コピーしたURL\");&#125;\n\n※stylish公式サイトの使用上「background-image」はコメントアウトしてありますので，解除してください。\n[背景色を変更] []1234  /*background-image: url(\"コピーしたURL\");*/→「/*」「*/」をとる→    background-image: url(\"file:///ドライブ名:（例 D:）/フォルダ名/画像ファイル名\");\n\nそれを保存すれば，Googleへの月島ほろ召喚完了です。ところが，このままでは無限にほろちゃんが呼び出されてしまいます。\n   \n\nそこで，次のコードを付け足します。\n[背景画像配置] []123456body&#123;    background-image:(\"コピーしたURL\");    background-repeat: no-repeat;    background-attachment: fixed;    background-position: right bottom;&#125;\n\nこれで，ページの右下に固定されて表示されます。  \n月島ほろ %\n\n\n設定によって好きな場所に出現させることができるので，冒頭の参考サイト様を参照に各自設定してみてください。他の要素は，先に述べた通りIDやclassを指定して設定していくのが便利です。  \nまとめStylishを使うと，簡単にユーザースタイルシートのオン・オフが切り替えられて便利です。HTML/CSSの知識がちょっと必要ですけど，プログラミング言語ほど難しくないので，チャレンジしてみてください。以上で，「Stylishを使ってGoogleに月島ほろを召喚 by FireFox」は終了です。お疲れ様でした。\n※下記に，Topの画像で使ってるCSSを公開しておきます。但し，ソースコードだけで画像は付いてきません。好きな画像を引っ張ってきて設定してください。※CSSの仕様上background-imageのURL欄に他サイトにある画像のURLを入力すると，その画像を背景に使えますが，サーバーの負担や規約違反等になるので絶対にしないでください。\nhoro_tsukishima on google\n","dateCreated":"2016-02-14T21:08:10+09:00","dateModified":"2019-05-25T14:11:23+09:00","datePublished":"2016-02-14T21:08:10+09:00","description":"目的FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。「Stylish」の使い方も含め，メモとして残しておきます。","headline":"Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox","image":["060dcb16.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2016/02/14/horo/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2016/02/14/horo/","keywords":"css, 月島ほろ, Stylish, web, Browser, FireFox","thumbnailUrl":"060dcb16.jpg"}</script>
+    <meta name="description" content="目的FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。「Stylish」の使い方も含め，メモとして残しておきます。">
+<meta name="keywords" content="css,月島ほろ,Stylish,web,Browser,FireFox">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox">
+<meta property="og:url" content="https://demskiautio.github.io/demski/2016/02/14/horo/index.html">
+<meta property="og:site_name" content="ヴェルフェゴールのため息">
+<meta property="og:description" content="目的FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。「Stylish」の使い方も含め，メモとして残しておきます。">
+<meta property="og:locale" content="ja">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/horo.png">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/horo2.png">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/stylish.png">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/stylish_google.png">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/firebug2.png">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/google_select.png">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/horo3.png">
+<meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/horo.png">
+<meta property="og:updated_time" content="2019-05-25T05:11:23.997Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox">
+<meta name="twitter:description" content="目的FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。「Stylish」の使い方も含め，メモとして残しておきます。">
+<meta name="twitter:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/horo.png">
+<meta name="twitter:creator" content="@Dmeski_Autio">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=640"/>
+    
+    
+        <meta property="og:image" content="https://demskiautio.github.io/demski/2016/02/14/horo/060dcb16.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://demskiautio.github.io/demski/2016/02/14/horo/060dcb16.jpg"/>
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/demski/assets/css/style-gauxwy3cyxylswvnatxzcbk0jwf9d9bu1tblsvcjvwneb3ntmx0n5v0slszm.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-73846111-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-73846111-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/demski/ "
+            aria-label=""
+        >
+            ヴェルフェゴールのため息
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /demski/#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=90" alt="著者の絵"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/demski/#about"
+                    aria-label="著者についてもっと読む"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=110" alt="著者の絵"/>
+                </a>
+                <h4 class="sidebar-profile-name">Demski Autio</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Demski Autio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/ "
+                            
+                            title="ホーム"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/all-categories"
+                            
+                            title="カテゴリー"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/all-tags"
+                            
+                            title="タグ"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/all-archives"
+                            
+                            title="アーカイブ"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="検索"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="プロフィール"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/DemskiAutio" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://ja.stackoverflow.com/users/19344/demski-autio" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/Demski_Autio" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/mailto"
+                            title="メール"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fas fa-address-card" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/link"
+                            
+                            title="Link"
+                        >
+                    
+                        <i class="sidebar-button-icon fas fa-link" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Link</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2016-02-14T21:08:10+09:00">
+	
+		    2016/02/14
+    	
+    </time>
+    
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/demski/categories/コンピューターとインターネット/">コンピューターとインターネット</a>, <a class="category-link" href="/demski/categories/コンピューターとインターネット/Browser/">Browser</a>, <a class="category-link" href="/demski/categories/コンピューターとインターネット/Browser/FireFox/">FireFox</a>, <a class="category-link" href="/demski/categories/ホームページ作成/">ホームページ作成</a>, <a class="category-link" href="/demski/categories/ホームページ作成/css/">css</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。<br>「Stylish」の使い方も含め，メモとして残しておきます。</p>
+<a id="more"></a>
+
+<div class="figure fig-25" style="width:100%;"><a class="fancybox" href="horo.png" title="月島ほろ01" data-caption="月島ほろ01" data-fancybox="default"><img class="fig-img" src="horo.png" style="width:100%;height:100%;" alt="月島ほろ01"></a><span class="caption">月島ほろ01</span></div><div style="clear:both;"></div>
+<div class="figure fig-25" style="width:100%;"><a class="fancybox" href="horo2.png" title="月島ほろ02" data-caption="月島ほろ02" data-fancybox="default"><img class="fig-img" src="horo2.png" style="width:100%;height:100%;" alt="月島ほろ02"></a><span class="caption">月島ほろ02</span></div><div style="clear:both;"></div>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#目的"><span class="toc-text">目的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前提条件"><span class="toc-text">前提条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用意するもの"><span class="toc-text">用意するもの</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「Stylish」をFireFoxにインストール"><span class="toc-text">「Stylish」をFireFoxにインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「stylish」の使い方"><span class="toc-text">「stylish」の使い方</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Google用のスキンをGet"><span class="toc-text">Google用のスキンをGet</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#術式用言語について"><span class="toc-text">術式用言語について</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参考サイト"><span class="toc-text">参考サイト</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Firebugにつて"><span class="toc-text">Firebugにつて</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#参考サイト-1"><span class="toc-text">参考サイト</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GoogleサイトのHTMLを分析"><span class="toc-text">GoogleサイトのHTMLを分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stylishで術式を書く"><span class="toc-text">Stylishで術式を書く</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ほろちゃん召喚"><span class="toc-text">ほろちゃん召喚</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#まとめ"><span class="toc-text">まとめ</span></a></li></ol>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><ul>
+<li>HTML/CSSの予備知識</li>
+<li>Firebugの基本的な使い方</li>
+</ul>
+<h3 id="用意するもの"><a href="#用意するもの" class="headerlink" title="用意するもの"></a>用意するもの</h3><ul>
+<li>FireFox</li>
+<li>Stylish</li>
+<li>背景にしたい画像</li>
+</ul>
+<h2 id="「Stylish」をFireFoxにインストール"><a href="#「Stylish」をFireFoxにインストール" class="headerlink" title="「Stylish」をFireFoxにインストール"></a>「Stylish」をFireFoxにインストール</h2><p>まずは，これが無ければ何も始まらない。<br>ということで，下記でdownload。</p>
+<p><a href="https://www.mozilla.jp" title="FireFox" target="_blank" rel="noopener">FireFox</a><br><a href="https://addons.mozilla.org/ja/firefox/addon/stylish/" title="Stylish" target="_blank" rel="noopener">Stylish :: Add-ons for Firefox </a>  </p>
+<p>今回使う「Stylish」は，ブラウザ側に保存された所謂「<strong>ユーザースタイルシート</strong>」を使ってサイトを上書きしています。<br>別に，googleのサイトをハッキングしたりとかはしてるわけではありませんのでご安心を。</p>
+<h2 id="「stylish」の使い方"><a href="#「stylish」の使い方" class="headerlink" title="「stylish」の使い方"></a>「stylish」の使い方</h2><h3 id="Google用のスキンをGet"><a href="#Google用のスキンをGet" class="headerlink" title="Google用のスキンをGet"></a>Google用のスキンをGet</h3><p>まずは，スタイルを書き換えたいサイトを表示しましょう。今回の場合ならGoogleですね。<br>続いて，ステータスバーにあるStylishのアイコンを右クリックして，<strong>「このサイト用のスタイルを探す」</strong> をクリックします。</p>
+<div class="figure fig-50" style="width:;"><a class="fancybox" href="stylish.png" title data-caption data-fancybox="default"><img class="fig-img" src="stylish.png" alt></a></div><div style="clear:both;"></div>  
+
+
+<p>そうすると，<a href="https://userstyles.org/" target="_blank" rel="noopener">userstyles.org</a> というコミュニティーサイトに飛びます。<br>しかも，既に「Google」用に作られたスタイルの検索結果が表示されます。<br>その中の気に入った物をクリックし,詳細を確認（殆ど英語ですが^^;）。<br>ページの右上にある <strong>「Install with Stylish」</strong> をクリックすると，そのスタイルが影響するサイトのURLを確認するアラートの後,ダウンロードされStylishから使えるようになります。<br>見事に書き換えられたら,成功です。</p>
+ <div class="figure fig-50" style="width:100%;"><a class="fancybox" href="stylish_google.png" title="stylish例" data-caption="stylish例" data-fancybox="default"><img class="fig-img" src="stylish_google.png" style="width:100%;height:100%;" alt="stylish例"></a><span class="caption">stylish例</span></div><div style="clear:both;"></div>
+<p> <span style="font-size: 65%">※『google space beer』というスタイルを適用した様子</span></p>
+<p>解除したい時はStylish アイコンのメニューから，当該のテーマ名のチェックを外せば，適用が解除されます。<br>このように既に用意されているスタイルを探して使うだけでも充分楽しめますね。(もちろん，テーマのある他サイトでもOK)</p>
+<h2 id="術式用言語について"><a href="#術式用言語について" class="headerlink" title="術式用言語について"></a>術式用言語について</h2><p>先にも述べたように，「Stylish」はCSSを使ってサイトを上書きしています。<br>CSSは，簡単に述べるとホームページのデザインを定義する言語です。(因みに，HTMLは文章構造を定義しています。)<br>まぁ，この辺りは説明しだすと長いんで，下記に示す参考サイトなり書籍なりGoogle大先生に聞くなりしてください。</p>
+<h4 id="参考サイト"><a href="#参考サイト" class="headerlink" title="参考サイト"></a>参考サイト</h4><ul>
+<li><a href="http://www.tohoho-web.com/" title="とほほのWWW入門" target="_blank" rel="noopener">とほほのWWW入門</a></li>
+<li><a href="http://www.htmq.com/" title="HTMLクイックリファレンス" target="_blank" rel="noopener">HTMLクイックリファレンス</a></li>
+</ul>
+<h3 id="Firebugにつて"><a href="#Firebugにつて" class="headerlink" title="Firebugにつて"></a>Firebugにつて</h3><p>さて，召喚魔法の為の最後の道具は「Firebug」というこれまたFireFoxのアドオンです。</p>
+<p><a href="https://addons.mozilla.org/ja/firefox/addon/firebug/" title="Firebug" target="_blank" rel="noopener">Firebug:: Add-ons for Firefox</a>  </p>
+<p>このアドオンは，FireFoxでWeb開発するうえで，色々な便利機能を追加してくれます。<br>ほかにも，WebDeveloperツールとか色々ありますけど，Firebugが一番有名(＝日本語情報が豊富)なので，今回はこれを使用します。  </p>
+<p>インストールが終わると，ツールバーにハチのアイコンが出てくるのでそれをクリックすれば起動します。<br>すると，ブラウザ内にFirebugeの画面が現れます。<br>通常は右にHTMLのソースが，左にCSSのソース等が表示されると思います。この画面を使ってGoogleさんを分析していきます。  </p>
+<h4 id="参考サイト-1"><a href="#参考サイト-1" class="headerlink" title="参考サイト"></a>参考サイト</h4><ul>
+<li><a href="http://web8bungi.sakura.ne.jp/first/htmlcss/firebug.html" title="Web八分儀" target="_blank" rel="noopener">Web八分儀</a></li>
+</ul>
+<h2 id="GoogleサイトのHTMLを分析"><a href="#GoogleサイトのHTMLを分析" class="headerlink" title="GoogleサイトのHTMLを分析"></a>GoogleサイトのHTMLを分析</h2><p>まずは，Googleのサイトを表示しつつFirebugを起動します。<br>そして，Firebugのハチアイコンの横にある長方形に矢印のあるボタンをクリックします。  </p>
+<div class="figure fig-50" style="width:100%;"><a class="fancybox" href="firebug2.png" title="firebug2" data-caption="firebug2" data-fancybox="default"><img class="fig-img" src="firebug2.png" style="width:100%;height:100%;" alt="firebug2"></a><span class="caption">firebug2</span></div><div style="clear:both;"></div>
+
+
+<p>そのままGoogleの画面にカーソルを持ってくると，青い枠で特定のエリアが囲われます。</p>
+<div class="figure fig-50" style="width:100%;"><a class="fancybox" href="google_select.png" title="要素調査" data-caption="要素調査" data-fancybox="default"><img class="fig-img" src="google_select.png" style="width:100%;height:100%;" alt="要素調査"></a><span class="caption">要素調査</span></div><div style="clear:both;"></div>
+
+<p>それをクリックすれば，「要素」が選ばれ，Firebugの右画面にはその「要素」に関連付けられているCSSが表示されます。<br>このCSSをStylishで上書きしていくわけです。<br>手順としては，変更したい「要素」の「ID」or「class」を調べ，その「ID」or「class」をStylishで上書きしていくという作業になります。</p>
+<h2 id="Stylishで術式を書く"><a href="#Stylishで術式を書く" class="headerlink" title="Stylishで術式を書く"></a>Stylishで術式を書く</h2><p>では，早速書いていきます。<br>Googleさんを表示した状態で，Stylishのアイコンから「新しいスタイルを書く→　このサイト専用」を選びます。<br>すると，下記の「おまじない」が書かれた画面が開くと思います。</p>
+<figure class="highlight css"><figcaption><span>[おまじない] []</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">namespace</span> url(http://www.w3.org/<span class="number">1999</span>/xhtml);</span><br><span class="line"></span><br><span class="line">@-<span class="keyword">moz</span>-<span class="keyword">document</span> domain(<span class="string">"google.co.jp"</span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>この{　}の中にCSSを書いていきます。  </p>
+<p>まず簡単に，下記を入力してみてください。</p>
+<figure class="highlight css"><figcaption><span>[背景色を変更] []</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span>&#123;</span><br><span class="line">    <span class="attribute">backuground-color</span>: <span class="number">#000000</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>「保存」または「お試し」を押してみてください。<br>そしてGoogleを見てみると，背景が黒くなっていたら成功です。</p>
+<h2 id="ほろちゃん召喚"><a href="#ほろちゃん召喚" class="headerlink" title="ほろちゃん召喚"></a>ほろちゃん召喚</h2><p>さて，いよいよわれらが「月島ほろ」を呼び出してみたいと思います。<br>まずは，公式ホームページやTwitterから公式画像をダウンロードしましょう。</p>
+<p><del>[月島ほろ公式ホームページ]</del> 活動停止により閉鎖;;</p>
+<p><a href="https://twitter.com/horo_tsukishima" title="月島ほろ公式Twitter" target="_blank" rel="noopener">月島ほろ公式Twitter</a></p>
+<p>画像をダウンロードしたら，PCの任意の場所に保存しましょう。<br>そして，そのまま画像をドロップでブラウザに放り込みます。<br>するとURL欄に次の形式で画像までのルートが記載されます。  </p>
+<figure class="highlight css"><figcaption><span>[背景色を変更] []</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">file:///ドライブ名:（例 D:）/フォルダ名/画像ファイル名</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>このURLをコピーして，stylishのbodyに次の形式で貼り付けます。</p>
+<figure class="highlight css"><figcaption><span>[背景に画像表示] []</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span>&#123;</span><br><span class="line">    <span class="attribute">background-image</span>:(<span class="string">"コピーしたURL"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>※stylish公式サイトの使用上「background-image」はコメントアウトしてありますので，解除してください。</p>
+<figure class="highlight css"><figcaption><span>[背景色を変更] []</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="comment">/*background-image: url("コピーしたURL");*/</span>→「<span class="comment">/*」「*/</span>」をとる</span><br><span class="line">→    background-image: url("file:///ドライブ名:（例 D:）/フォルダ名/画像ファイル名");</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>それを保存すれば，Googleへの月島ほろ召喚完了です。<br>ところが，このままでは無限にほろちゃんが呼び出されてしまいます。</p>
+<div class="figure fig-50" style="width:;"><a class="fancybox" href="horo3.png" title data-caption data-fancybox="default"><img class="fig-img" src="horo3.png" alt></a></div><div style="clear:both;"></div>   
+
+<p>そこで，次のコードを付け足します。</p>
+<figure class="highlight css"><figcaption><span>[背景画像配置] []</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span>&#123;</span><br><span class="line">    <span class="attribute">background-image</span>:(<span class="string">"コピーしたURL"</span>);</span><br><span class="line">    <span class="attribute">background-repeat</span>: no-repeat;</span><br><span class="line">    <span class="attribute">background-attachment</span>: fixed;</span><br><span class="line">    <span class="attribute">background-position</span>: right bottom;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>これで，ページの右下に固定されて表示されます。  </p>
+<div class="figure fig-50" style="width:100%;"><a class="fancybox" href="horo.png" title="月島ほろ %" data-caption="月島ほろ %" data-fancybox="default"><img class="fig-img" src="horo.png" style="width:100%;height:100%;" alt="月島ほろ %"></a><span class="caption">月島ほろ %</span></div><div style="clear:both;"></div>
+
+
+<p>設定によって好きな場所に出現させることができるので，冒頭の参考サイト様を参照に各自設定してみてください。<br>他の要素は，先に述べた通りIDやclassを指定して設定していくのが便利です。  </p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>Stylishを使うと，簡単にユーザースタイルシートのオン・オフが切り替えられて便利です。<br>HTML/CSSの知識がちょっと必要ですけど，プログラミング言語ほど難しくないので，チャレンジしてみてください。<br>以上で，「Stylishを使ってGoogleに月島ほろを召喚 by FireFox」は終了です。<br>お疲れ様でした。</p>
+<p>※下記に，Topの画像で使ってるCSSを公開しておきます。但し，ソースコードだけで画像は付いてきません。好きな画像を引っ張ってきて設定してください。<br>※CSSの仕様上background-imageのURL欄に他サイトにある画像のURLを入力すると，その画像を背景に使えますが，サーバーの負担や規約違反等になるので絶対にしないでください。</p>
+<p><a href="https://userstyles.org/styles/124293/horo-tsukishima-on-google" target="_blank" rel="noopener">horo_tsukishima on google</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/Browser/">Browser</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/FireFox/">FireFox</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/Stylish/">Stylish</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/css/">css</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/web/">web</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/月島ほろ/">月島ほろ</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2016/04/04/floating-point/"
+                    data-tooltip="浮動小数点"
+                    aria-label="前: 浮動小数点"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/1970/01/01/ck1rkbsp8000fm4tvwdcb2669/"
+                    data-tooltip="Hello World"
+                    aria-label="次: Hello World"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Demski Autio. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2016/04/04/floating-point/"
+                    data-tooltip="浮動小数点"
+                    aria-label="前: 浮動小数点"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/1970/01/01/ck1rkbsp8000fm4tvwdcb2669/"
+                    data-tooltip="Hello World"
+                    aria-label="次: Hello World"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2016/02/14/horo/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=110" alt="著者の絵"/>
+        
+            <h4 id="about-card-name">Demski Autio</h4>
+        
+            <div id="about-card-bio"><p>Demski Autio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>自宅警備隊</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Japan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/demski/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">見つかりませんでした。</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ck1rkbsp8000fm4tvwdcb2669/"
+                            aria-label=": Hello World"
+                        >
+                            <h3 class="media-heading">Hello World</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    1970年1月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/02/14/horo/"
+                            aria-label=": Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2016/02/14/horo/060dcb16.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/02/14/horo/"
+                            aria-label=": Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
+                        >
+                            <h3 class="media-heading">Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年2月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。<br>「Stylish」の使い方も含め，メモとして残しておきます。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/04/04/floating-point/"
+                            aria-label=": 浮動小数点"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2016/04/04/floating-point/mathematics.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/04/04/floating-point/"
+                            aria-label=": 浮動小数点"
+                        >
+                            <h3 class="media-heading">浮動小数点</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年4月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。<br>今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
+                            aria-label=": Javascrpt 変数の巻き上げ"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/learn-javascript.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
+                            aria-label=": Javascrpt 変数の巻き上げ"
+                        >
+                            <h3 class="media-heading">Javascrpt 変数の巻き上げ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>javascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。<br>javascrpt特有で最重要ポイントの一つ。<br>これを分かってると，コードの読み方が一歩プロに近づく…カモ</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/03/24/git1/Git-Icon-1788C.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
+                        >
+                            <h3 class="media-heading">WindowsでGitを使う　～GitHub登録まで</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年3月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>バージョン管理ツールであるGitをインストールして，GitHubと連携させるまでのメモ</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/04/24/css-tips1/css3.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <h3 class="media-heading">Css-tips1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年4月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/Windows10Logo.svg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <h3 class="media-heading">Windos10 ショートカットキー</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>最近，マウスよりキーボードだけで色々済ませたほうが楽なことに気付いた。<br>記憶力が乏しいので，よく使いそうなものからメモ。(但し，知ってるのは省略（Ctrl + Cとか）)</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <h3 class="media-heading">EditorConfigの使い方</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年6月8日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a href="https://editorconfig.org/" target="_blank" rel="noopener">公式ページ</a>を翻訳・要約記事にしてみました。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
+                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/microsoft-windows-22.svg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
+                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
+                        >
+                            <h3 class="media-heading">Windows10が不安定な時にコマンドプロンプトから回復する方法</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年6月28日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>Windows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。<br>そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。<br>それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。<br>ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="見つかりませんでした。"
+                data-message-one="1件見つかりました。"
+                data-message-other="{n} 件見つかりました。">
+                10 件見つかりました。
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/demski/assets/js/script-igcnmfmqyxgqtuyigc94ez7nkcirjnbrkoc80jppn1ulbcnflyypwiadthue.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://demskiautio.github.io/demski/2016/02/14/horo/';
+              
+            this.page.identifier = '2016/02/14/horo/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'demskiautio';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    <script src="/demski/assets/js/moment-with-locales.js"></script>
+    <script src="/demski/assets/js/algoliasearch.js"></script>
+    <script>
+      var algoliaClient = algoliasearch('9XBM0N4A5H', 'fcec9f4739d2cb371a4c96f19912f611');
+      var algoliaIndex = algoliaClient.initIndex('my-hexo-blog');
+    </script>
+
+
+    </body>
+</html>
