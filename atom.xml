@@ -106,9 +106,9 @@
     
       <category term="ホームページ作成" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/"/>
     
-      <category term="ツール" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/%E3%83%84%E3%83%BC%E3%83%AB/"/>
-    
       <category term="HTML5/CSS3" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/HTML5-CSS3/"/>
+    
+      <category term="ツール" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/%E3%83%84%E3%83%BC%E3%83%AB/"/>
     
       <category term="HTML5 Boilerplate" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/%E3%83%84%E3%83%BC%E3%83%AB/HTML5-Boilerplate/"/>
     
@@ -203,9 +203,9 @@
     
       <category term="ホームページ作成" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/"/>
     
-      <category term="ツール" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/%E3%83%84%E3%83%BC%E3%83%AB/"/>
-    
       <category term="Git" scheme="https://demskiautio.github.io/demski/categories/Git/"/>
+    
+      <category term="ツール" scheme="https://demskiautio.github.io/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/%E3%83%84%E3%83%BC%E3%83%AB/"/>
     
       <category term="GitHub" scheme="https://demskiautio.github.io/demski/categories/Git/GitHub/"/>
     
@@ -325,8 +325,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://demskiautio.github.io/demski/1970/01/01/ck1rkbsp8000fm4tvwdcb2669/"/>
-    <id>https://demskiautio.github.io/demski/1970/01/01/ck1rkbsp8000fm4tvwdcb2669/</id>
+    <link href="https://demskiautio.github.io/demski/1970/01/01/ck1rlutyq000fxwtvliowyf8d/"/>
+    <id>https://demskiautio.github.io/demski/1970/01/01/ck1rlutyq000fxwtvliowyf8d/</id>
     <published>1969-12-31T15:00:00.000Z</published>
     <updated>2019-05-23T10:06:45.131Z</updated>
     
