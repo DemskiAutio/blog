@@ -17,19 +17,22 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにわかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。\n\n\n\n\nボックスモデルHTML5と言うと，HTMLのバージョンとしてのHTML5(狭い意味)と，Javascriptを初めとしたWeb技術としてのHTML5(広い意味)がある。今回は前者の意味でHTML5という言葉を用いている。というのも，HTML5ではセマンティクスの観点からHTMLは文章構造・意味を表すのを担い，デザイン部分はCSS3(以下CSS)が担うという風に，明確に区別が定義されるようになった。(らしい…)ボックスモデルは文章の構造・意味的な部分よりもデザイン的な部分が大きい為，CSSが担うことになった。その事を端的に表しているのが「display」プロパティ。この要素は[ブロック・インライン等の、要素の表示形式を指定する際に使用」される。つまり，HTML5の殆どのタグが，自由にブロック・インラインどちらかのボックスに変えることが出来る。http://www.d-toybox.com/spec/CSS3/box/index.html#L706\nただ，ブラウザの仕様上，特に指定がない場合はHTML4時代の名残としてp要素はブロックレベルでa要素はインラインレベルでというように(ブラウザが判断して)表示されるようです。\nボックスモデル配置の大前提ボックスの構成要素要素が宣言されると，ブラウザは次の部品を構成する。\n\n内容（コンテンツ）\nボーダー（border）\n内容とボーダーの間の余白（padding）\nボーダーと他のボックスとの間の余白（margin）\n\nこれは，ブロック・インラインともに共通している。但し，インライン要素の場合は，width や height，上下の margin は効かない。これは，インライン要素はあくまでも内容の中の一部に過ぎないから\n包含ブロック12345&lt;div&gt;    &lt;p&gt;        hoge    &lt;/p&gt;&lt;/div&gt;  \n\n内容の配置は，親要素のpaddingの内側になる。上記の例だと，p要素はdiv要素のpaddingの内側になる。そして、p要素の内容であるhogeは，p要素のpaddingの内側となる。このpaddingの内側は，「包含プロック(又はコンテナブロック)」とよばれる。ボックスの配置は，祖先・親要素の内容(コンテンツ)内になる。必ずしも親要素内とは限らないので注意が必要。例えば，「position:static」以外を指定すると，親要素と子要素の関係が変化する。(詳しくは別の機会に)簡単に書くと，親要素に「static」以外が指定されていると，その親要素が基準となりボックスが配置される。\nボックスの配置ボックスの配置は，ブロックボックスとインラインボックスの2つに分けられる。ブロックボックスは「個々の独立したかたまり」を意味する。そして，その塊は下へ下へと配置されていく。例えエディタ上でp要素が横に並んでいても，ブラウザ上では段落が分けられて表示される。\n一方のインラインボックスは「行の一部」として表示される。例えば，エディタでa要素とa要素の間を改行で区切っても，ブラウザ上では横に並んで表示される。\nmarginの相殺marginの相殺は，\n\n上下に隣り合ってるボックス同士\n入れ子関係にあるボックス同士(但し，間にboder,paddingがない場合)\n\nの間で起こる。相殺が起こった場合，大きい方の数値が採用される。相殺を回避するには，boder,paddingを設定するか，overflow:hidden　を設定する。また，floatを設定した場合も相殺は起こらない。\n参考サイトCSS3の日本語訳集W3C仕様書などのまとめ【保存版】MDN web docs:ブロックレベル要素\n","dateCreated":"2019-04-24T17:44:16+09:00","dateModified":"2019-05-24T19:20:00+09:00","datePublished":"2019-04-24T17:44:16+09:00","description":"はじめにわかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。","headline":"Css-tips1","image":["css3.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/04/24/css-tips1/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/04/24/css-tips1/","keywords":"HTML5, html, css, tips","thumbnailUrl":"css3.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにわかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。\n\n\n\n\nボックスモデルHTML5と言うと，HTMLのバージョンとしてのHTML5(狭い意味)と，Javascriptを初めとしたWeb技術としてのHTML5(広い意味)がある。今回は前者の意味でHTML5という言葉を用いている。というのも，HTML5ではセマンティクスの観点からHTMLは文章構造・意味を表すのを担い，デザイン部分はCSS3(以下CSS)が担うという風に，明確に区別が定義されるようになった。(らしい…)ボックスモデルは文章の構造・意味的な部分よりもデザイン的な部分が大きい為，CSSが担うことになった。その事を端的に表しているのが「display」プロパティ。この要素は[ブロック・インライン等の、要素の表示形式を指定する際に使用」される。つまり，HTML5の殆どのタグが，自由にブロック・インラインどちらかのボックスに変えることが出来る。http://www.d-toybox.com/spec/CSS3/box/index.html#L706\nただ，ブラウザの仕様上，特に指定がない場合はHTML4時代の名残としてp要素はブロックレベルでa要素はインラインレベルでというように(ブラウザが判断して)表示されるようです。\nボックスモデル配置の大前提ボックスの構成要素要素が宣言されると，ブラウザは次の部品を構成する。\n\n内容（コンテンツ）\nボーダー（border）\n内容とボーダーの間の余白（padding）\nボーダーと他のボックスとの間の余白（margin）\n\nこれは，ブロック・インラインともに共通している。但し，インライン要素の場合は，width や height，上下の margin は効かない。これは，インライン要素はあくまでも内容の中の一部に過ぎないから\n包含ブロック12345&lt;div&gt;    &lt;p&gt;        hoge    &lt;/p&gt;&lt;/div&gt;  \n\n内容の配置は，親要素のpaddingの内側になる。上記の例だと，p要素はdiv要素のpaddingの内側になる。そして、p要素の内容であるhogeは，p要素のpaddingの内側となる。このpaddingの内側は，「包含プロック(又はコンテナブロック)」とよばれる。ボックスの配置は，祖先・親要素の内容(コンテンツ)内になる。必ずしも親要素内とは限らないので注意が必要。例えば，「position:static」以外を指定すると，親要素と子要素の関係が変化する。(詳しくは別の機会に)簡単に書くと，親要素に「static」以外が指定されていると，その親要素が基準となりボックスが配置される。\nボックスの配置ボックスの配置は，ブロックボックスとインラインボックスの2つに分けられる。ブロックボックスは「個々の独立したかたまり」を意味する。そして，その塊は下へ下へと配置されていく。例えエディタ上でp要素が横に並んでいても，ブラウザ上では段落が分けられて表示される。\n一方のインラインボックスは「行の一部」として表示される。例えば，エディタでa要素とa要素の間を改行で区切っても，ブラウザ上では横に並んで表示される。\nmarginの相殺marginの相殺は，\n\n上下に隣り合ってるボックス同士\n入れ子関係にあるボックス同士(但し，間にboder,paddingがない場合)\n\nの間で起こる。相殺が起こった場合，大きい方の数値が採用される。相殺を回避するには，boder,paddingを設定するか，overflow:hidden　を設定する。また，floatを設定した場合も相殺は起こらない。\n参考サイトCSS3の日本語訳集W3C仕様書などのまとめ【保存版】MDN web docs:ブロックレベル要素\n","dateCreated":"2019-04-24T17:44:16+09:00","dateModified":"2020-05-26T22:51:49+09:00","datePublished":"2019-04-24T17:44:16+09:00","description":"はじめにわかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。","headline":"Css-tips1","image":["css3.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/04/24/css-tips1/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/04/24/css-tips1/","keywords":"HTML5, html, css, tips","thumbnailUrl":"css3.png"}</script>
     <meta name="description" content="はじめにわかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。">
-<meta name="keywords" content="HTML5,html,css,tips">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Css-tips1">
 <meta property="og:url" content="https://demskiautio.github.io/demski/2019/04/24/css-tips1/index.html">
 <meta property="og:site_name" content="ヴェルフェゴールのため息">
 <meta property="og:description" content="はじめにわかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。">
-<meta property="og:locale" content="ja">
-<meta property="og:updated_time" content="2019-05-24T10:20:00.467Z">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2019-04-24T08:44:16.000Z">
+<meta property="article:modified_time" content="2020-05-26T13:51:49.897Z">
+<meta property="article:author" content="Demski Autio">
+<meta property="article:tag" content="HTML5">
+<meta property="article:tag" content="html">
+<meta property="article:tag" content="css">
+<meta property="article:tag" content="tips">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Css-tips1">
-<meta name="twitter:description" content="はじめにわかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。">
 <meta name="twitter:creator" content="@Dmeski_Autio">
     
     
@@ -45,7 +48,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/demski/assets/css/style-gauxwy3cyxylswvnatxzcbk0jwf9d9bu1tblsvcjvwneb3ntmx0n5v0slszm.min.css">
+    
+<link rel="stylesheet" href="/demski/assets/css/style-qqb3nhxjghzpneti7rczqomokfelajpfsez7zbnmxzywfqdbf1w0kpmmdlgp.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-73846111-1"></script>
@@ -79,7 +84,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/demski/ "
+            href="/demski/"
             aria-label=""
         >
             ヴェルフェゴールのため息
@@ -128,7 +133,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/demski/ "
+                             href="/demski/"
                             
                             title="ホーム"
                         >
@@ -319,7 +324,7 @@
     
         <span>カテゴリー </span>
         
-    <a class="category-link" href="/demski/categories/ホームページ作成/">ホームページ作成</a>, <a class="category-link" href="/demski/categories/ホームページ作成/CSS/">CSS</a>
+    <a class="category-link" href="/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/">ホームページ作成</a>, <a class="category-link" href="/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/CSS/">CSS</a>
 
 
     
@@ -346,7 +351,7 @@
 <li>ボーダーと他のボックスとの間の余白（margin）</li>
 </ul>
 <p>これは，ブロック・インラインともに共通している。<br>但し，インライン要素の場合は，width や height，上下の margin は効かない。<br>これは，インライン要素はあくまでも内容の中の一部に過ぎないから</p>
-<h3 id="包含ブロック"><a href="#包含ブロック" class="headerlink" title="包含ブロック"></a>包含ブロック</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="selector-tag">div</span>&gt;</span><br><span class="line">    &lt;<span class="selector-tag">p</span>&gt;</span><br><span class="line">        <span class="selector-tag">hoge</span></span><br><span class="line">    &lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>  
+<h3 id="包含ブロック"><a href="#包含ブロック" class="headerlink" title="包含ブロック"></a>包含ブロック</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">        hoge</span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>  
 
 <p>内容の配置は，親要素のpaddingの内側になる。<br>上記の例だと，p要素はdiv要素のpaddingの内側になる。<br>そして、p要素の内容であるhogeは，p要素のpaddingの内側となる。<br>このpaddingの内側は，「包含プロック(又はコンテナブロック)」とよばれる。<br>ボックスの配置は，祖先・親要素の内容(コンテンツ)内になる。<br>必ずしも親要素内とは限らないので注意が必要。<br>例えば，「position:static」以外を指定すると，親要素と子要素の関係が変化する。(詳しくは別の機会に)<br>簡単に書くと，親要素に「static」以外が指定されていると，その親要素が基準となりボックスが配置される。</p>
 <h2 id="ボックスの配置"><a href="#ボックスの配置" class="headerlink" title="ボックスの配置"></a>ボックスの配置</h2><p>ボックスの配置は，ブロックボックスとインラインボックスの2つに分けられる。<br>ブロックボックスは「個々の独立したかたまり」を意味する。<br>そして，その塊は下へ下へと配置されていく。<br>例えエディタ上でp要素が横に並んでいても，ブラウザ上では段落が分けられて表示される。</p>
@@ -369,7 +374,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/demski/tags/HTML5/">HTML5</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/css/">css</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/html/">html</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/tips/">tips</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/HTML5/" rel="tag">HTML5</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/css/" rel="tag">css</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/html/" rel="tag">html</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/tips/" rel="tag">tips</a>
 
             </div>
         
@@ -382,9 +387,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2019/05/24/windos10-tips/"
-                    data-tooltip="Windos10 ショートカットキー"
-                    aria-label="前: Windos10 ショートカットキー"
+                    href="/demski/2019/05/10/ckao0836d000ygctv9xdo1v8d/"
+                    data-tooltip="template"
+                    aria-label="前: template"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -397,8 +402,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/demski/2019/03/24/git1/"
-                    data-tooltip="WindowsでGitを使う　～GitHub登録まで"
-                    aria-label="次: WindowsでGitを使う　～GitHub登録まで"
+                    data-tooltip="WindowsでGitHubを使う　～登録まで"
+                    aria-label="次: WindowsでGitHubを使う　～登録まで"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -412,7 +417,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -463,7 +468,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -485,7 +490,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -496,7 +501,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -511,9 +516,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2019/05/24/windos10-tips/"
-                    data-tooltip="Windos10 ショートカットキー"
-                    aria-label="前: Windos10 ショートカットキー"
+                    href="/demski/2019/05/10/ckao0836d000ygctv9xdo1v8d/"
+                    data-tooltip="template"
+                    aria-label="前: template"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -526,8 +531,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/demski/2019/03/24/git1/"
-                    data-tooltip="WindowsでGitを使う　～GitHub登録まで"
-                    aria-label="次: WindowsでGitを使う　～GitHub登録まで"
+                    data-tooltip="WindowsでGitHubを使う　～登録まで"
+                    aria-label="次: WindowsでGitHubを使う　～登録まで"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -541,7 +546,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -592,7 +597,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -722,7 +727,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ck1rlutyq000fxwtvliowyf8d/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckao08369000pgctvaglph3kv/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -735,6 +740,62 @@
                             </span>
                         </span>
                         <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2015/12/28/introduction/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <h3 class="media-heading">hexo + githubページでブログ構築</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2015年12月28日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/01/18/atom/"
+                            aria-label=": Atomの基本的な操作メモ"
+                        >
+                            <h3 class="media-heading">Atomの基本的な操作メモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年1月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Atomとは？"><a href="#Atomとは？" class="headerlink" title="Atomとは？"></a>Atomとは？</h2><p>Atomは,Github社製のオープンソースのテキストエディター。<br>これから主流になっていくと思われる。<br>パッケージ形式で機能を拡張できる。  </p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -808,6 +869,118 @@
                 
                 <div class="media">
                     
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/"
+                            aria-label=": CentOS7 on vagrant"
+                        >
+                            <h3 class="media-heading">CentOS7 on vagrant</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
+                            aria-label=": CentOS on vagrant -LAMP編"
+                        >
+                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年12月7日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <h3 class="media-heading">hexoで使用中のpluginのメモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年3月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/10/16/powershell-color/powershell.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <h3 class="media-heading">PowerShell のColorを変えよう</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月16日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>Windows10のPowerShellの文字色を変更する事ができたので，その時のメモ。<br>デフォルトだと，背景と同色で見えねーって事がありましたので・・・<br>簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -839,204 +1012,6 @@
                     <hr>
                 </div>
                 
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
-                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/03/24/git1/Git-Icon-1788C.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
-                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
-                        >
-                            <h3 class="media-heading">WindowsでGitを使う　～GitHub登録まで</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年3月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>バージョン管理ツールであるGitをインストールして，GitHubと連携させるまでのメモ</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
-                            aria-label=": Css-tips1"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/04/24/css-tips1/css3.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
-                            aria-label=": Css-tips1"
-                        >
-                            <h3 class="media-heading">Css-tips1</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年4月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
-                            aria-label=": Windos10 ショートカットキー"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/Windows10Logo.svg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
-                            aria-label=": Windos10 ショートカットキー"
-                        >
-                            <h3 class="media-heading">Windos10 ショートカットキー</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>最近，マウスよりキーボードだけで色々済ませたほうが楽なことに気付いた。<br>記憶力が乏しいので，よく使いそうなものからメモ。(但し，知ってるのは省略（Ctrl + Cとか）)</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月25日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <h3 class="media-heading">EditorConfigの使い方</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月8日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a href="https://editorconfig.org/" target="_blank" rel="noopener">公式ページ</a>を翻訳・要約記事にしてみました。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
-                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/microsoft-windows-22.svg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
-                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
-                        >
-                            <h3 class="media-heading">Windows10が不安定な時にコマンドプロンプトから回復する方法</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月28日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>Windows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。<br>そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。<br>それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。<br>ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
             </div>
         </div>
         <div class="modal-footer">
@@ -1044,7 +1019,7 @@
                 data-message-zero="見つかりませんでした。"
                 data-message-one="1件見つかりました。"
                 data-message-other="{n} 件見つかりました。">
-                10 件見つかりました。
+                18 件見つかりました。
             </p>
         </div>
     </div>
@@ -1054,7 +1029,9 @@
         
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/demski/assets/js/script-igcnmfmqyxgqtuyigc94ez7nkcirjnbrkoc80jppn1ulbcnflyypwiadthue.min.js"></script>
+
+<script src="/demski/assets/js/script-donq2yudro7bekyvhnbimoabsp023gsegqsuz48ynncychxaorirlfiypuay.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
@@ -1079,8 +1056,12 @@
 
 
 
-    <script src="/demski/assets/js/moment-with-locales.js"></script>
-    <script src="/demski/assets/js/algoliasearch.js"></script>
+    
+<script src="/demski/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/demski/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('9XBM0N4A5H', 'fcec9f4739d2cb371a4c96f19912f611');
       var algoliaIndex = algoliaClient.initIndex('my-hexo-blog');

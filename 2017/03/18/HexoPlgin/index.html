@@ -1,0 +1,1142 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="ヴェルフェゴールのため息">
+    <title>hexoで使用中のpluginのメモ - ヴェルフェゴールのため息</title>
+    <meta name="author" content="Demski Autio">
+    
+        <meta name="keywords" content="hexo,javascript,プログラミング,">
+    
+    
+        <link rel="icon" href="https://demskiautio.github.io/demski/assets/images/favicon.ico">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにhexoには様々な拡張機能がプラグインとして提供されている。その中から，今自分が使っているモノのリストとその使い方をメモしておく。\n\n\n\nインストール一覧一覧というか，package.jsonを晒す。\n123456789101112131415161718192021222324252627282930313233343536373839404142434445&#123;  \"name\": \"hexo-site\",  \"version\": \"0.0.0\",  \"private\": true,  \"hexo\": &#123;    \"version\": \"3.8.0\"  &#125;,  \"dependencies\": &#123;    \"hexo\": \"^3.8.0\",    \"hexo-algoliasearch\": \"^0.3.0\",    \"hexo-autonofollow\": \"^1.0.1\",    \"hexo-browsersync\": \"^0.3.0\",    \"hexo-clean-css\": \"0.0.3\",    \"hexo-deployer-ftpsync\": \"^0.1.1\",    \"hexo-deployer-git\": \"^1.0.0\",    \"hexo-filter-flowchart\": \"^1.0.4\",    \"hexo-filter-sequence\": \"^1.0.3\",    \"hexo-fs\": \"^1.0.2\",    \"hexo-generator-archive\": \"^0.1.5\",    \"hexo-generator-category\": \"^0.1.3\",    \"hexo-generator-feed\": \"^1.2.2\",    \"hexo-generator-index\": \"^0.2.1\",    \"hexo-generator-seo-friendly-sitemap\": \"0.0.25\",    \"hexo-html-minifier\": \"0.0.2\",    \"hexo-i18n\": \"^0.2.1\",    \"hexo-imagemin\": \"^0.1.0\",    \"hexo-notify\": \"0.0.1\",    \"hexo-pagination\": \"^0.1.0\",    \"hexo-renderer-ejs2\": \"^0.1.0\",    \"hexo-renderer-marked\": \"^0.3.2\",    \"hexo-renderer-stylus\": \"^0.3.3\",    \"hexo-server\": \"^0.3.3\",    \"hexo-uglify\": \"0.0.5\",    \"hexo-util\": \"^0.6.3\",    \"install\": \"^0.12.2\",    \"jquery\": \"^3.4.0\",    \"jsdom\": \"^14.0.0\",    \"npm\": \"^6.9.0\",    \"prompt\": \"^1.0.0\",    \"uglify-js\": \"^3.5.4\"  &#125;,  \"devDependencies\": &#123;    \"hexo-generator-tag\": \"^0.2.0\"  &#125;&#125;\n\n“dependencies”に入っているのが，hexo関連。以下に詳細を見ていく\nインストール詳細コア関連取り合えず，何も考えずにぶち込んどけってやつ。\n\nhexo-generator-archive……「アーカイブの生成」\n\nhexo-generator-archive12345archive_generator:  per_page: 10 #ページネーションの数  yearly: true #年毎のアーカイブ生成  monthly: true #月毎のアーカイブ生成  daily: false #日毎のアーカイブ生成\n\n\nhexo-generator-category……「カテゴリーページの生成」\n\nhexo-generator-feed……「AtomまたはRSSのフィードを作成」\n\nhexo-generator-index……「最初のindexページの生成」\n\nhexo-toc……「ポストがレンダリングされる前に、マークダウンTOC（目次）を挿入します。」\nhexo-generator-archive12345678toc:  maxdepth: 3 #最大深度以下の見出しを使用する。  class: toc ♯tocのCSSクラス  slugify: transliteration #どのslugify関数を使用するかを選択します。現在、uslug（デフォルト）と音訳をサポートしています  anchor: # 見出しごとにアンカーが必要かどうか(Default is false)    position: after #アンカーは、タイトルの前またはタイトルの後ろに置く必要があります。 (Default is after);    symbol: '#' #どのシンボルをアンカーにしたいか(Default is #);    style: header-anchor #アンカーのCSSクラス、(Default is header-anchor);\n\nhexo-generator-seo-friendly-sitemap,……「googleエンジン用にサイトマップ（XML）を生成。投稿記事オプションにsitemap: falseを付けると，そのページは除外される」\n\nhexo-generator-tag……「タグページの生成」\n\nhexo-fs……「ファイルシステムモジュール」\n\nhexo-i18n……「多言語対応のなめのi18nが使えるようになる」\n\nhexo-renderer-ejs2……「テンプレートエンジンejs関連」\n\nhexo-renderer-marked……「マークダウン用レンダラー」\n\nhexo-imagemin……「画像のサイズを圧縮する」\nhexo-imagemin1234567imagemin:  enable     : true     //プラグインのon/off  interlaced : false    //プログレシッブレタリングをするか  multipass  : false    //svgの最適化  optimizationLevel: 2  //最適化レベルを0～7で  pngquant   : false    //pngquantプラグインを使用するか（別途インストール必要?）  progressive: false    //プログレッシブへの無損失変換\n\nhexo-notify……お知らせ用？\n\nhexo-pagination……「ページネーション用プラグイン」\n\nhexo-server……「ローカルで確認するためのサーバー機能」\n\n\n取り合えず入れとけば動くもの\nhexo-algoliasearch……「Webサイト用の検索ボックスalgoliaを使用できるようにする。当然algoliaアカウントが必要\n\n\nhexo-autonofollow……「hexoの外部リンクをすべてnofollow属性を付加」\n\nhexo-clean-css……「clean-cssのhexo版」\n123clean_css:  exclude:    - *.min.css\n\nhexo-deployer-ftpsync……「FTPでサーバーと繋ぐ」\n12345678910deploy:  type: ftpsync  host: &lt;host&gt;  user: &lt;user&gt;  pass: &lt;password&gt;  remote: [remote]  port: [port]  ignore: [ignore]  connections: [connections]  verbose: [true|false]\n\nhexo-deployer-git……「gitにデプロイできるようにするプラグイン」\nhexo-deployer-git languages:yml123456789101112131415161718192021222324deploy:  type: git  repo: &lt;repository url&gt;  branch: [branch]  message: [message]  name: [git user]  email: [git email]  extend_dirs: [extend directory]  ignore_hidden: false # default is true# or this:deploy:  type: git  message: [message]  repo:    github: &lt;repository url&gt;,[branch]    gitcafe: &lt;repository url&gt;,[branch]  extend_dirs:    - [extend directory]    - [another extend directory]  ignore_hidden:    public: false    [extend directory]: true    [another extend directory]: false\n\nhexo-html-minifier……「HTMLMinifier。HTMLのサイズを縮小して読み込み速度UP」\n\n\n投稿作成時に記述が必要なもの\nhexo-renderer-stylus……「NibというCSSライブラリを使えるようにする」\n\n最後にまだまだ使いこなせてないモノや便利なものがありそうなので，この記事は随時更新するかも。兎に角迷ったらhexo公式のプラグインページへ\n\nhexo- hexo-autonofollow\n- hexo-browsersync\n- hexo-clean-css\n- hexo-deployer-ftpsync\n- hexo-deployer-git\n- hexo-filter-flowchart\n- hexo-filter-sequence\n- hexo-filter-sub\n- hexo-filter-sup\n- hexo-fs\n- hexo-generator-archive\n- hexo-generator-category\n- hexo-generator-feed\n- hexo-generator-index\n- hexo-generator-seo-friendly-sitemap\n- hexo-generator-tag\n- hexo-html-minifier\n- hexo-i18n\n- hexo-imagemin\n- hexo-notify\n- hexo-pagination\n- hexo-renderer-ejs2\n- hexo-renderer-marked\n- hexo-renderer-stylus\n- hexo-server\n- hexo-toc\n- hexo-uglify\n- hexo-util\n\n","dateCreated":"2017-03-18T16:00:50+09:00","dateModified":"2019-05-05T15:55:20+09:00","datePublished":"2017-03-18T16:00:50+09:00","description":"はじめにhexoには様々な拡張機能がプラグインとして提供されている。その中から，今自分が使っているモノのリストとその使い方をメモしておく。","headline":"hexoで使用中のpluginのメモ","image":["hexo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/","keywords":"web, hexo, plugin","thumbnailUrl":"hexo.png"}</script>
+    <meta name="description" content="はじめにhexoには様々な拡張機能がプラグインとして提供されている。その中から，今自分が使っているモノのリストとその使い方をメモしておく。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="hexoで使用中のpluginのメモ">
+<meta property="og:url" content="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/index.html">
+<meta property="og:site_name" content="ヴェルフェゴールのため息">
+<meta property="og:description" content="はじめにhexoには様々な拡張機能がプラグインとして提供されている。その中から，今自分が使っているモノのリストとその使い方をメモしておく。">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2017-03-18T07:00:50.000Z">
+<meta property="article:modified_time" content="2019-05-05T06:55:20.000Z">
+<meta property="article:author" content="Demski Autio">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="plugin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@Dmeski_Autio">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=640"/>
+    
+    
+        <meta property="og:image" content="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png"/>
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/demski/assets/css/style-qqb3nhxjghzpneti7rczqomokfelajpfsez7zbnmxzywfqdbf1w0kpmmdlgp.min.css">
+
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-73846111-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-73846111-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/demski/"
+            aria-label=""
+        >
+            ヴェルフェゴールのため息
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="リンクを開く: /demski/#about"
+            >
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=90" alt="著者の絵"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/demski/#about"
+                    aria-label="著者についてもっと読む"
+                >
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=110" alt="著者の絵"/>
+                </a>
+                <h4 class="sidebar-profile-name">Demski Autio</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Demski Autio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/"
+                            
+                            title="ホーム"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">ホーム</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/all-categories"
+                            
+                            title="カテゴリー"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">カテゴリー</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/all-tags"
+                            
+                            title="タグ"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">タグ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/all-archives"
+                            
+                            title="アーカイブ"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">アーカイブ</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="検索"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">検索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="プロフィール"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">プロフィール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/DemskiAutio" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://ja.stackoverflow.com/users/19344/demski-autio" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/Demski_Autio" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/mailto"
+                            title="メール"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">メール</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fas fa-address-card" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/demski/link"
+                            
+                            title="Link"
+                        >
+                    
+                        <i class="sidebar-button-icon fas fa-link" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Link</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            hexoで使用中のpluginのメモ
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-03-18T16:00:50+09:00">
+	
+		    2017/03/18
+    	
+    </time>
+    
+        <span>カテゴリー </span>
+        
+    <a class="category-link" href="/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/">ホームページ作成</a>, <a class="category-link" href="/demski/categories/%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%9A%E3%83%BC%E3%82%B8%E4%BD%9C%E6%88%90/%E3%83%96%E3%83%AD%E3%82%B0/">ブログ</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p>
+<a id="more"></a>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#はじめに"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#インストール一覧"><span class="toc-text">インストール一覧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#インストール詳細"><span class="toc-text">インストール詳細</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#コア関連"><span class="toc-text">コア関連</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#取り合えず入れとけば動くもの"><span class="toc-text">取り合えず入れとけば動くもの</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#投稿作成時に記述が必要なもの"><span class="toc-text">投稿作成時に記述が必要なもの</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最後に"><span class="toc-text">最後に</span></a></li></ol>
+
+<h2 id="インストール一覧"><a href="#インストール一覧" class="headerlink" title="インストール一覧"></a>インストール一覧</h2><p>一覧というか，package.jsonを晒す。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"hexo-site"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"0.0.0"</span>,</span><br><span class="line">  <span class="attr">"private"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"hexo"</span>: &#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"3.8.0"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"hexo"</span>: <span class="string">"^3.8.0"</span>,</span><br><span class="line">    <span class="attr">"hexo-algoliasearch"</span>: <span class="string">"^0.3.0"</span>,</span><br><span class="line">    <span class="attr">"hexo-autonofollow"</span>: <span class="string">"^1.0.1"</span>,</span><br><span class="line">    <span class="attr">"hexo-browsersync"</span>: <span class="string">"^0.3.0"</span>,</span><br><span class="line">    <span class="attr">"hexo-clean-css"</span>: <span class="string">"0.0.3"</span>,</span><br><span class="line">    <span class="attr">"hexo-deployer-ftpsync"</span>: <span class="string">"^0.1.1"</span>,</span><br><span class="line">    <span class="attr">"hexo-deployer-git"</span>: <span class="string">"^1.0.0"</span>,</span><br><span class="line">    <span class="attr">"hexo-filter-flowchart"</span>: <span class="string">"^1.0.4"</span>,</span><br><span class="line">    <span class="attr">"hexo-filter-sequence"</span>: <span class="string">"^1.0.3"</span>,</span><br><span class="line">    <span class="attr">"hexo-fs"</span>: <span class="string">"^1.0.2"</span>,</span><br><span class="line">    <span class="attr">"hexo-generator-archive"</span>: <span class="string">"^0.1.5"</span>,</span><br><span class="line">    <span class="attr">"hexo-generator-category"</span>: <span class="string">"^0.1.3"</span>,</span><br><span class="line">    <span class="attr">"hexo-generator-feed"</span>: <span class="string">"^1.2.2"</span>,</span><br><span class="line">    <span class="attr">"hexo-generator-index"</span>: <span class="string">"^0.2.1"</span>,</span><br><span class="line">    <span class="attr">"hexo-generator-seo-friendly-sitemap"</span>: <span class="string">"0.0.25"</span>,</span><br><span class="line">    <span class="attr">"hexo-html-minifier"</span>: <span class="string">"0.0.2"</span>,</span><br><span class="line">    <span class="attr">"hexo-i18n"</span>: <span class="string">"^0.2.1"</span>,</span><br><span class="line">    <span class="attr">"hexo-imagemin"</span>: <span class="string">"^0.1.0"</span>,</span><br><span class="line">    <span class="attr">"hexo-notify"</span>: <span class="string">"0.0.1"</span>,</span><br><span class="line">    <span class="attr">"hexo-pagination"</span>: <span class="string">"^0.1.0"</span>,</span><br><span class="line">    <span class="attr">"hexo-renderer-ejs2"</span>: <span class="string">"^0.1.0"</span>,</span><br><span class="line">    <span class="attr">"hexo-renderer-marked"</span>: <span class="string">"^0.3.2"</span>,</span><br><span class="line">    <span class="attr">"hexo-renderer-stylus"</span>: <span class="string">"^0.3.3"</span>,</span><br><span class="line">    <span class="attr">"hexo-server"</span>: <span class="string">"^0.3.3"</span>,</span><br><span class="line">    <span class="attr">"hexo-uglify"</span>: <span class="string">"0.0.5"</span>,</span><br><span class="line">    <span class="attr">"hexo-util"</span>: <span class="string">"^0.6.3"</span>,</span><br><span class="line">    <span class="attr">"install"</span>: <span class="string">"^0.12.2"</span>,</span><br><span class="line">    <span class="attr">"jquery"</span>: <span class="string">"^3.4.0"</span>,</span><br><span class="line">    <span class="attr">"jsdom"</span>: <span class="string">"^14.0.0"</span>,</span><br><span class="line">    <span class="attr">"npm"</span>: <span class="string">"^6.9.0"</span>,</span><br><span class="line">    <span class="attr">"prompt"</span>: <span class="string">"^1.0.0"</span>,</span><br><span class="line">    <span class="attr">"uglify-js"</span>: <span class="string">"^3.5.4"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"hexo-generator-tag"</span>: <span class="string">"^0.2.0"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>“dependencies”に入っているのが，hexo関連。<br>以下に詳細を見ていく</p>
+<h2 id="インストール詳細"><a href="#インストール詳細" class="headerlink" title="インストール詳細"></a>インストール詳細</h2><h3 id="コア関連"><a href="#コア関連" class="headerlink" title="コア関連"></a>コア関連</h3><p>取り合えず，何も考えずにぶち込んどけってやつ。</p>
+<ul>
+<li>hexo-generator-archive……「アーカイブの生成」</li>
+</ul>
+<figure class="highlight yml"><figcaption><span>hexo-generator-archive</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">archive_generator:</span></span><br><span class="line"><span class="attr">  per_page:</span> <span class="number">10</span> <span class="comment">#ページネーションの数</span></span><br><span class="line"><span class="attr">  yearly:</span> <span class="literal">true</span> <span class="comment">#年毎のアーカイブ生成</span></span><br><span class="line"><span class="attr">  monthly:</span> <span class="literal">true</span> <span class="comment">#月毎のアーカイブ生成</span></span><br><span class="line"><span class="attr">  daily:</span> <span class="literal">false</span> <span class="comment">#日毎のアーカイブ生成</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>hexo-generator-category……「カテゴリーページの生成」</p>
+</li>
+<li><p>hexo-generator-feed……「AtomまたはRSSのフィードを作成」</p>
+</li>
+<li><p>hexo-generator-index……「最初のindexページの生成」</p>
+</li>
+<li><p>hexo-toc……「ポストがレンダリングされる前に、マークダウンTOC（目次）を挿入します。」</p>
+<figure class="highlight yml"><figcaption><span>hexo-generator-archive</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line"><span class="attr">  maxdepth:</span> <span class="number">3</span> <span class="comment">#最大深度以下の見出しを使用する。</span></span><br><span class="line"><span class="attr">  class:</span> <span class="string">toc</span> <span class="string">♯tocのCSSクラス</span></span><br><span class="line"><span class="attr">  slugify:</span> <span class="string">transliteration</span> <span class="comment">#どのslugify関数を使用するかを選択します。現在、uslug（デフォルト）と音訳をサポートしています</span></span><br><span class="line"><span class="attr">  anchor:</span> <span class="comment"># 見出しごとにアンカーが必要かどうか(Default is false)</span></span><br><span class="line"><span class="attr">    position:</span> <span class="string">after</span> <span class="comment">#アンカーは、タイトルの前またはタイトルの後ろに置く必要があります。 (Default is after);</span></span><br><span class="line"><span class="attr">    symbol:</span> <span class="string">'#'</span> <span class="comment">#どのシンボルをアンカーにしたいか(Default is #);</span></span><br><span class="line"><span class="attr">    style:</span> <span class="string">header-anchor</span> <span class="comment">#アンカーのCSSクラス、(Default is header-anchor);</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hexo-generator-seo-friendly-sitemap,……「googleエンジン用にサイトマップ（XML）を生成。投稿記事オプションにsitemap: falseを付けると，そのページは除外される」</p>
+</li>
+<li><p>hexo-generator-tag……「タグページの生成」</p>
+</li>
+<li><p>hexo-fs……「ファイルシステムモジュール」</p>
+</li>
+<li><p>hexo-i18n……「多言語対応のなめのi18nが使えるようになる」</p>
+</li>
+<li><p>hexo-renderer-ejs2……「テンプレートエンジンejs関連」</p>
+</li>
+<li><p>hexo-renderer-marked……「マークダウン用レンダラー」</p>
+</li>
+<li><p>hexo-imagemin……「画像のサイズを圧縮する」</p>
+<figure class="highlight yml"><figcaption><span>hexo-imagemin</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">imagemin:</span></span><br><span class="line">  <span class="string">enable</span>     <span class="string">:</span> <span class="literal">true</span>     <span class="string">//プラグインのon/off</span></span><br><span class="line">  <span class="string">interlaced</span> <span class="string">:</span> <span class="literal">false</span>    <span class="string">//プログレシッブレタリングをするか</span></span><br><span class="line">  <span class="string">multipass</span>  <span class="string">:</span> <span class="literal">false</span>    <span class="string">//svgの最適化</span></span><br><span class="line"><span class="attr">  optimizationLevel:</span> <span class="number">2</span>  <span class="string">//最適化レベルを0～7で</span></span><br><span class="line">  <span class="string">pngquant</span>   <span class="string">:</span> <span class="literal">false</span>    <span class="string">//pngquantプラグインを使用するか（別途インストール必要?）</span></span><br><span class="line"><span class="attr">  progressive:</span> <span class="literal">false</span>    <span class="string">//プログレッシブへの無損失変換</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hexo-notify……お知らせ用？</p>
+</li>
+<li><p>hexo-pagination……「ページネーション用プラグイン」</p>
+</li>
+<li><p>hexo-server……「ローカルで確認するためのサーバー機能」</p>
+</li>
+</ul>
+<h3 id="取り合えず入れとけば動くもの"><a href="#取り合えず入れとけば動くもの" class="headerlink" title="取り合えず入れとけば動くもの"></a>取り合えず入れとけば動くもの</h3><ul>
+<li>hexo-algoliasearch……「Webサイト用の検索ボックスalgoliaを使用できるようにする。当然algoliaアカウントが必要</li>
+</ul>
+<ul>
+<li><p>hexo-autonofollow……「hexoの外部リンクをすべてnofollow属性を付加」</p>
+</li>
+<li><p>hexo-clean-css……「clean-cssのhexo版」</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">clean_css:</span></span><br><span class="line"><span class="attr">  exclude:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">*.min.css</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hexo-deployer-ftpsync……「FTPでサーバーと繋ぐ」</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">ftpsync</span></span><br><span class="line"><span class="attr">  host:</span> <span class="string">&lt;host&gt;</span></span><br><span class="line"><span class="attr">  user:</span> <span class="string">&lt;user&gt;</span></span><br><span class="line"><span class="attr">  pass:</span> <span class="string">&lt;password&gt;</span></span><br><span class="line"><span class="attr">  remote:</span> <span class="string">[remote]</span></span><br><span class="line"><span class="attr">  port:</span> <span class="string">[port]</span></span><br><span class="line"><span class="attr">  ignore:</span> <span class="string">[ignore]</span></span><br><span class="line"><span class="attr">  connections:</span> <span class="string">[connections]</span></span><br><span class="line"><span class="attr">  verbose:</span> <span class="string">[true|false]</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hexo-deployer-git……「gitにデプロイできるようにするプラグイン」</p>
+<figure class="highlight plain"><figcaption><span>hexo-deployer-git languages:yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: &lt;repository url&gt;</span><br><span class="line">  branch: [branch]</span><br><span class="line">  message: [message]</span><br><span class="line">  name: [git user]</span><br><span class="line">  email: [git email]</span><br><span class="line">  extend_dirs: [extend directory]</span><br><span class="line">  ignore_hidden: false # default is true</span><br><span class="line"></span><br><span class="line"># or this:</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  message: [message]</span><br><span class="line">  repo:</span><br><span class="line">    github: &lt;repository url&gt;,[branch]</span><br><span class="line">    gitcafe: &lt;repository url&gt;,[branch]</span><br><span class="line">  extend_dirs:</span><br><span class="line">    - [extend directory]</span><br><span class="line">    - [another extend directory]</span><br><span class="line">  ignore_hidden:</span><br><span class="line">    public: false</span><br><span class="line">    [extend directory]: true</span><br><span class="line">    [another extend directory]: false</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hexo-html-minifier……「HTMLMinifier。HTMLのサイズを縮小して読み込み速度UP」</p>
+</li>
+</ul>
+<h3 id="投稿作成時に記述が必要なもの"><a href="#投稿作成時に記述が必要なもの" class="headerlink" title="投稿作成時に記述が必要なもの"></a>投稿作成時に記述が必要なもの</h3><ul>
+<li>hexo-renderer-stylus……「NibというCSSライブラリを使えるようにする」</li>
+</ul>
+<h2 id="最後に"><a href="#最後に" class="headerlink" title="最後に"></a>最後に</h2><p>まだまだ使いこなせてないモノや便利なものがありそうなので，この記事は随時更新するかも。<br>兎に角迷ったら<a href="https://hexo.io/plugins/" target="_blank" rel="noopener" title="hexo plugins">hexo公式のプラグインページへ</a></p>
+<ul>
+<li>hexo<pre><code>- hexo-autonofollow
+- hexo-browsersync
+- hexo-clean-css
+- hexo-deployer-ftpsync
+- hexo-deployer-git
+- hexo-filter-flowchart
+- hexo-filter-sequence
+- hexo-filter-sub
+- hexo-filter-sup
+- hexo-fs
+- hexo-generator-archive
+- hexo-generator-category
+- hexo-generator-feed
+- hexo-generator-index
+- hexo-generator-seo-friendly-sitemap
+- hexo-generator-tag
+- hexo-html-minifier
+- hexo-i18n
+- hexo-imagemin
+- hexo-notify
+- hexo-pagination
+- hexo-renderer-ejs2
+- hexo-renderer-marked
+- hexo-renderer-stylus
+- hexo-server
+- hexo-toc
+- hexo-uglify
+- hexo-util</code></pre></li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">タグ</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/hexo/" rel="tag">hexo</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/plugin/" rel="tag">plugin</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/web/" rel="tag">web</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2017/10/16/powershell-color/"
+                    data-tooltip="PowerShell のColorを変えよう"
+                    aria-label="前: PowerShell のColorを変えよう"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
+                    data-tooltip="CentOS on vagrant -LAMP編"
+                    aria-label="次: CentOS on vagrant -LAMP編"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2017/10/16/powershell-color/"
+                    data-tooltip="PowerShell のColorを変えよう"
+                    aria-label="前: PowerShell のColorを変えよう"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">前</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
+                    data-tooltip="CentOS on vagrant -LAMP編"
+                    aria-label="次: CentOS on vagrant -LAMP編"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">次</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Diesen Beitrag teilen"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                    title="Facebookで共有"
+                    aria-label="Facebookで共有"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                    title="Twitterで共有"
+                    aria-label="Twitterで共有"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                    title="Google+で共有"
+                    aria-label="Google+で共有"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Kommentieren"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#table-of-contents" aria-label="目次">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                        aria-label="Facebookで共有"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                        aria-label="Twitterで共有"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                        aria-label="Google+で共有"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=110" alt="著者の絵"/>
+        
+            <h4 id="about-card-name">Demski Autio</h4>
+        
+            <div id="about-card-bio"><p>Demski Autio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>自宅警備隊</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Japan
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/demski/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">見つかりませんでした。</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckao08369000pgctvaglph3kv/"
+                            aria-label=": Hello World"
+                        >
+                            <h3 class="media-heading">Hello World</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    1970年1月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2015/12/28/introduction/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <h3 class="media-heading">hexo + githubページでブログ構築</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2015年12月28日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/01/18/atom/"
+                            aria-label=": Atomの基本的な操作メモ"
+                        >
+                            <h3 class="media-heading">Atomの基本的な操作メモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年1月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Atomとは？"><a href="#Atomとは？" class="headerlink" title="Atomとは？"></a>Atomとは？</h2><p>Atomは,Github社製のオープンソースのテキストエディター。<br>これから主流になっていくと思われる。<br>パッケージ形式で機能を拡張できる。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/02/14/horo/"
+                            aria-label=": Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2016/02/14/horo/060dcb16.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/02/14/horo/"
+                            aria-label=": Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
+                        >
+                            <h3 class="media-heading">Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年2月14日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>FireFoxのプラグイン「Stylish」を利用して，Googleの検索画面に月島ほろちゃんを召喚しようという計画です。<br>「Stylish」の使い方も含め，メモとして残しておきます。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/04/04/floating-point/"
+                            aria-label=": 浮動小数点"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2016/04/04/floating-point/mathematics.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/04/04/floating-point/"
+                            aria-label=": 浮動小数点"
+                        >
+                            <h3 class="media-heading">浮動小数点</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年4月4日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。<br>今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/"
+                            aria-label=": CentOS7 on vagrant"
+                        >
+                            <h3 class="media-heading">CentOS7 on vagrant</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
+                            aria-label=": CentOS on vagrant -LAMP編"
+                        >
+                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年12月7日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <h3 class="media-heading">hexoで使用中のpluginのメモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年3月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/10/16/powershell-color/powershell.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <h3 class="media-heading">PowerShell のColorを変えよう</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月16日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>Windows10のPowerShellの文字色を変更する事ができたので，その時のメモ。<br>デフォルトだと，背景と同色で見えねーって事がありましたので・・・<br>簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
+                            aria-label=": Javascrpt 変数の巻き上げ"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/learn-javascript.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
+                            aria-label=": Javascrpt 変数の巻き上げ"
+                        >
+                            <h3 class="media-heading">Javascrpt 変数の巻き上げ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年12月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>javascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。<br>javascrpt特有で最重要ポイントの一つ。<br>これを分かってると，コードの読み方が一歩プロに近づく…カモ</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="見つかりませんでした。"
+                data-message-one="1件見つかりました。"
+                data-message-other="{n} 件見つかりました。">
+                18 件見つかりました。
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/demski/assets/js/script-donq2yudro7bekyvhnbimoabsp023gsegqsuz48ynncychxaorirlfiypuay.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/';
+              
+            this.page.identifier = '2017/03/18/HexoPlgin/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'demskiautio';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+    
+<script src="/demski/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/demski/assets/js/algoliasearch.js"></script>
+
+    <script>
+      var algoliaClient = algoliasearch('9XBM0N4A5H', 'fcec9f4739d2cb371a4c96f19912f611');
+      var algoliaIndex = algoliaClient.initIndex('my-hexo-blog');
+    </script>
+
+
+    </body>
+</html>

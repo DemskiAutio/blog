@@ -17,20 +17,23 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。\n\n\n\n\n「DISM.exe」と「sfc /scannow」，「chkedsk」Windows7の頃までは 「sfc /scannow」 が有名でしたが，Win8.1以降には 「DISM.exe」 というのが加わったようです。この二つの違いは 「DISM.exe」はWindowsのシステムイメージの破損の確認と修復を、「sfc /scannow」は保護されているすべてのシステムファイルをスキャンして破損したファイルがあった場合は「C:\\Windows\\System32\\dllcache」の圧縮フォルダにあるキャッシュコピーから復元します。\n実行順は「DISM.exe」から始め，それでも不安定なら「sfc /scannow」を実行します。\n「DISM.exe」の実行方法まずは，管理者権限でPowerShellを起動します。スタートアイコンを右クリックして出てきたメニューからWindows PowerShell(管理者)(A)というのをクリックします。すると，PowerShellが管理者権限付きで起動します。(途中で警告がでたら「はい」を選びます)。そしたら，\n1DISM.exe /Online /Cleanup-image /Restorehealth\n\nと入力してEnterキーを押すとDISM.exeがスタートします。ステータスが100％になるまで待ちます。時間はケース・バイ・ケースですが，おおよそ15分～1時間位は覚悟しましょう。「操作は正常に完了しました。」と表示されれば終了です。\nDISM.exeのオプション先ほど叩いたコマンドのうち「/」以降はオプション指定です。とは言え「/?」を叩けばオプションの簡単な説明が出てきます。さらに詳しく見たいオプションがあれば，そのオプション後に「/?」を叩けば説明が表示されます。\nDISM のヘルプ\n\n「sfc /scannow」の実行方法DISM.exeを実行しても不安定なら，「sfc /scannow」を実行します。実行法はDISM.exeと同じように管理者権限付きのPowerShellを起動してコマンドを叩くだけです。例によって100%になるまで待ちます。\n「Windowsリソース保護は、整合性違反を検出しませんでした。」\nと表示されれば問題ありません。もし\n「破損したファイルを検出し、正常に修復しました。」\n\nと表示された場合は，修復されたので問題ありません。Windowsを再起動しましょう。\n「Windows リソース保護は要求された操作を実行できませんでした。」\nと表示されたら，Windowsのセーフモードで立ち上げて%WinDir%\\WinSxS\\Temp の下に PendingDeletes フォルダーと PendingRenames フォルダーが存在することを確認します。このファイルが何なのかはよくわかりません。まぁ，あってもなくても「sfc /scannow」を試してみましょう。\n「Windows リソース保護は、破損したファイルを検出しましたが、その一部を修正できませんでした。 詳細は CBS.Log (%WinDir%\\Logs\\CBS\\CBS.log) にあります。」\nと出たら修復失敗です。logファイルなんて見ても分かりませんので「sfc /scannow」での回復は諦めましょう。\n「chkdsk」こちらは，ディスクのエラーを確認するためのコマンドです。(因みに，ドライブを右クリックで出てくるオプションからでも実行できます。)ただ「chkdsk」はオプションを指定せずに実行すると、一切の修復作業を行いません。エラーがあるかを確認するだけです。オプションには以下のものがあります。\n/f    ファイルシステムを修復する。あくまでもソフトウェア的な修復で、ハードディスクのセクタチェックは行わない。最も使用頻度の高いオプション。\n\n\n/r    不良セクタを検出し、不良クラスタから読み出し可能なデータは回収する。また、「/f」のオプションを包括する。領域内の全セクタをチェックするため、非常に時間がかかる。読めないデータはそのまま失われるので、過信は禁物。  \n\n\n/b    ファイルシステムに登録されている不良クラスタをチェックし直す。また、「/r」のオプションを包括する。  \n\n\nということなので，通常は「/f」オプションをつけて実行します。ただ，checkdskはドライブに大きな負荷をかけることになります。因みに，最近主流になり始めているSSDには効果が無いという情報がちらほら見かけます。その反面，しつこく何回か叩いたら回復したという情報も。自分ではまだここまで試すエラーが出てないので，真相はわかりません。残念。\nまとめWindowsの調子が悪い時は\n\n「Windows PowerShell」を管理者権限で起動\nDISM.exe /Online /Cleanup-image /Restorehealth を実行\nsfc /scannow を実行\nchkdsk /fを試す。ダメ元で/rを叩きまくる。\n\n\n\nと，こんな感じになるかと思います。以上，Windowsの調子が悪い時に試すコマンドの紹介でした。\n参考\n「己で解決！泣かぬなら己で鳴こうホトトギス」 DISM.exeとsfc /scannowでWindowsを修復する\n\n「Windowsのサポート」 システム ファイル チェッカー ツールを使用して不足または破損しているシステム ファイルを修復する\n\nSSDに不良ブロックができても諦めてはいけない件\n\n\n","dateCreated":"2019-06-28T18:26:02+09:00","dateModified":"2019-06-28T18:46:00+09:00","datePublished":"2019-06-28T18:26:02+09:00","description":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。","headline":"Windows10が不安定な時にコマンドプロンプトから回復する方法","image":["microsoft-windows-22.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/","keywords":"Windows10, 回復, コマンドプロンプト, PowerShell","thumbnailUrl":"microsoft-windows-22.svg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。\n\n\n\n\n「DISM.exe」と「sfc /scannow」，「chkedsk」Windows7の頃までは 「sfc /scannow」 が有名でしたが，Win8.1以降には 「DISM.exe」 というのが加わったようです。この二つの違いは 「DISM.exe」はWindowsのシステムイメージの破損の確認と修復を、「sfc /scannow」は保護されているすべてのシステムファイルをスキャンして破損したファイルがあった場合は「C:\\Windows\\System32\\dllcache」の圧縮フォルダにあるキャッシュコピーから復元します。\n実行順は「DISM.exe」から始め，それでも不安定なら「sfc /scannow」を実行します。\n「DISM.exe」の実行方法まずは，管理者権限でPowerShellを起動します。スタートアイコンを右クリックして出てきたメニューからWindows PowerShell(管理者)(A)というのをクリックします。すると，PowerShellが管理者権限付きで起動します。(途中で警告がでたら「はい」を選びます)。そしたら，\n1DISM.exe /Online /Cleanup-image /Restorehealth\n\nと入力してEnterキーを押すとDISM.exeがスタートします。ステータスが100％になるまで待ちます。時間はケース・バイ・ケースですが，おおよそ15分～1時間位は覚悟しましょう。「操作は正常に完了しました。」と表示されれば終了です。\nDISM.exeのオプション先ほど叩いたコマンドのうち「/」以降はオプション指定です。とは言え「/?」を叩けばオプションの簡単な説明が出てきます。さらに詳しく見たいオプションがあれば，そのオプション後に「/?」を叩けば説明が表示されます。\nDISM のヘルプ\n\n「sfc /scannow」の実行方法DISM.exeを実行しても不安定なら，「sfc /scannow」を実行します。実行法はDISM.exeと同じように管理者権限付きのPowerShellを起動してコマンドを叩くだけです。例によって100%になるまで待ちます。\n「Windowsリソース保護は、整合性違反を検出しませんでした。」\nと表示されれば問題ありません。もし\n「破損したファイルを検出し、正常に修復しました。」\n\nと表示された場合は，修復されたので問題ありません。Windowsを再起動しましょう。\n「Windows リソース保護は要求された操作を実行できませんでした。」\nと表示されたら，Windowsのセーフモードで立ち上げて%WinDir%\\WinSxS\\Temp の下に PendingDeletes フォルダーと PendingRenames フォルダーが存在することを確認します。このファイルが何なのかはよくわかりません。まぁ，あってもなくても「sfc /scannow」を試してみましょう。\n「Windows リソース保護は、破損したファイルを検出しましたが、その一部を修正できませんでした。 詳細は CBS.Log (%WinDir%\\Logs\\CBS\\CBS.log) にあります。」\nと出たら修復失敗です。logファイルなんて見ても分かりませんので「sfc /scannow」での回復は諦めましょう。\n「chkdsk」こちらは，ディスクのエラーを確認するためのコマンドです。(因みに，ドライブを右クリックで出てくるオプションからでも実行できます。)ただ「chkdsk」はオプションを指定せずに実行すると、一切の修復作業を行いません。エラーがあるかを確認するだけです。オプションには以下のものがあります。\n/f    ファイルシステムを修復する。あくまでもソフトウェア的な修復で、ハードディスクのセクタチェックは行わない。最も使用頻度の高いオプション。\n\n\n/r    不良セクタを検出し、不良クラスタから読み出し可能なデータは回収する。また、「/f」のオプションを包括する。領域内の全セクタをチェックするため、非常に時間がかかる。読めないデータはそのまま失われるので、過信は禁物。  \n\n\n/b    ファイルシステムに登録されている不良クラスタをチェックし直す。また、「/r」のオプションを包括する。  \n\n\nということなので，通常は「/f」オプションをつけて実行します。ただ，checkdskはドライブに大きな負荷をかけることになります。因みに，最近主流になり始めているSSDには効果が無いという情報がちらほら見かけます。その反面，しつこく何回か叩いたら回復したという情報も。自分ではまだここまで試すエラーが出てないので，真相はわかりません。残念。\nまとめWindowsの調子が悪い時は\n\n「Windows PowerShell」を管理者権限で起動\nDISM.exe /Online /Cleanup-image /Restorehealth を実行\nsfc /scannow を実行\nchkdsk /fを試す。ダメ元で/rを叩きまくる。\n\n\n\nと，こんな感じになるかと思います。以上，Windowsの調子が悪い時に試すコマンドの紹介でした。\n参考\n「己で解決！泣かぬなら己で鳴こうホトトギス」 DISM.exeとsfc /scannowでWindowsを修復する\n\n「Windowsのサポート」 システム ファイル チェッカー ツールを使用して不足または破損しているシステム ファイルを修復する\n\nSSDに不良ブロックができても諦めてはいけない件\n\n\n","dateCreated":"2019-06-28T18:26:02+09:00","dateModified":"2019-06-28T18:46:00+09:00","datePublished":"2019-06-28T18:26:02+09:00","description":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。","headline":"Windows10が不安定な時にコマンドプロンプトから回復する方法","image":["microsoft-windows-22.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/","keywords":"Windows10, PowerShell, 回復, コマンドプロンプト","thumbnailUrl":"microsoft-windows-22.svg"}</script>
     <meta name="description" content="初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。">
-<meta name="keywords" content="Windows10,回復,コマンドプロンプト,PowerShell">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Windows10が不安定な時にコマンドプロンプトから回復する方法">
 <meta property="og:url" content="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/index.html">
 <meta property="og:site_name" content="ヴェルフェゴールのため息">
 <meta property="og:description" content="初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。">
-<meta property="og:locale" content="ja">
+<meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/help.png">
-<meta property="og:updated_time" content="2019-06-28T09:46:00.554Z">
+<meta property="article:published_time" content="2019-06-28T09:26:02.000Z">
+<meta property="article:modified_time" content="2019-06-28T09:46:00.554Z">
+<meta property="article:author" content="Demski Autio">
+<meta property="article:tag" content="Windows10">
+<meta property="article:tag" content="PowerShell">
+<meta property="article:tag" content="回復">
+<meta property="article:tag" content="コマンドプロンプト">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Windows10が不安定な時にコマンドプロンプトから回復する方法">
-<meta name="twitter:description" content="初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。">
 <meta name="twitter:image" content="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/help.png">
 <meta name="twitter:creator" content="@Dmeski_Autio">
     
@@ -47,7 +50,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/demski/assets/css/style-gauxwy3cyxylswvnatxzcbk0jwf9d9bu1tblsvcjvwneb3ntmx0n5v0slszm.min.css">
+    
+<link rel="stylesheet" href="/demski/assets/css/style-qqb3nhxjghzpneti7rczqomokfelajpfsez7zbnmxzywfqdbf1w0kpmmdlgp.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-73846111-1"></script>
@@ -81,7 +86,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/demski/ "
+            href="/demski/"
             aria-label=""
         >
             ヴェルフェゴールのため息
@@ -130,7 +135,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/demski/ "
+                             href="/demski/"
                             
                             title="ホーム"
                         >
@@ -321,7 +326,7 @@
     
         <span>カテゴリー </span>
         
-    <a class="category-link" href="/demski/categories/コンピューター/">コンピューター</a>, <a class="category-link" href="/demski/categories/コンピューター/Windows10/">Windows10</a>, <a class="category-link" href="/demski/categories/コンピューター/Windows10/回復/">回復</a>
+    <a class="category-link" href="/demski/categories/%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%83%BC/">コンピューター</a>, <a class="category-link" href="/demski/categories/%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%83%BC/Windows10/">Windows10</a>, <a class="category-link" href="/demski/categories/%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF%E3%83%BC/Windows10/%E5%9B%9E%E5%BE%A9/">回復</a>
 
 
     
@@ -336,7 +341,7 @@
             <h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>Windows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。<br>そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。<br>それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。<br>ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。</p>
 <a id="more"></a>
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初めに"><span class="toc-text">初めに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「DISM-exe」と「sfc-scannow」，「chkedsk」"><span class="toc-text">「DISM.exe」と「sfc /scannow」，「chkedsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「DISM-exe」の実行方法"><span class="toc-text">「DISM.exe」の実行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DISM-exeのオプション"><span class="toc-text">DISM.exeのオプション</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「sfc-scannow」の実行方法"><span class="toc-text">「sfc /scannow」の実行方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「chkdsk」"><span class="toc-text">「chkdsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#まとめ"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初めに"><span class="toc-text">初めに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「DISM-exe」と「sfc-scannow」，「chkedsk」"><span class="toc-text">「DISM.exe」と「sfc &#x2F;scannow」，「chkedsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「DISM-exe」の実行方法"><span class="toc-text">「DISM.exe」の実行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DISM-exeのオプション"><span class="toc-text">DISM.exeのオプション</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「sfc-scannow」の実行方法"><span class="toc-text">「sfc &#x2F;scannow」の実行方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「chkdsk」"><span class="toc-text">「chkdsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#まとめ"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
 
 <h2 id="「DISM-exe」と「sfc-scannow」，「chkedsk」"><a href="#「DISM-exe」と「sfc-scannow」，「chkedsk」" class="headerlink" title="「DISM.exe」と「sfc /scannow」，「chkedsk」"></a>「DISM.exe」と「sfc /scannow」，「chkedsk」</h2><p>Windows7の頃までは <strong>「sfc /scannow」</strong> が有名でしたが，Win8.1以降には <strong>「DISM.exe」</strong> というのが加わったようです。<br>この二つの違いは <em>「DISM.exe」はWindowsのシステムイメージの破損の確認と修復を、「sfc /scannow」は保護されているすべてのシステムファイルをスキャンして破損したファイルがあった場合は「C:\Windows\System32\dllcache」の圧縮フォルダにあるキャッシュコピーから復元します。</em></p>
 <p><strong>実行順は「DISM.exe」から始め，それでも不安定なら「sfc /scannow」を実行します。</strong></p>
@@ -345,7 +350,7 @@
 
 <p>と入力してEnterキーを押すとDISM.exeがスタートします。<br>ステータスが100％になるまで待ちます。<br>時間はケース・バイ・ケースですが，おおよそ15分～1時間位は覚悟しましょう。<br>「操作は正常に完了しました。」と表示されれば終了です。</p>
 <h3 id="DISM-exeのオプション"><a href="#DISM-exeのオプション" class="headerlink" title="DISM.exeのオプション"></a>DISM.exeのオプション</h3><p>先ほど叩いたコマンドのうち「/」以降はオプション指定です。<br>とは言え「/?」を叩けばオプションの簡単な説明が出てきます。<br>さらに詳しく見たいオプションがあれば，そのオプション後に「/?」を叩けば説明が表示されます。</p>
-<div class="figure " style="width:100%;"><a class="fancybox" href="help.png" title="DISM のヘルプ" data-caption="DISM のヘルプ" data-fancybox="console"><img class="fig-img" src="help.png" style="width:100%;height:100%;" alt="DISM のヘルプ"></a><span class="caption">DISM のヘルプ</span></div><div style="clear:both;"></div>
+<div class="figure " style="width:100%;"><a class="fancybox" href="help.png" title="DISM のヘルプ" data-caption="DISM のヘルプ" data-fancybox="console"><img class="fig-img" src="help.png" style="width:100%;height:100%;"alt="DISM のヘルプ"></a><span class="caption">DISM のヘルプ</span></div><div style="clear:both;"></div>
 
 <h2 id="「sfc-scannow」の実行方法"><a href="#「sfc-scannow」の実行方法" class="headerlink" title="「sfc /scannow」の実行方法"></a>「sfc /scannow」の実行方法</h2><p>DISM.exeを実行しても不安定なら，「sfc /scannow」を実行します。<br>実行法はDISM.exeと同じように管理者権限付きのPowerShellを起動してコマンドを叩くだけです。<br>例によって100%になるまで待ちます。</p>
 <span class="highlight-text success">「Windowsリソース保護は、整合性違反を検出しませんでした。」</span>
@@ -397,7 +402,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/demski/tags/PowerShell/">PowerShell</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/Windows10/">Windows10</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/コマンドプロンプト/">コマンドプロンプト</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/回復/">回復</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/PowerShell/" rel="tag">PowerShell</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/Windows10/" rel="tag">Windows10</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88/" rel="tag">コマンドプロンプト</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E5%9B%9E%E5%BE%A9/" rel="tag">回復</a>
 
             </div>
         
@@ -407,11 +412,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2020/02/27/npm-command/"
+                    data-tooltip="npmコマンドについてのまとめ"
+                    aria-label="前: npmコマンドについてのまとめ"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -437,7 +445,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -488,7 +496,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -510,7 +518,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -521,7 +529,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -533,11 +541,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2020/02/27/npm-command/"
+                    data-tooltip="npmコマンドについてのまとめ"
+                    aria-label="前: npmコマンドについてのまとめ"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -563,7 +574,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -614,7 +625,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -744,7 +755,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ck1rlutyq000fxwtvliowyf8d/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckao08369000pgctvaglph3kv/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -757,6 +768,62 @@
                             </span>
                         </span>
                         <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2015/12/28/introduction/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <h3 class="media-heading">hexo + githubページでブログ構築</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2015年12月28日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/01/18/atom/"
+                            aria-label=": Atomの基本的な操作メモ"
+                        >
+                            <h3 class="media-heading">Atomの基本的な操作メモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年1月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Atomとは？"><a href="#Atomとは？" class="headerlink" title="Atomとは？"></a>Atomとは？</h2><p>Atomは,Github社製のオープンソースのテキストエディター。<br>これから主流になっていくと思われる。<br>パッケージ形式で機能を拡張できる。  </p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -830,6 +897,118 @@
                 
                 <div class="media">
                     
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/"
+                            aria-label=": CentOS7 on vagrant"
+                        >
+                            <h3 class="media-heading">CentOS7 on vagrant</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
+                            aria-label=": CentOS on vagrant -LAMP編"
+                        >
+                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年12月7日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <h3 class="media-heading">hexoで使用中のpluginのメモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年3月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/10/16/powershell-color/powershell.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <h3 class="media-heading">PowerShell のColorを変えよう</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月16日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>Windows10のPowerShellの文字色を変更する事ができたので，その時のメモ。<br>デフォルトだと，背景と同色で見えねーって事がありましたので・・・<br>簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -861,204 +1040,6 @@
                     <hr>
                 </div>
                 
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
-                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/03/24/git1/Git-Icon-1788C.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
-                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
-                        >
-                            <h3 class="media-heading">WindowsでGitを使う　～GitHub登録まで</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年3月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>バージョン管理ツールであるGitをインストールして，GitHubと連携させるまでのメモ</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
-                            aria-label=": Css-tips1"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/04/24/css-tips1/css3.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
-                            aria-label=": Css-tips1"
-                        >
-                            <h3 class="media-heading">Css-tips1</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年4月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
-                            aria-label=": Windos10 ショートカットキー"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/Windows10Logo.svg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
-                            aria-label=": Windos10 ショートカットキー"
-                        >
-                            <h3 class="media-heading">Windos10 ショートカットキー</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>最近，マウスよりキーボードだけで色々済ませたほうが楽なことに気付いた。<br>記憶力が乏しいので，よく使いそうなものからメモ。(但し，知ってるのは省略（Ctrl + Cとか）)</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月25日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <h3 class="media-heading">EditorConfigの使い方</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月8日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a href="https://editorconfig.org/" target="_blank" rel="noopener">公式ページ</a>を翻訳・要約記事にしてみました。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
-                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/microsoft-windows-22.svg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
-                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
-                        >
-                            <h3 class="media-heading">Windows10が不安定な時にコマンドプロンプトから回復する方法</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月28日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>Windows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。<br>そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。<br>それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。<br>ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
             </div>
         </div>
         <div class="modal-footer">
@@ -1066,7 +1047,7 @@
                 data-message-zero="見つかりませんでした。"
                 data-message-one="1件見つかりました。"
                 data-message-other="{n} 件見つかりました。">
-                10 件見つかりました。
+                18 件見つかりました。
             </p>
         </div>
     </div>
@@ -1076,7 +1057,9 @@
         
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/demski/assets/js/script-igcnmfmqyxgqtuyigc94ez7nkcirjnbrkoc80jppn1ulbcnflyypwiadthue.min.js"></script>
+
+<script src="/demski/assets/js/script-donq2yudro7bekyvhnbimoabsp023gsegqsuz48ynncychxaorirlfiypuay.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
@@ -1101,8 +1084,12 @@
 
 
 
-    <script src="/demski/assets/js/moment-with-locales.js"></script>
-    <script src="/demski/assets/js/algoliasearch.js"></script>
+    
+<script src="/demski/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/demski/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('9XBM0N4A5H', 'fcec9f4739d2cb371a4c96f19912f611');
       var algoliaIndex = algoliaClient.initIndex('my-hexo-blog');

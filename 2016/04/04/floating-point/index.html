@@ -17,19 +17,22 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  \n\nMozillaのMDN Javascript再入門によると，\n\nJavaScript における数値は，仕様によると「倍精度 64 ビットフォーマット IEEE 754 値 (double-precision 64-bit format IEEE 754 values)」です。\n\nと，いきなり難しいことを言ってきます…。ということで，以下に調べてみた結果をメモ。\n\n\nIEEE 754IEEE＝「Institute of Electrical and Electronics Engineers＝米国電気電子技術者協会」の略。IEEEは電気工学を源流とする通信・電子・情報工学とその関連分野の学会であり，事実上コンピューターの色々な仕様の世界標準決定機関です。で，「IEEE754」は，この学会が取り決めた「 浮動小数点演算に関する標準規格」です。\n不動小数点とはコンピューターは厳密には「0」と「1」で構成される2進数しか扱えません。そこで，(小数点を含む)整数を表すのに特別な方法が必要となってきます。  \n小数点を表すには固定小数点数と浮動小数点数があります。固定小数点とは，普段よく目にする「3.1424,,,,,」のように表現すること。この方式ではコンピューターが理解することができません。  \n一方，不動小数点では「指数形式(○○×△△の□□乗)」という形で表します。具体的には，「3.14」を表すのに「31.4×10－1，314.0×10－2，3.14×100，31.4×10－1，314.0×10－2,,,」と色んな形で表現することができます。表現する形が多いということは，コンピューターやソフトを作るときに作り手が好き勝手に決められることになります。ところが，それでは互換性とかの問題で扱いにくいのでIEEEが基準を示し，作り手がそれを採用して互換性を保つようになりました。\nということで，以下はIEEE745に沿った浮動小数点です。\nIEEE 754における浮動小数点浮動小数点で表現するのに，指数形式を部分的に分けて使います。「○○×△△の□□乗」は\n\n○○を仮数部(符号)\n△△を基数部\n□□乗を指数部\n\nと呼びます。そして，求められる計算精度とデータ容量の問題を考慮して以下の2つの形式が定められています。\n\n半精度浮動小数点数では，符号部 1 ビット ・ 指数部 5 ビット ・ 仮数部 10 ビット =16ビット\n単精度浮動小数点数では，符号部 1 ビット ・ 指数部 8 ビット ・ 仮数部 23 ビット =32ビット\n倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 11 ビット ・ 仮数部 52 ビット =64ビット\n四倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 15 ビット ・ 仮数部 112 ビット=127ビット\n\nとして扱います。最近よく言われる「32bit版Windows10」「64bit版Windows10」といのは，ここに由来しています。さらに，\n\n符号部は「正の値なら0」,「 負の値なら1」とする。\n仮数部は，整数部分が 1 であるような2進小数の小数部分（ケチ表現）を表す。\n指数部は，符号なし2進整数とし，半精度では 15，単精度では 127，倍精度では 1023，四倍精度では 16383 のゲタを履かせたゲタ履き表現で表す。\n\n固定小数点を浮動小数点に変換実際に単精度で「3.25」を浮動小数点に変換してみます。\n10進数から2進数10進数を整数と小数点以下の2つに分けます。理由は，それぞれ2進数に直す方法が異なるから。整数はひたすら2で割りその余りを出します。3を2進数にすると，\n123/2→1余り11/2→0余り1\n\n並びは下からなので，答えは「11」となります。\n続いて小数点以下を2進数にします。方法は10進数の小数部を2倍して商を求めます。商の小数部を繰り返し2倍していき，その整数部が2進数になります。つまり，「0.25」を計算すると\n120.25*2→0.5 整数部00.5*2→1 整数部1\n\n並びは整数とは逆で上から読むので，答えは「01」となります。よって，「3.25」の2進数は「11.01」となります。\n2進数を「1.◯◯×2^△」にする\n符号は正の数なので「0」。\n指数は2に小数点を動かした桁と同数に127(単精度)を足すので，「1+127＝128」とります。  \n\n128を2進数に直すと\n12345678128/2→64余り064/2→32余り032/2→16余り016/2→8余り08/2→4余り04/2→2余り02/2→1余り01/2→0余り1\n\nよって答えは「1000 0000」。\n仮数は整数部が「1」固定の2進数になるように小数点を左に移動するので，1.101。  これを「正規化」といいます。仮数は23ビット(単精度)で小数点より右側だけなので，足りない分を0でうめて101000000000 00000000000。\n浮動小数点は符号，指数，仮数を合わせて01000000010100000000000000000000となります。以上で，「3.25」を32bitの浮動小数点に変換できました。\nJavascriptでは……冒頭のJavascriptの「数値」の扱いの仕様に戻ると「倍精度 64 ビットフォーマット」で扱うとなってます。ところが，読み進めると\n\n実のところ，整数値は 32 ビット int 型として扱われます。また一部の実装では，32 ビット整数値ではなく Number で有効な命令の実行を求められるまでの間，32 ビット整数値として保存します。これはビット演算を行う際に重要なことです。\n\nとあります。よくわかりません。^^;とりあえず，長くなったので項目を改めます。\n参照サイトITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』一から勉強させてください(￣ω￣;)MDN Javascript再入門\n","dateCreated":"2016-04-04T18:28:07+09:00","dateModified":"2019-05-23T19:02:55+09:00","datePublished":"2016-04-04T18:28:07+09:00","description":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  ","headline":"浮動小数点","image":["mathematics.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2016/04/04/floating-point/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2016/04/04/floating-point/","keywords":"プログラミング, Javascript, 数値, 数学","thumbnailUrl":"mathematics.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  \n\nMozillaのMDN Javascript再入門によると，\n\nJavaScript における数値は，仕様によると「倍精度 64 ビットフォーマット IEEE 754 値 (double-precision 64-bit format IEEE 754 values)」です。\n\nと，いきなり難しいことを言ってきます…。ということで，以下に調べてみた結果をメモ。\n\n\nIEEE 754IEEE＝「Institute of Electrical and Electronics Engineers＝米国電気電子技術者協会」の略。IEEEは電気工学を源流とする通信・電子・情報工学とその関連分野の学会であり，事実上コンピューターの色々な仕様の世界標準決定機関です。で，「IEEE754」は，この学会が取り決めた「 浮動小数点演算に関する標準規格」です。\n不動小数点とはコンピューターは厳密には「0」と「1」で構成される2進数しか扱えません。そこで，(小数点を含む)整数を表すのに特別な方法が必要となってきます。  \n小数点を表すには固定小数点数と浮動小数点数があります。固定小数点とは，普段よく目にする「3.1424,,,,,」のように表現すること。この方式ではコンピューターが理解することができません。  \n一方，不動小数点では「指数形式(○○×△△の□□乗)」という形で表します。具体的には，「3.14」を表すのに「31.4×10－1，314.0×10－2，3.14×100，31.4×10－1，314.0×10－2,,,」と色んな形で表現することができます。表現する形が多いということは，コンピューターやソフトを作るときに作り手が好き勝手に決められることになります。ところが，それでは互換性とかの問題で扱いにくいのでIEEEが基準を示し，作り手がそれを採用して互換性を保つようになりました。\nということで，以下はIEEE745に沿った浮動小数点です。\nIEEE 754における浮動小数点浮動小数点で表現するのに，指数形式を部分的に分けて使います。「○○×△△の□□乗」は\n\n○○を仮数部(符号)\n△△を基数部\n□□乗を指数部\n\nと呼びます。そして，求められる計算精度とデータ容量の問題を考慮して以下の2つの形式が定められています。\n\n半精度浮動小数点数では，符号部 1 ビット ・ 指数部 5 ビット ・ 仮数部 10 ビット =16ビット\n単精度浮動小数点数では，符号部 1 ビット ・ 指数部 8 ビット ・ 仮数部 23 ビット =32ビット\n倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 11 ビット ・ 仮数部 52 ビット =64ビット\n四倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 15 ビット ・ 仮数部 112 ビット=127ビット\n\nとして扱います。最近よく言われる「32bit版Windows10」「64bit版Windows10」といのは，ここに由来しています。さらに，\n\n符号部は「正の値なら0」,「 負の値なら1」とする。\n仮数部は，整数部分が 1 であるような2進小数の小数部分（ケチ表現）を表す。\n指数部は，符号なし2進整数とし，半精度では 15，単精度では 127，倍精度では 1023，四倍精度では 16383 のゲタを履かせたゲタ履き表現で表す。\n\n固定小数点を浮動小数点に変換実際に単精度で「3.25」を浮動小数点に変換してみます。\n10進数から2進数10進数を整数と小数点以下の2つに分けます。理由は，それぞれ2進数に直す方法が異なるから。整数はひたすら2で割りその余りを出します。3を2進数にすると，\n123&#x2F;2→1余り11&#x2F;2→0余り1\n\n並びは下からなので，答えは「11」となります。\n続いて小数点以下を2進数にします。方法は10進数の小数部を2倍して商を求めます。商の小数部を繰り返し2倍していき，その整数部が2進数になります。つまり，「0.25」を計算すると\n120.25*2→0.5 整数部00.5*2→1 整数部1\n\n並びは整数とは逆で上から読むので，答えは「01」となります。よって，「3.25」の2進数は「11.01」となります。\n2進数を「1.◯◯×2^△」にする\n符号は正の数なので「0」。\n指数は2に小数点を動かした桁と同数に127(単精度)を足すので，「1+127＝128」とります。  \n\n128を2進数に直すと\n12345678128&#x2F;2→64余り064&#x2F;2→32余り032&#x2F;2→16余り016&#x2F;2→8余り08&#x2F;2→4余り04&#x2F;2→2余り02&#x2F;2→1余り01&#x2F;2→0余り1\n\nよって答えは「1000 0000」。\n仮数は整数部が「1」固定の2進数になるように小数点を左に移動するので，1.101。  これを「正規化」といいます。仮数は23ビット(単精度)で小数点より右側だけなので，足りない分を0でうめて101000000000 00000000000。\n浮動小数点は符号，指数，仮数を合わせて01000000010100000000000000000000となります。以上で，「3.25」を32bitの浮動小数点に変換できました。\nJavascriptでは……冒頭のJavascriptの「数値」の扱いの仕様に戻ると「倍精度 64 ビットフォーマット」で扱うとなってます。ところが，読み進めると\n\n実のところ，整数値は 32 ビット int 型として扱われます。また一部の実装では，32 ビット整数値ではなく Number で有効な命令の実行を求められるまでの間，32 ビット整数値として保存します。これはビット演算を行う際に重要なことです。\n\nとあります。よくわかりません。^^;とりあえず，長くなったので項目を改めます。\n参照サイトITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』一から勉強させてください(￣ω￣;)MDN Javascript再入門\n","dateCreated":"2016-04-04T18:28:07+09:00","dateModified":"2019-05-23T19:02:55+09:00","datePublished":"2016-04-04T18:28:07+09:00","description":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  ","headline":"浮動小数点","image":["mathematics.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2016/04/04/floating-point/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2016/04/04/floating-point/","keywords":"プログラミング, Javascript, 数値, 数学","thumbnailUrl":"mathematics.jpg"}</script>
     <meta name="description" content="Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。">
-<meta name="keywords" content="プログラミング,Javascript,数値,数学">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="浮動小数点">
 <meta property="og:url" content="https://demskiautio.github.io/demski/2016/04/04/floating-point/index.html">
 <meta property="og:site_name" content="ヴェルフェゴールのため息">
 <meta property="og:description" content="Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。">
-<meta property="og:locale" content="ja">
-<meta property="og:updated_time" content="2019-05-23T10:02:55.621Z">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2016-04-04T09:28:07.000Z">
+<meta property="article:modified_time" content="2019-05-23T10:02:55.621Z">
+<meta property="article:author" content="Demski Autio">
+<meta property="article:tag" content="プログラミング">
+<meta property="article:tag" content="Javascript">
+<meta property="article:tag" content="数値">
+<meta property="article:tag" content="数学">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浮動小数点">
-<meta name="twitter:description" content="Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。">
 <meta name="twitter:creator" content="@Dmeski_Autio">
     
     
@@ -45,7 +48,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/demski/assets/css/style-gauxwy3cyxylswvnatxzcbk0jwf9d9bu1tblsvcjvwneb3ntmx0n5v0slszm.min.css">
+    
+<link rel="stylesheet" href="/demski/assets/css/style-qqb3nhxjghzpneti7rczqomokfelajpfsez7zbnmxzywfqdbf1w0kpmmdlgp.min.css">
+
     <!--STYLES END-->
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-73846111-1"></script>
@@ -79,7 +84,7 @@
     <div class="header-title">
         <a
             class="header-title-link"
-            href="/demski/ "
+            href="/demski/"
             aria-label=""
         >
             ヴェルフェゴールのため息
@@ -128,7 +133,7 @@
                 <li class="sidebar-button">
                     
                         <a  class="sidebar-button-link "
-                             href="/demski/ "
+                             href="/demski/"
                             
                             title="ホーム"
                         >
@@ -319,7 +324,7 @@
     
         <span>カテゴリー </span>
         
-    <a class="category-link" href="/demski/categories/コンピュータ/">コンピュータ</a>, <a class="category-link" href="/demski/categories/コンピュータ/プログラミング/">プログラミング</a>, <a class="category-link" href="/demski/categories/コンピュータ/プログラミング/数学/">数学</a>
+    <a class="category-link" href="/demski/categories/%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF/">コンピュータ</a>, <a class="category-link" href="/demski/categories/%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0/">プログラミング</a>, <a class="category-link" href="/demski/categories/%E3%82%B3%E3%83%B3%E3%83%94%E3%83%A5%E3%83%BC%E3%82%BF/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0/%E6%95%B0%E5%AD%A6/">数学</a>
 
 
     
@@ -366,7 +371,7 @@
 </ul>
 <h2 id="固定小数点を浮動小数点に変換"><a href="#固定小数点を浮動小数点に変換" class="headerlink" title="固定小数点を浮動小数点に変換"></a>固定小数点を浮動小数点に変換</h2><p>実際に単精度で「3.25」を浮動小数点に変換してみます。</p>
 <h3 id="10進数から2進数"><a href="#10進数から2進数" class="headerlink" title="10進数から2進数"></a>10進数から2進数</h3><p>10進数を整数と小数点以下の2つに分けます。<br>理由は，それぞれ2進数に直す方法が異なるから。<br>整数はひたすら2で割りその余りを出します。<br>3を2進数にすると，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3/2→1余り1</span><br><span class="line">1/2→0余り1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3&#x2F;2→1余り1</span><br><span class="line">1&#x2F;2→0余り1</span><br></pre></td></tr></table></figure>
 
 <p>並びは下からなので，答えは「11」となります。</p>
 <p>続いて小数点以下を2進数にします。<br>方法は10進数の小数部を2倍して商を求めます。<br>商の小数部を繰り返し2倍していき，その整数部が2進数になります。<br>つまり，「0.25」を計算すると</p>
@@ -378,7 +383,7 @@
 <li>指数は2に小数点を動かした桁と同数に127(単精度)を足すので，「1+127＝128」とります。  </li>
 </ul>
 <p>128を2進数に直すと</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">128/2→64余り0</span><br><span class="line">64/2→32余り0</span><br><span class="line">32/2→16余り0</span><br><span class="line">16/2→8余り0</span><br><span class="line">8/2→4余り0</span><br><span class="line">4/2→2余り0</span><br><span class="line">2/2→1余り0</span><br><span class="line">1/2→0余り1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">128&#x2F;2→64余り0</span><br><span class="line">64&#x2F;2→32余り0</span><br><span class="line">32&#x2F;2→16余り0</span><br><span class="line">16&#x2F;2→8余り0</span><br><span class="line">8&#x2F;2→4余り0</span><br><span class="line">4&#x2F;2→2余り0</span><br><span class="line">2&#x2F;2→1余り0</span><br><span class="line">1&#x2F;2→0余り1</span><br></pre></td></tr></table></figure>
 
 <p>よって答えは「1000 0000」。</p>
 <p>仮数は整数部が「1」固定の2進数になるように小数点を左に移動するので，<code>1.101</code>。  これを「正規化」といいます。<br>仮数は23ビット(単精度)で小数点より右側だけなので，足りない分を0でうめて<code>101000000000 00000000000</code>。</p>
@@ -388,7 +393,7 @@
 <p>実のところ，整数値は 32 ビット int 型として扱われます。また一部の実装では，32 ビット整数値ではなく Number で有効な命令の実行を求められるまでの間，32 ビット整数値として保存します。これはビット演算を行う際に重要なことです。</p>
 </blockquote>
 <p>とあります。<br>よくわかりません。^^;<br>とりあえず，長くなったので項目を改めます。</p>
-<h2 id="参照サイト"><a href="#参照サイト" class="headerlink" title="参照サイト"></a>参照サイト</h2><p><a href="http://itpro.nikkeibp.co.jp/members/ITPro/ITBASIC/20020624/" title="１週間で学ぶIT基礎の基礎" target="_blank" rel="noopener">ITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』</a><br><a href="http://dangerous-animal141.hatenablog.com/entry/2014/05/10/000000" title="動小数点数について本気出して考えてみた" target="_blank" rel="noopener">一から勉強させてください(￣ω￣;)</a><br><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/A_re-introduction_to_JavaScript" title="Javascript再入門" target="_blank" rel="noopener">MDN Javascript再入門</a></p>
+<h2 id="参照サイト"><a href="#参照サイト" class="headerlink" title="参照サイト"></a>参照サイト</h2><p><a href="http://itpro.nikkeibp.co.jp/members/ITPro/ITBASIC/20020624/" target="_blank" rel="noopener" title="１週間で学ぶIT基礎の基礎">ITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』</a><br><a href="http://dangerous-animal141.hatenablog.com/entry/2014/05/10/000000" target="_blank" rel="noopener" title="動小数点数について本気出して考えてみた">一から勉強させてください(￣ω￣;)</a><br><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/A_re-introduction_to_JavaScript" target="_blank" rel="noopener" title="Javascript再入門">MDN Javascript再入門</a></p>
 
             
 
@@ -400,7 +405,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/demski/tags/Javascript/">Javascript</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/プログラミング/">プログラミング</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/数値/">数値</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/数学/">数学</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/Javascript/" rel="tag">Javascript</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0/" rel="tag">プログラミング</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E6%95%B0%E5%80%A4/" rel="tag">数値</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a>
 
             </div>
         
@@ -413,9 +418,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2018/12/25/javascrpt-theory1/"
-                    data-tooltip="Javascrpt 変数の巻き上げ"
-                    aria-label="前: Javascrpt 変数の巻き上げ"
+                    href="/demski/2016/11/06/CentOS7OnVagrant/"
+                    data-tooltip="CentOS7 on vagrant"
+                    aria-label="前: CentOS7 on vagrant"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -443,7 +448,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -494,7 +499,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -516,7 +521,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -527,7 +532,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -542,9 +547,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2018/12/25/javascrpt-theory1/"
-                    data-tooltip="Javascrpt 変数の巻き上げ"
-                    aria-label="前: Javascrpt 変数の巻き上げ"
+                    href="/demski/2016/11/06/CentOS7OnVagrant/"
+                    data-tooltip="CentOS7 on vagrant"
+                    aria-label="前: CentOS7 on vagrant"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -572,7 +577,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Share this post"
+                aria-label="Diesen Beitrag teilen"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -623,7 +628,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Leave a comment"
+                        aria-label="Kommentieren"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -753,7 +758,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ck1rlutyq000fxwtvliowyf8d/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckao08369000pgctvaglph3kv/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -766,6 +771,62 @@
                             </span>
                         </span>
                         <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2015/12/28/introduction/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2015/12/28/introduction/"
+                            aria-label=": hexo + githubページでブログ構築"
+                        >
+                            <h3 class="media-heading">hexo + githubページでブログ構築</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2015年12月28日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/01/18/atom/"
+                            aria-label=": Atomの基本的な操作メモ"
+                        >
+                            <h3 class="media-heading">Atomの基本的な操作メモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年1月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Atomとは？"><a href="#Atomとは？" class="headerlink" title="Atomとは？"></a>Atomとは？</h2><p>Atomは,Github社製のオープンソースのテキストエディター。<br>これから主流になっていくと思われる。<br>パッケージ形式で機能を拡張できる。  </p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -839,6 +900,118 @@
                 
                 <div class="media">
                     
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/"
+                            aria-label=": CentOS7 on vagrant"
+                        >
+                            <h3 class="media-heading">CentOS7 on vagrant</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
+                            aria-label=": CentOS on vagrant -LAMP編"
+                        >
+                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2016年12月7日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
+                            aria-label=": hexoで使用中のpluginのメモ"
+                        >
+                            <h3 class="media-heading">hexoで使用中のpluginのメモ</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年3月18日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/10/16/powershell-color/powershell.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2017/10/16/powershell-color/"
+                            aria-label=": PowerShell のColorを変えよう"
+                        >
+                            <h3 class="media-heading">PowerShell のColorを変えよう</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2017年10月16日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>Windows10のPowerShellの文字色を変更する事ができたので，その時のメモ。<br>デフォルトだと，背景と同色で見えねーって事がありましたので・・・<br>簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -870,204 +1043,6 @@
                     <hr>
                 </div>
                 
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
-                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/03/24/git1/Git-Icon-1788C.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
-                            aria-label=": WindowsでGitを使う　～GitHub登録まで"
-                        >
-                            <h3 class="media-heading">WindowsでGitを使う　～GitHub登録まで</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年3月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>バージョン管理ツールであるGitをインストールして，GitHubと連携させるまでのメモ</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
-                            aria-label=": Css-tips1"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/04/24/css-tips1/css3.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
-                            aria-label=": Css-tips1"
-                        >
-                            <h3 class="media-heading">Css-tips1</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年4月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
-                            aria-label=": Windos10 ショートカットキー"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/Windows10Logo.svg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
-                            aria-label=": Windos10 ショートカットキー"
-                        >
-                            <h3 class="media-heading">Windos10 ショートカットキー</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月24日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>最近，マウスよりキーボードだけで色々済ませたほうが楽なことに気付いた。<br>記憶力が乏しいので，よく使いそうなものからメモ。(但し，知ってるのは省略（Ctrl + Cとか）)</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月25日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <h3 class="media-heading">EditorConfigの使い方</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月8日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a href="https://editorconfig.org/" target="_blank" rel="noopener">公式ページ</a>を翻訳・要約記事にしてみました。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
-                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/microsoft-windows-22.svg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"
-                            aria-label=": Windows10が不安定な時にコマンドプロンプトから回復する方法"
-                        >
-                            <h3 class="media-heading">Windows10が不安定な時にコマンドプロンプトから回復する方法</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月28日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>Windows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。<br>そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。<br>それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。<br>ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
             </div>
         </div>
         <div class="modal-footer">
@@ -1075,7 +1050,7 @@
                 data-message-zero="見つかりませんでした。"
                 data-message-one="1件見つかりました。"
                 data-message-other="{n} 件見つかりました。">
-                10 件見つかりました。
+                18 件見つかりました。
             </p>
         </div>
     </div>
@@ -1085,7 +1060,9 @@
         
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
-<script src="/demski/assets/js/script-igcnmfmqyxgqtuyigc94ez7nkcirjnbrkoc80jppn1ulbcnflyypwiadthue.min.js"></script>
+
+<script src="/demski/assets/js/script-donq2yudro7bekyvhnbimoabsp023gsegqsuz48ynncychxaorirlfiypuay.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
@@ -1110,8 +1087,12 @@
 
 
 
-    <script src="/demski/assets/js/moment-with-locales.js"></script>
-    <script src="/demski/assets/js/algoliasearch.js"></script>
+    
+<script src="/demski/assets/js/moment-with-locales.js"></script>
+
+    
+<script src="/demski/assets/js/algoliasearch.js"></script>
+
     <script>
       var algoliaClient = algoliasearch('9XBM0N4A5H', 'fcec9f4739d2cb371a4c96f19912f611');
       var algoliaIndex = algoliaClient.initIndex('my-hexo-blog');

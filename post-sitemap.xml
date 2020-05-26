@@ -8,6 +8,46 @@
     </url>
 
     <url>
+        <loc>https://demskiautio.github.io/demski/2020/02/27/npm-command/</loc>
+        <lastmod>2020-05-26T14:17:28.084Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2019/04/24/css-tips1/</loc>
+        <lastmod>2020-05-26T13:51:49.897Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2015/12/28/introduction/</loc>
+        <lastmod>2020-05-26T12:53:06.144Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2019/03/24/git1/</loc>
+        <lastmod>2020-05-26T11:42:54.941Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2019/05/10/ckao0836d000ygctv9xdo1v8d/</loc>
+        <lastmod>2020-05-26T11:38:24.377Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://demskiautio.github.io/demski/2019/05/24/windos10-tips/</loc>
         <lastmod>2019-10-15T07:32:00.756Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -56,23 +96,7 @@
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/2019/04/24/css-tips1/</loc>
-        <lastmod>2019-05-24T10:20:00.467Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2019/03/24/git1/</loc>
-        <lastmod>2019-05-24T10:18:44.726Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/1970/01/01/ck1rlutyq000fxwtvliowyf8d/</loc>
+        <loc>https://demskiautio.github.io/demski/1970/01/01/ckao08369000pgctvaglph3kv/</loc>
         <lastmod>2019-05-23T10:06:45.131Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -82,6 +106,46 @@
     <url>
         <loc>https://demskiautio.github.io/demski/2016/04/04/floating-point/</loc>
         <lastmod>2019-05-23T10:02:55.621Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/</loc>
+        <lastmod>2019-05-05T06:55:20.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2017/10/16/powershell-color/</loc>
+        <lastmod>2019-05-04T11:03:07.871Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2016/01/18/atom/</loc>
+        <lastmod>2017-09-18T10:54:56.422Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/</loc>
+        <lastmod>2017-04-03T11:09:33.536Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/</loc>
+        <lastmod>2017-04-03T11:09:14.346Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
