@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにjavascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。javascrpt特有で最重要ポイントの一つ。これを分かってると，コードの読み方が一歩プロに近づく…カモ\n\n\n\n\n大前提１ グローバル変数とローカル変数まずは，基礎中の基礎，「グローバル変数」と「ローカル変数」について。  \n変数js12345678910var shaver = '松本イズミ';function show(){    console.log(shaver);    var imo = '松本いずみ';    console.log(imo);}show();console.log(shaver);console.log(imo);\n\nこれを実行すると\n1234松本イズミ松本いずみ松本イズミUncaught ReferenceError: imo is not defined\n\nと表示されます。最後が「imo is not defined」となってます。これは，変数imoこと「松本いずみ」はローカル変数だから。つまり，変数imoは関数show()の中でしか使えないということ。逆に，変数shaverこと「松本イズミ」はグローバル変数なので，関数show内でも外でも使えます。当然，新しく作った関数内でも使えます。\n本題1 変数の巻き上げさて，ここからが本題です。まずは，コードを見てみます。\nhoistingjs1234567var izumi = '松本イズミ';function show(){    cosole.log(izumi);    var izumi = '松本いずみ';    console.log(izumi);}show();\n\n\nコンソールにどのように表示されるでしょうか？  \n12松本イズミ松本いずみ\nと思った人は不正解。正解は\n12undefined松本いずみ\n\n\n本題2 巻き上げの正体Javascrptでは，関数内のどこでもvar宣言で変数を定義できる。しかし，実行時にはその変数は関数の先頭で宣言されたものと同じ扱いになる。つまり，以下のコードと同等となる。\nhoistingjs12345678var izumi = '松本イズミ';function show(){    var izumi; //undefined    cosole.log(izumi);    var izumi = '松本いずみ';    cosole.log(izumi); //松本いずみ}show();\n\nグローバル変数のでて定義した「松本イズミ」は，関数内で巻き上げられた[var izumi;]に上書きされちゃうんですね。結果，表示されるのは「undefined」になると。なぜ，このような仕様になってるのかというと，結構複雑な事情があるみたい。次回，さらに掘り下げてみます。\n参考知らないと怖い「変数の巻き上げ」とは？やっとわかったjsの「巻き上げ」  \n","dateCreated":"2018-12-25T20:55:21+09:00","dateModified":"2019-06-14T19:40:15+09:00","datePublished":"2018-12-25T20:55:21+09:00","description":"はじめにjavascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。javascrpt特有で最重要ポイントの一つ。これを分かってると，コードの読み方が一歩プロに近づく…カモ","headline":"Javascrpt 変数の巻き上げ","image":["learn-javascript.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/","keywords":"プログラミング, JavaScript, 基礎, theory","thumbnailUrl":"learn-javascript.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにjavascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。javascrpt特有で最重要ポイントの一つ。これを分かってると，コードの読み方が一歩プロに近づく…カモ\n\n\n\n\n大前提１ グローバル変数とローカル変数まずは，基礎中の基礎，「グローバル変数」と「ローカル変数」について。  \n変数js12345678910var shaver = '松本イズミ';function show(){    console.log(shaver);    var imo = '松本いずみ';    console.log(imo);}show();console.log(shaver);console.log(imo);\n\nこれを実行すると\n1234松本イズミ松本いずみ松本イズミUncaught ReferenceError: imo is not defined\n\nと表示されます。最後が「imo is not defined」となってます。これは，変数imoこと「松本いずみ」はローカル変数だから。つまり，変数imoは関数show()の中でしか使えないということ。逆に，変数shaverこと「松本イズミ」はグローバル変数なので，関数show内でも外でも使えます。当然，新しく作った関数内でも使えます。\n本題1 変数の巻き上げさて，ここからが本題です。まずは，コードを見てみます。\nhoistingjs1234567var izumi = '松本イズミ';function show(){    cosole.log(izumi);    var izumi = '松本いずみ';    console.log(izumi);}show();\n\n\nコンソールにどのように表示されるでしょうか？  \n12松本イズミ松本いずみ\nと思った人は不正解。正解は\n12undefined松本いずみ\n\n\n本題2 巻き上げの正体Javascrptでは，関数内のどこでもvar宣言で変数を定義できる。しかし，実行時にはその変数は関数の先頭で宣言されたものと同じ扱いになる。つまり，以下のコードと同等となる。\nhoistingjs12345678var izumi = '松本イズミ';function show(){    var izumi; //undefined    cosole.log(izumi);    var izumi = '松本いずみ';    cosole.log(izumi); //松本いずみ}show();\n\nグローバル変数のでて定義した「松本イズミ」は，関数内で巻き上げられた[var izumi;]に上書きされちゃうんですね。結果，表示されるのは「undefined」になると。なぜ，このような仕様になってるのかというと，結構複雑な事情があるみたい。次回，さらに掘り下げてみます。\n参考知らないと怖い「変数の巻き上げ」とは？やっとわかったjsの「巻き上げ」  \n","dateCreated":"2018-12-25T20:55:21+09:00","dateModified":"2018-12-25T20:55:21+09:00","datePublished":"2018-12-25T20:55:21+09:00","description":"はじめにjavascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。javascrpt特有で最重要ポイントの一つ。これを分かってると，コードの読み方が一歩プロに近づく…カモ","headline":"Javascrpt 変数の巻き上げ","image":["learn-javascript.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/","keywords":"プログラミング, JavaScript, 基礎, theory","thumbnailUrl":"learn-javascript.png"}</script>
     <meta name="description" content="はじめにjavascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。javascrpt特有で最重要ポイントの一つ。これを分かってると，コードの読み方が一歩プロに近づく…カモ">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Javascrpt 変数の巻き上げ">
@@ -26,7 +26,7 @@
 <meta property="og:description" content="はじめにjavascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。javascrpt特有で最重要ポイントの一つ。これを分かってると，コードの読み方が一歩プロに近づく…カモ">
 <meta property="og:locale" content="ja_JP">
 <meta property="article:published_time" content="2018-12-25T11:55:21.000Z">
-<meta property="article:modified_time" content="2019-06-14T10:40:15.662Z">
+<meta property="article:modified_time" content="2018-12-25T11:55:21.000Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="プログラミング">
 <meta property="article:tag" content="JavaScript">
@@ -332,7 +332,7 @@
         <div class="main-content-wrap">
             <h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>javascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。<br>javascrpt特有で最重要ポイントの一つ。<br>これを分かってると，コードの読み方が一歩プロに近づく…カモ</p>
 <a id="more"></a>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#はじめに"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大前提１-グローバル変数とローカル変数"><span class="toc-text">大前提１ グローバル変数とローカル変数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本題1-変数の巻き上げ"><span class="toc-text">本題1 変数の巻き上げ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本題2-巻き上げの正体"><span class="toc-text">本題2 巻き上げの正体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E5%89%8D%E6%8F%90%EF%BC%91-%E3%82%B0%E3%83%AD%E3%83%BC%E3%83%90%E3%83%AB%E5%A4%89%E6%95%B0%E3%81%A8%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E5%A4%89%E6%95%B0"><span class="toc-text">大前提１ グローバル変数とローカル変数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E9%A1%8C1-%E5%A4%89%E6%95%B0%E3%81%AE%E5%B7%BB%E3%81%8D%E4%B8%8A%E3%81%92"><span class="toc-text">本題1 変数の巻き上げ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E9%A1%8C2-%E5%B7%BB%E3%81%8D%E4%B8%8A%E3%81%92%E3%81%AE%E6%AD%A3%E4%BD%93"><span class="toc-text">本題2 巻き上げの正体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
 
 
 <h2 id="大前提１-グローバル変数とローカル変数"><a href="#大前提１-グローバル変数とローカル変数" class="headerlink" title="大前提１ グローバル変数とローカル変数"></a>大前提１ グローバル変数とローカル変数</h2><p>まずは，基礎中の基礎，「グローバル変数」と「ローカル変数」について。  </p>
@@ -356,7 +356,7 @@
 <figure class="codeblock codeblock--tabbed"><figcaption><span>hoisting</span><ul class="tabs"><li class="tab active">js</li></ul></figcaption><div class="tabs-content"><figure class="highlight js" style="display: block;"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> izumi = <span class="string">'松本イズミ'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>)</span>{</span><br><span class="line">    <span class="keyword">var</span> izumi; <span class="comment">//undefined</span></span><br><span class="line">    cosole.log(izumi);</span><br><span class="line">    <span class="keyword">var</span> izumi = <span class="string">'松本いずみ'</span>;</span><br><span class="line">    cosole.log(izumi); <span class="comment">//松本いずみ</span></span><br><span class="line">}</span><br><span class="line">show();</span><br></pre></td></tr></tbody></table></figure></div></figure>
 
 <p>グローバル変数のでて定義した「松本イズミ」は，関数内で巻き上げられた[var izumi;]に上書きされちゃうんですね。<br>結果，表示されるのは「undefined」になると。<br>なぜ，このような仕様になってるのかというと，結構複雑な事情があるみたい。<br>次回，さらに掘り下げてみます。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://analogic.jp/hoisting/" target="_blank" rel="noopener" title="ANALOGIC">知らないと怖い「変数の巻き上げ」とは？</a><br><a href="http://qiita.com/39_isao/items/d9d80e98b5bd1938bc1d" target="_blank" rel="noopener">やっとわかったjsの「巻き上げ」</a>  </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://analogic.jp/hoisting/" title="ANALOGIC">知らないと怖い「変数の巻き上げ」とは？</a><br><a target="_blank" rel="noopener" href="http://qiita.com/39_isao/items/d9d80e98b5bd1938bc1d">やっとわかったjsの「巻き上げ」</a>  </p>
 
             
 
@@ -368,7 +368,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/demski/tags/JavaScript/" rel="tag">JavaScript</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/theory/" rel="tag">theory</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0/" rel="tag">プログラミング</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E5%9F%BA%E7%A4%8E/" rel="tag">基礎</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/JavaScript/" rel="tag">JavaScript</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/theory/" rel="tag">theory</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0/" rel="tag">プログラミング</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E5%9F%BA%E7%A4%8E/" rel="tag">基礎</a>
 
             </div>
         
@@ -484,7 +484,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -721,7 +721,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckao0u268000pl4tvaaaufkhp/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckdiu1p3a000p50va3gn61t91/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -733,7 +733,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
