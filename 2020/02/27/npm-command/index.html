@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n\n\n\n\n\nnpmの概要npmとはnpmとは「Node Package Manager」の略で，その名の通りNode.jsのモジュールを管理するツール。JavaScriptでのWebアプリの開発には，Node.js及びnpmモジュールが多く使われるようになっている。その為，npmコマンドを叩くことが基本の「き」のような状況。  \nnpmのインストールとpackage.jsonnpmのインストールは，Node.jsをインストールすれば，自動的にインストールされる。各モジュールは，必要に応じてpackage.jsonで管理していくことになる。依存関係のモジュールも一括インストールしてくれるので便利。\nnode_modules フォルダカレントディレクトリ配下にあり、カレントディレクトリにインストールされるモジュールの中身が配置されるフォルダ。エラー等に悩んだら，フォルダを一端削除してインストールし直すと良いかもしれない。\nscopeについてscopeとは,パッケージ名の前につける@から/までの名前空間の事。@以降にnpmのユーザーアカウント名もしくは組織名が入ります。これによってパッケージ名が重複しても，別のモジュールとして認識される。  \nパッケージのバージョン表記パッケージのバージョンは主に三つの数字で表される。意味は，前から・・・\n\nMajor Release：仕様そのものの変更。upgradeする場合はアプリケーションの改修が必要になる可能性あり。\nMinor Release：仕様を維持した状態での機能追加。upgradeしてもアプリケーションは壊れない。\nPatch Release：バグ修正。upgradeしてもアプリケーションは壊れない。\n\nとなる。\n各コマンドについてバージョンの取得1npm -v\n\n\n\n初期化ディレクトリにpackage.jsonを作成し，プロジェクトを開始する。init後にアプリ名やヴァージョンなど幾つか質問されるが，特に設定しなくともよい。問い合わせが面倒なら「-y」を付けるとよい。\n1234567891011121314151617181920212223242526272829303132333435PS D:\\Learning\\spa&gt; npm init                                                    This utility will walk you through creating a package.json file.It only covers the most common items, and tries to guess sensible defaults.See &#96;npm help json&#96; for definitive documentation on these fieldsand exactly what they do.Use &#96;npm install &lt;pkg&gt;&#96; afterwards to install a package andsave it as a dependency in the package.json file.Press ^C at any time to quit.package name: (spa)version: (1.0.0)description:entry point: (index.js)test command:git repository:keywords:author:license: (ISC)About to write to D:\\Learning\\spa\\package.json:&#123;  &quot;name&quot;: &quot;spa&quot;,  &quot;version&quot;: &quot;1.0.0&quot;,  &quot;description&quot;: &quot;&quot;,  &quot;main&quot;: &quot;index.js&quot;,  &quot;scripts&quot;: &#123;    &quot;test&quot;: &quot;echo \\&quot;Error: no test specified\\&quot; &amp;&amp; exit 1&quot;  &#125;,  &quot;author&quot;: &quot;&quot;,  &quot;license&quot;: &quot;ISC&quot;&#125;Is this OK? (yes) yes\n\n\n\nパッケージインストール次のコマンドで，自分の使いたいパッケージを指定する。package.jsonに記入されると共に，パッケージがダウンロードされる。この時，依存関係にあるパッケージを同時にダウンロードされる。ダウンロードされたパッケージはnode_modules以下に配置される。\n123npm install パッケージ名&#x2F;&#x2F;もしくはnpm i パッケージ名\n\n既にpackage.jsonに記入がある場合は，次のコマンドを入力する。package.jsonさえコピーすれば，別の端末で同じ環境を構築することができる。\n123npm install&#x2F;&#x2F;もしくはnpm i\n\n次のオプションを付ける事ができる。\n\n–no-save\npackage.json に書き込まない場合に指定します。npm4 までは package.json に書き込まないのがデフォルトでしたが、npm5 からは –save がデフォルトとなりました。\n–save\n依存パッケージの場合に指定します。package.json の dependencies に記録されます。このパッケージを誰かが npm install したときに依存パッケージとしてインストールされます。\n–save-optional\n依存はするけれど必須ではないパッケージの場合に指定します。package.json の optionalDependencies に記録されます。npm install でインストールされますが、インストールに失敗してもスルーされます。\n–save-dev\nテストツールなど、開発者が使用するパッケージの場合に指定します。package.json の devDependencies に記録されます。このパッケージを npm install しても、インストールされません。ただし、パッケージを Git から clone して npm install した場合は開発者とみなされ、インストールされます。\n\nパッケージをアンインストールするには次のコマンドを使う。\n123456npm uninstall パッケージ名npm un パッケージ名npm unlink パッケージ名npm remove パッケージ名npm rm パッケージ名npm r パッケージ名\n\n上記- -saveオプション等使う事が出来る。\nパッケージ情報インストール済みのパッケージ一覧を表示する。\n1234npm listnpm lsnpm lanpm ll\n\n依存関係のパッケージを省いた一覧は次のオプションを付ける。(自分がインストールしたパッケージのみ)\n1npm list --depth&#x3D;0\n\n\n\nパッケージアップデート使用しているパッケージに更新されているか確認する。\n1npm outdated\n\nパッケージをアップデートする。\n1npm update パッケージ\n\nパッケージ名を省略するとpackage.jsonに記入された全てのパッケージをアップデートする。\n1npm update\n\n\n\nパッケージアンインストールパッケージをアンインストールする。\n1npm uninstall パッケージ\n\n\n\nパッケージ検索キーワードに関連するパッケージを npm リポジトリから検索します\n1npm search キーワード\n\n\n\nパッケージの詳細情報123npm info パッケージnpm view パッケージnpm show パッケージ\n\n\n\nパッケージのバージョン12npm info パッケージ version  &#x2F;&#x2F; 最新バージョンを表示npm info パッケージ versions  &#x2F;&#x2F; インストール可能なバージョン一欄を表示\n\nタスク実行タスクはpackage.jsonのscript:に記述します。\nnpmタスク12345&#123;  &quot;scripts&quot;: &#123;    &quot;build&quot;: &quot;browserify src/main.js &gt; build/bundle.js&quot;  &#125;&#125;\n\n此方は，少し複雑なので項を改め纏めます。\nおすすめパッケージ\nnpm-check … npmの更新を一括チェック\nnpm-install-missing・・・依存関係を一気にインストール\n\n","dateCreated":"2020-02-27T22:48:58+09:00","dateModified":"2020-02-27T22:48:58+09:00","datePublished":"2020-02-27T22:48:58+09:00","description":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n","headline":"npmコマンドについてのまとめ","image":["npm.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2020/02/27/npm-command/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2020/02/27/npm-command/","keywords":"npm, Node, 開発ツール","thumbnailUrl":"npm.svg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n\n\n\n\n\nnpmの概要npmとはnpmとは「Node Package Manager」の略で，その名の通りNode.jsのモジュールを管理するツール。JavaScriptでのWebアプリの開発には，Node.js及びnpmモジュールが多く使われるようになっている。その為，npmコマンドを叩くことが基本の「き」のような状況。  \nnpmのインストールとpackage.jsonnpmのインストールは，Node.jsをインストールすれば，自動的にインストールされる。各モジュールは，必要に応じてpackage.jsonで管理していくことになる。依存関係のモジュールも一括インストールしてくれるので便利。\nnode_modules フォルダカレントディレクトリ配下にあり、カレントディレクトリにインストールされるモジュールの中身が配置されるフォルダ。エラー等に悩んだら，フォルダを一端削除してインストールし直すと良いかもしれない。\nscopeについてscopeとは,パッケージ名の前につける@から/までの名前空間の事。@以降にnpmのユーザーアカウント名もしくは組織名が入ります。これによってパッケージ名が重複しても，別のモジュールとして認識される。  \nパッケージのバージョン表記パッケージのバージョンは主に三つの数字で表される。意味は，前から・・・\n\nMajor Release：仕様そのものの変更。upgradeする場合はアプリケーションの改修が必要になる可能性あり。\nMinor Release：仕様を維持した状態での機能追加。upgradeしてもアプリケーションは壊れない。\nPatch Release：バグ修正。upgradeしてもアプリケーションは壊れない。\n\nとなる。\n各コマンドについてバージョンの取得1npm -v\n\n\n\n初期化ディレクトリにpackage.jsonを作成し，プロジェクトを開始する。init後にアプリ名やヴァージョンなど幾つか質問されるが，特に設定しなくともよい。問い合わせが面倒なら「-y」を付けるとよい。\n1234567891011121314151617181920212223242526272829303132333435PS D:\\Learning\\spa&gt; npm init                                                    This utility will walk you through creating a package.json file.It only covers the most common items, and tries to guess sensible defaults.See &#96;npm help json&#96; for definitive documentation on these fieldsand exactly what they do.Use &#96;npm install &lt;pkg&gt;&#96; afterwards to install a package andsave it as a dependency in the package.json file.Press ^C at any time to quit.package name: (spa)version: (1.0.0)description:entry point: (index.js)test command:git repository:keywords:author:license: (ISC)About to write to D:\\Learning\\spa\\package.json:&#123;  &quot;name&quot;: &quot;spa&quot;,  &quot;version&quot;: &quot;1.0.0&quot;,  &quot;description&quot;: &quot;&quot;,  &quot;main&quot;: &quot;index.js&quot;,  &quot;scripts&quot;: &#123;    &quot;test&quot;: &quot;echo \\&quot;Error: no test specified\\&quot; &amp;&amp; exit 1&quot;  &#125;,  &quot;author&quot;: &quot;&quot;,  &quot;license&quot;: &quot;ISC&quot;&#125;Is this OK? (yes) yes\n\n\n\nパッケージインストール次のコマンドで，自分の使いたいパッケージを指定する。package.jsonに記入されると共に，パッケージがダウンロードされる。この時，依存関係にあるパッケージを同時にダウンロードされる。ダウンロードされたパッケージはnode_modules以下に配置される。\n123npm install パッケージ名&#x2F;&#x2F;もしくはnpm i パッケージ名\n\n既にpackage.jsonに記入がある場合は，次のコマンドを入力する。package.jsonさえコピーすれば，別の端末で同じ環境を構築することができる。\n123npm install&#x2F;&#x2F;もしくはnpm i\n\n次のオプションを付ける事ができる。\n\n–no-save\npackage.json に書き込まない場合に指定します。npm4 までは package.json に書き込まないのがデフォルトでしたが、npm5 からは –save がデフォルトとなりました。\n–save\n依存パッケージの場合に指定します。package.json の dependencies に記録されます。このパッケージを誰かが npm install したときに依存パッケージとしてインストールされます。\n–save-optional\n依存はするけれど必須ではないパッケージの場合に指定します。package.json の optionalDependencies に記録されます。npm install でインストールされますが、インストールに失敗してもスルーされます。\n–save-dev\nテストツールなど、開発者が使用するパッケージの場合に指定します。package.json の devDependencies に記録されます。このパッケージを npm install しても、インストールされません。ただし、パッケージを Git から clone して npm install した場合は開発者とみなされ、インストールされます。\n\nパッケージをアンインストールするには次のコマンドを使う。\n123456npm uninstall パッケージ名npm un パッケージ名npm unlink パッケージ名npm remove パッケージ名npm rm パッケージ名npm r パッケージ名\n\n上記- -saveオプション等使う事が出来る。\nパッケージ情報インストール済みのパッケージ一覧を表示する。\n1234npm listnpm lsnpm lanpm ll\n\n依存関係のパッケージを省いた一覧は次のオプションを付ける。(自分がインストールしたパッケージのみ)\n1npm list --depth&#x3D;0\n\n\n\nパッケージアップデート使用しているパッケージに更新されているか確認する。\n1npm outdated\n\nパッケージをアップデートする。\n1npm update パッケージ\n\nパッケージ名を省略するとpackage.jsonに記入された全てのパッケージをアップデートする。\n1npm update\n\n\n\nパッケージアンインストールパッケージをアンインストールする。\n1npm uninstall パッケージ\n\n\n\nパッケージ検索キーワードに関連するパッケージを npm リポジトリから検索します\n1npm search キーワード\n\n\n\nパッケージの詳細情報123npm info パッケージnpm view パッケージnpm show パッケージ\n\n\n\nパッケージのバージョン12npm info パッケージ version  &#x2F;&#x2F; 最新バージョンを表示npm info パッケージ versions  &#x2F;&#x2F; インストール可能なバージョン一欄を表示\n\nタスク実行タスクはpackage.jsonのscript:に記述します。\nnpmタスク12345&#123;  &quot;scripts&quot;: &#123;    &quot;build&quot;: &quot;browserify src/main.js &gt; build/bundle.js&quot;  &#125;&#125;\n\n此方は，少し複雑なので項を改め纏めます。\nおすすめパッケージ\nnpm-check … npmの更新を一括チェック\nnpm-install-missing・・・依存関係を一気にインストール\n\n","dateCreated":"2020-02-27T22:48:58+09:00","dateModified":"2020-02-27T22:48:58+09:00","datePublished":"2020-02-27T22:48:58+09:00","description":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n","headline":"npmコマンドについてのまとめ","image":["npm.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2020/02/27/npm-command/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2020/02/27/npm-command/","keywords":"Node, 開発ツール, npm","thumbnailUrl":"npm.svg"}</script>
     <meta name="description" content="初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。    公式サイト">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="npmコマンドについてのまとめ">
@@ -28,9 +28,9 @@
 <meta property="article:published_time" content="2020-02-27T13:48:58.000Z">
 <meta property="article:modified_time" content="2020-02-27T13:48:58.000Z">
 <meta property="article:author" content="Demski Autio">
-<meta property="article:tag" content="npm">
 <meta property="article:tag" content="Node">
 <meta property="article:tag" content="開発ツール">
+<meta property="article:tag" content="npm">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@Dmeski_Autio">
     
@@ -48,7 +48,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/demski/assets/css/style-qqb3nhxjghzpneti7rczqomokfelajpfsez7zbnmxzywfqdbf1w0kpmmdlgp.min.css">
+<link rel="stylesheet" href="/demski/assets/css/style-gfinubp8xpoianjy3izfgazfpyfbeaudia1pivtogbbck02wh4dzksr7vmam.min.css">
 
     <!--STYLES END-->
     
@@ -448,11 +448,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2020/08/14/ESLintStarted/"
+                    data-tooltip="ESLint事始め"
+                    aria-label="前: ESLint事始め"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -574,11 +577,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2020/08/14/ESLintStarted/"
+                    data-tooltip="ESLint事始め"
+                    aria-label="前: ESLint事始め"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -785,7 +791,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckdiu1p3a000p50va3gn61t91/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -1077,7 +1083,7 @@
                 data-message-zero="見つかりませんでした。"
                 data-message-one="1件見つかりました。"
                 data-message-other="{n} 件見つかりました。">
-                17 件見つかりました。
+                18 件見つかりました。
             </p>
         </div>
     </div>
@@ -1088,7 +1094,7 @@
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/demski/assets/js/script-donq2yudro7bekyvhnbimoabsp023gsegqsuz48ynncychxaorirlfiypuay.min.js"></script>
+<script src="/demski/assets/js/script-zkg2ltxncv78nizr5pcqwmnabnai8efsnxbzkcq7wrft2fxfobigr7xewtco.min.js"></script>
 
 <!--SCRIPTS END-->
 
