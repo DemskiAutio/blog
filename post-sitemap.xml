@@ -8,16 +8,56 @@
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/2020/02/27/npm-command/</loc>
-        <lastmod>2021-02-11T03:50:34.076Z</lastmod>
+        <loc>https://demskiautio.github.io/demski/2016/04/04/floating-point/</loc>
+        <lastmod>2022-10-03T01:57:50.125Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/</loc>
-        <lastmod>2021-02-11T03:50:34.042Z</lastmod>
+        <loc>https://demskiautio.github.io/demski/2020/12/25/javascrpt-theory1/</loc>
+        <lastmod>2022-10-03T01:57:29.860Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/</loc>
+        <lastmod>2022-10-03T01:57:20.036Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/</loc>
+        <lastmod>2022-10-03T01:56:30.766Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/</loc>
+        <lastmod>2022-10-03T01:56:24.084Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2021/01/18/atom/</loc>
+        <lastmod>2022-10-03T01:56:17.670Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2020/02/27/npm-command/</loc>
+        <lastmod>2021-02-11T03:50:34.076Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -88,14 +128,6 @@
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/</loc>
-        <lastmod>2019-06-07T12:14:10.298Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://demskiautio.github.io/demski/2016/02/14/horo/</loc>
         <lastmod>2019-05-25T05:11:23.997Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -104,7 +136,7 @@
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/</loc>
+        <loc>https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/</loc>
         <lastmod>2019-05-23T10:06:45.131Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -112,40 +144,8 @@
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/2016/04/04/floating-point/</loc>
-        <lastmod>2019-05-23T10:02:55.621Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/</loc>
+        <loc>https://demskiautio.github.io/demski/2021/03/18/HexoPlgin/</loc>
         <lastmod>2019-05-05T06:55:20.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2016/01/18/atom/</loc>
-        <lastmod>2017-09-18T10:54:56.422Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/</loc>
-        <lastmod>2017-04-03T11:09:33.536Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/</loc>
-        <lastmod>2017-04-03T11:09:14.346Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

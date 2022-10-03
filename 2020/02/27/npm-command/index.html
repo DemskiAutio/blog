@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n\n\n\n\n\nnpmの概要npmとはnpmとは「Node Package Manager」の略で，その名の通りNode.jsのモジュールを管理するツール。JavaScriptでのWebアプリの開発には，Node.js及びnpmモジュールが多く使われるようになっている。その為，npmコマンドを叩くことが基本の「き」のような状況。  \nnpmのインストールとpackage.jsonnpmのインストールは，Node.jsをインストールすれば，自動的にインストールされる。各モジュールは，必要に応じてpackage.jsonで管理していくことになる。依存関係のモジュールも一括インストールしてくれるので便利。\nnode_modules フォルダカレントディレクトリ配下にあり、カレントディレクトリにインストールされるモジュールの中身が配置されるフォルダ。エラー等に悩んだら，フォルダを一端削除してインストールし直すと良いかもしれない。\nscopeについてscopeとは,パッケージ名の前につける@から/までの名前空間の事。@以降にnpmのユーザーアカウント名もしくは組織名が入ります。これによってパッケージ名が重複しても，別のモジュールとして認識される。  \nパッケージのバージョン表記パッケージのバージョンは主に三つの数字で表される。意味は，前から・・・\n\nMajor Release：仕様そのものの変更。upgradeする場合はアプリケーションの改修が必要になる可能性あり。\nMinor Release：仕様を維持した状態での機能追加。upgradeしてもアプリケーションは壊れない。\nPatch Release：バグ修正。upgradeしてもアプリケーションは壊れない。\n\nとなる。\n各コマンドについてバージョンの取得1npm -v\n\n\n\n初期化ディレクトリにpackage.jsonを作成し，プロジェクトを開始する。init後にアプリ名やヴァージョンなど幾つか質問されるが，特に設定しなくともよい。問い合わせが面倒なら「-y」を付けるとよい。\n1234567891011121314151617181920212223242526272829303132333435PS D:\\Learning\\spa&gt; npm init                                                    This utility will walk you through creating a package.json file.It only covers the most common items, and tries to guess sensible defaults.See &#96;npm help json&#96; for definitive documentation on these fieldsand exactly what they do.Use &#96;npm install &lt;pkg&gt;&#96; afterwards to install a package andsave it as a dependency in the package.json file.Press ^C at any time to quit.package name: (spa)version: (1.0.0)description:entry point: (index.js)test command:git repository:keywords:author:license: (ISC)About to write to D:\\Learning\\spa\\package.json:&#123;  &quot;name&quot;: &quot;spa&quot;,  &quot;version&quot;: &quot;1.0.0&quot;,  &quot;description&quot;: &quot;&quot;,  &quot;main&quot;: &quot;index.js&quot;,  &quot;scripts&quot;: &#123;    &quot;test&quot;: &quot;echo \\&quot;Error: no test specified\\&quot; &amp;&amp; exit 1&quot;  &#125;,  &quot;author&quot;: &quot;&quot;,  &quot;license&quot;: &quot;ISC&quot;&#125;Is this OK? (yes) yes\n\n\n\nパッケージインストール次のコマンドで，自分の使いたいパッケージを指定する。package.jsonに記入されると共に，パッケージがダウンロードされる。この時，依存関係にあるパッケージを同時にダウンロードされる。ダウンロードされたパッケージはnode_modules以下に配置される。\n123npm install パッケージ名&#x2F;&#x2F;もしくはnpm i パッケージ名\n\n既にpackage.jsonに記入がある場合は，次のコマンドを入力する。package.jsonさえコピーすれば，別の端末で同じ環境を構築することができる。\n123npm install&#x2F;&#x2F;もしくはnpm i\n\n次のオプションを付ける事ができる。\n\n–no-save\npackage.json に書き込まない場合に指定します。npm4 までは package.json に書き込まないのがデフォルトでしたが、npm5 からは –save がデフォルトとなりました。\n–save\n依存パッケージの場合に指定します。package.json の dependencies に記録されます。このパッケージを誰かが npm install したときに依存パッケージとしてインストールされます。\n–save-optional\n依存はするけれど必須ではないパッケージの場合に指定します。package.json の optionalDependencies に記録されます。npm install でインストールされますが、インストールに失敗してもスルーされます。\n–save-dev\nテストツールなど、開発者が使用するパッケージの場合に指定します。package.json の devDependencies に記録されます。このパッケージを npm install しても、インストールされません。ただし、パッケージを Git から clone して npm install した場合は開発者とみなされ、インストールされます。\n\nパッケージをアンインストールするには次のコマンドを使う。\n123456npm uninstall パッケージ名npm un パッケージ名npm unlink パッケージ名npm remove パッケージ名npm rm パッケージ名npm r パッケージ名\n\n上記- -saveオプション等使う事が出来る。\nパッケージ情報インストール済みのパッケージ一覧を表示する。\n1234npm listnpm lsnpm lanpm ll\n\n依存関係のパッケージを省いた一覧は次のオプションを付ける。(自分がインストールしたパッケージのみ)\n1npm list --depth&#x3D;0\n\n\n\nパッケージアップデート使用しているパッケージに更新されているか確認する。\n1npm outdated\n\nパッケージをアップデートする。\n1npm update パッケージ\n\nパッケージ名を省略するとpackage.jsonに記入された全てのパッケージをアップデートする。\n1npm update\n\n\n\nパッケージアンインストールパッケージをアンインストールする。\n1npm uninstall パッケージ\n\n\n\nパッケージ検索キーワードに関連するパッケージを npm リポジトリから検索します\n1npm search キーワード\n\n\n\nパッケージの詳細情報123npm info パッケージnpm view パッケージnpm show パッケージ\n\n\n\nパッケージのバージョン12npm info パッケージ version  &#x2F;&#x2F; 最新バージョンを表示npm info パッケージ versions  &#x2F;&#x2F; インストール可能なバージョン一欄を表示\n\nタスク実行タスクはpackage.jsonのscript:に記述します。\nnpmタスク12345&#123;  \"scripts\": &#123;    \"build\": \"browserify src/main.js &gt; build/bundle.js\"  &#125;&#125;\n\n此方は，少し複雑なので項を改め纏めます。\n","dateCreated":"2020-02-27T22:48:58+09:00","dateModified":"2021-02-11T12:50:34+09:00","datePublished":"2020-02-27T22:48:58+09:00","description":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n","headline":"npmコマンドについてのまとめ","image":["npm.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2020/02/27/npm-command/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2020/02/27/npm-command/","keywords":"npm, Node, 開発ツール","thumbnailUrl":"npm.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n\n\n\n\n\nnpmの概要npmとはnpmとは「Node Package Manager」の略で，その名の通りNode.jsのモジュールを管理するツール。JavaScriptでのWebアプリの開発には，Node.js及びnpmモジュールが多く使われるようになっている。その為，npmコマンドを叩くことが基本の「き」のような状況。  \nnpmのインストールとpackage.jsonnpmのインストールは，Node.jsをインストールすれば，自動的にインストールされる。各モジュールは，必要に応じてpackage.jsonで管理していくことになる。依存関係のモジュールも一括インストールしてくれるので便利。\nnode_modules フォルダカレントディレクトリ配下にあり、カレントディレクトリにインストールされるモジュールの中身が配置されるフォルダ。エラー等に悩んだら，フォルダを一端削除してインストールし直すと良いかもしれない。\nscopeについてscopeとは,パッケージ名の前につける@から&#x2F;までの名前空間の事。@以降にnpmのユーザーアカウント名もしくは組織名が入ります。これによってパッケージ名が重複しても，別のモジュールとして認識される。  \nパッケージのバージョン表記パッケージのバージョンは主に三つの数字で表される。意味は，前から・・・\n\nMajor Release：仕様そのものの変更。upgradeする場合はアプリケーションの改修が必要になる可能性あり。\nMinor Release：仕様を維持した状態での機能追加。upgradeしてもアプリケーションは壊れない。\nPatch Release：バグ修正。upgradeしてもアプリケーションは壊れない。\n\nとなる。\n各コマンドについてバージョンの取得1npm -v\n\n\n\n初期化ディレクトリにpackage.jsonを作成し，プロジェクトを開始する。init後にアプリ名やヴァージョンなど幾つか質問されるが，特に設定しなくともよい。問い合わせが面倒なら「-y」を付けるとよい。\n1234567891011121314151617181920212223242526272829303132333435PS D:\\Learning\\spa&gt; npm init                                                    This utility will walk you through creating a package.json file.It only covers the most common items, and tries to guess sensible defaults.See `npm help json` for definitive documentation on these fieldsand exactly what they do.Use `npm install &lt;pkg&gt;` afterwards to install a package andsave it as a dependency in the package.json file.Press ^C at any time to quit.package name: (spa)version: (1.0.0)description:entry point: (index.js)test command:git repository:keywords:author:license: (ISC)About to write to D:\\Learning\\spa\\package.json:&#123;  &quot;name&quot;: &quot;spa&quot;,  &quot;version&quot;: &quot;1.0.0&quot;,  &quot;description&quot;: &quot;&quot;,  &quot;main&quot;: &quot;index.js&quot;,  &quot;scripts&quot;: &#123;    &quot;test&quot;: &quot;echo \\&quot;Error: no test specified\\&quot; &amp;&amp; exit 1&quot;  &#125;,  &quot;author&quot;: &quot;&quot;,  &quot;license&quot;: &quot;ISC&quot;&#125;Is this OK? (yes) yes\n\n\n\nパッケージインストール次のコマンドで，自分の使いたいパッケージを指定する。package.jsonに記入されると共に，パッケージがダウンロードされる。この時，依存関係にあるパッケージを同時にダウンロードされる。ダウンロードされたパッケージはnode_modules以下に配置される。\n123npm install パッケージ名//もしくはnpm i パッケージ名\n\n既にpackage.jsonに記入がある場合は，次のコマンドを入力する。package.jsonさえコピーすれば，別の端末で同じ環境を構築することができる。\n123npm install//もしくはnpm i\n\n次のオプションを付ける事ができる。\n\n–no-save\npackage.json に書き込まない場合に指定します。npm4 までは package.json に書き込まないのがデフォルトでしたが、npm5 からは –save がデフォルトとなりました。\n–save\n依存パッケージの場合に指定します。package.json の dependencies に記録されます。このパッケージを誰かが npm install したときに依存パッケージとしてインストールされます。\n–save-optional\n依存はするけれど必須ではないパッケージの場合に指定します。package.json の optionalDependencies に記録されます。npm install でインストールされますが、インストールに失敗してもスルーされます。\n–save-dev\nテストツールなど、開発者が使用するパッケージの場合に指定します。package.json の devDependencies に記録されます。このパッケージを npm install しても、インストールされません。ただし、パッケージを Git から clone して npm install した場合は開発者とみなされ、インストールされます。\n\nパッケージをアンインストールするには次のコマンドを使う。\n123456npm uninstall パッケージ名npm un パッケージ名npm unlink パッケージ名npm remove パッケージ名npm rm パッケージ名npm r パッケージ名\n\n上記- -saveオプション等使う事が出来る。\nパッケージ情報インストール済みのパッケージ一覧を表示する。\n1234npm listnpm lsnpm lanpm ll\n\n依存関係のパッケージを省いた一覧は次のオプションを付ける。(自分がインストールしたパッケージのみ)\n1npm list --depth=0\n\n\n\nパッケージアップデート使用しているパッケージに更新されているか確認する。\n1npm outdated\n\nパッケージをアップデートする。\n1npm update パッケージ\n\nパッケージ名を省略するとpackage.jsonに記入された全てのパッケージをアップデートする。\n1npm update\n\n\n\nパッケージアンインストールパッケージをアンインストールする。\n1npm uninstall パッケージ\n\n\n\nパッケージ検索キーワードに関連するパッケージを npm リポジトリから検索します\n1npm search キーワード\n\n\n\nパッケージの詳細情報123npm info パッケージnpm view パッケージnpm show パッケージ\n\n\n\nパッケージのバージョン12npm info パッケージ version  // 最新バージョンを表示npm info パッケージ versions  // インストール可能なバージョン一欄を表示\n\nタスク実行タスクはpackage.jsonのscript:に記述します。\nnpmタスク12345&#123;  &quot;scripts&quot;: &#123;    &quot;build&quot;: &quot;browserify src/main.js &gt; build/bundle.js&quot;  &#125;&#125;\n\n此方は，少し複雑なので項を改め纏めます。\n","dateCreated":"2020-02-27T22:48:58+09:00","dateModified":"2021-02-11T12:50:34+09:00","datePublished":"2020-02-27T22:48:58+09:00","description":"初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  \n\n公式サイト\n","headline":"npmコマンドについてのまとめ","image":["npm.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2020/02/27/npm-command/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2020/02/27/npm-command/","keywords":"Node, 開発ツール, npm","thumbnailUrl":"npm.png"}</script>
     <meta name="description" content="初めにNode.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。    公式サイト">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="npmコマンドについてのまとめ">
@@ -28,9 +28,9 @@
 <meta property="article:published_time" content="2020-02-27T13:48:58.000Z">
 <meta property="article:modified_time" content="2021-02-11T03:50:34.076Z">
 <meta property="article:author" content="Demski Autio">
-<meta property="article:tag" content="npm">
 <meta property="article:tag" content="Node">
 <meta property="article:tag" content="開発ツール">
+<meta property="article:tag" content="npm">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:creator" content="@Dmeski_Autio">
     
@@ -337,16 +337,16 @@
         <div class="main-content-wrap">
             <h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>Node.jsをはじめ，Javasceriptを使用してのWeb開発に欠かせなくなってきているnpmコマンドについての備忘録。  </p>
 <ul>
-<li><a href="https://www.npmjs.com/" target="_blank" rel="noopener">公式サイト</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/">公式サイト</a></li>
 </ul>
-<a id="more"></a>
+<span id="more"></span>
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初めに"><span class="toc-text">初めに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npmの概要"><span class="toc-text">npmの概要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npmとは"><span class="toc-text">npmとは</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npmのインストールとpackage-json"><span class="toc-text">npmのインストールとpackage.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-modules-フォルダ"><span class="toc-text">node_modules フォルダ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scopeについて"><span class="toc-text">scopeについて</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージのバージョン表記"><span class="toc-text">パッケージのバージョン表記</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#各コマンドについて"><span class="toc-text">各コマンドについて</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#バージョンの取得"><span class="toc-text">バージョンの取得</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#初期化"><span class="toc-text">初期化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージインストール"><span class="toc-text">パッケージインストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージ情報"><span class="toc-text">パッケージ情報</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージアップデート"><span class="toc-text">パッケージアップデート</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージアンインストール"><span class="toc-text">パッケージアンインストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージ検索"><span class="toc-text">パッケージ検索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージの詳細情報"><span class="toc-text">パッケージの詳細情報</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#パッケージのバージョン"><span class="toc-text">パッケージのバージョン</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#タスク実行"><span class="toc-text">タスク実行</span></a></li></ol></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E3%82%81%E3%81%AB"><span class="toc-text">初めに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm%E3%81%AE%E6%A6%82%E8%A6%81"><span class="toc-text">npmの概要</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npm%E3%81%A8%E3%81%AF"><span class="toc-text">npmとは</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%A8package-json"><span class="toc-text">npmのインストールとpackage.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-modules-%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80"><span class="toc-text">node_modules フォルダ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scope%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="toc-text">scopeについて</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E8%A1%A8%E8%A8%98"><span class="toc-text">パッケージのバージョン表記</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%84%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="toc-text">各コマンドについて</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E5%8F%96%E5%BE%97"><span class="toc-text">バージョンの取得</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E6%9C%9F%E5%8C%96"><span class="toc-text">初期化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">パッケージインストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E6%83%85%E5%A0%B1"><span class="toc-text">パッケージ情報</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88"><span class="toc-text">パッケージアップデート</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%A2%E3%83%B3%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">パッケージアンインストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E6%A4%9C%E7%B4%A2"><span class="toc-text">パッケージ検索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AE%E8%A9%B3%E7%B4%B0%E6%83%85%E5%A0%B1"><span class="toc-text">パッケージの詳細情報</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3"><span class="toc-text">パッケージのバージョン</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%82%BF%E3%82%B9%E3%82%AF%E5%AE%9F%E8%A1%8C"><span class="toc-text">タスク実行</span></a></li></ol></li></ol>
 
 <h2 id="npmの概要"><a href="#npmの概要" class="headerlink" title="npmの概要"></a>npmの概要</h2><h3 id="npmとは"><a href="#npmとは" class="headerlink" title="npmとは"></a>npmとは</h3><p>npmとは「Node Package Manager」の略で，その名の通りNode.jsのモジュールを管理するツール。<br>JavaScriptでのWebアプリの開発には，Node.js及びnpmモジュールが多く使われるようになっている。<br>その為，npmコマンドを叩くことが基本の「き」のような状況。  </p>
 <h3 id="npmのインストールとpackage-json"><a href="#npmのインストールとpackage-json" class="headerlink" title="npmのインストールとpackage.json"></a>npmのインストールとpackage.json</h3><p>npmのインストールは，Node.jsをインストールすれば，自動的にインストールされる。<br>各モジュールは，必要に応じてpackage.jsonで管理していくことになる。<br>依存関係のモジュールも一括インストールしてくれるので便利。</p>
 <h3 id="node-modules-フォルダ"><a href="#node-modules-フォルダ" class="headerlink" title="node_modules フォルダ"></a>node_modules フォルダ</h3><p>カレントディレクトリ配下にあり、カレントディレクトリにインストールされるモジュールの中身が配置されるフォルダ。<br>エラー等に悩んだら，フォルダを一端削除してインストールし直すと良いかもしれない。</p>
-<h3 id="scopeについて"><a href="#scopeについて" class="headerlink" title="scopeについて"></a>scopeについて</h3><p>scopeとは,パッケージ名の前につける@から/までの名前空間の事。@以降にnpmのユーザーアカウント名もしくは組織名が入ります。<br>これによってパッケージ名が重複しても，別のモジュールとして認識される。  </p>
+<h3 id="scopeについて"><a href="#scopeについて" class="headerlink" title="scopeについて"></a>scopeについて</h3><p>scopeとは,パッケージ名の前につける@から&#x2F;までの名前空間の事。@以降にnpmのユーザーアカウント名もしくは組織名が入ります。<br>これによってパッケージ名が重複しても，別のモジュールとして認識される。  </p>
 <h3 id="パッケージのバージョン表記"><a href="#パッケージのバージョン表記" class="headerlink" title="パッケージのバージョン表記"></a>パッケージのバージョン表記</h3><p>パッケージのバージョンは主に三つの数字で表される。<br>意味は，前から・・・</p>
 <ul>
 <li>Major Release：仕様そのものの変更。upgradeする場合はアプリケーションの改修が必要になる可能性あり。</li>
@@ -354,20 +354,20 @@
 <li>Patch Release：バグ修正。upgradeしてもアプリケーションは壊れない。</li>
 </ul>
 <p>となる。</p>
-<h2 id="各コマンドについて"><a href="#各コマンドについて" class="headerlink" title="各コマンドについて"></a>各コマンドについて</h2><h3 id="バージョンの取得"><a href="#バージョンの取得" class="headerlink" title="バージョンの取得"></a>バージョンの取得</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+<h2 id="各コマンドについて"><a href="#各コマンドについて" class="headerlink" title="各コマンドについて"></a>各コマンドについて</h2><h3 id="バージョンの取得"><a href="#バージョンの取得" class="headerlink" title="バージョンの取得"></a>バージョンの取得</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm -v</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="初期化"><a href="#初期化" class="headerlink" title="初期化"></a>初期化</h3><p>ディレクトリにpackage.jsonを作成し，プロジェクトを開始する。<br>init後にアプリ名やヴァージョンなど幾つか質問されるが，特に設定しなくともよい。<br>問い合わせが面倒なら「-y」を付けるとよい。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">PS D:\Learning\spa&gt; npm init                                                    This utility will walk you through creating a package.json file.</span><br><span class="line">It only covers the most common items, and tries to guess sensible defaults.</span><br><span class="line"></span><br><span class="line">See &#96;npm help json&#96; for definitive documentation on these fields</span><br><span class="line">and exactly what they do.</span><br><span class="line"></span><br><span class="line">Use &#96;npm install &lt;pkg&gt;&#96; afterwards to install a package and</span><br><span class="line">save it as a dependency in the package.json file.</span><br><span class="line"></span><br><span class="line">Press ^C at any time to quit.</span><br><span class="line">package name: (spa)</span><br><span class="line">version: (1.0.0)</span><br><span class="line">description:</span><br><span class="line">entry point: (index.js)</span><br><span class="line">test command:</span><br><span class="line">git repository:</span><br><span class="line">keywords:</span><br><span class="line">author:</span><br><span class="line">license: (ISC)</span><br><span class="line">About to write to D:\Learning\spa\package.json:</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;spa&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;index.js&quot;,</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;author&quot;: &quot;&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Is this OK? (yes) yes</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">PS D:\Learning\spa&gt; npm init                                                    This utility will walk you through creating a package.json file.</span><br><span class="line">It only covers the most common items, and tries to guess sensible defaults.</span><br><span class="line"></span><br><span class="line">See `npm help json` for definitive documentation on these fields</span><br><span class="line">and exactly what they do.</span><br><span class="line"></span><br><span class="line">Use `npm install &lt;pkg&gt;` afterwards to install a package and</span><br><span class="line">save it as a dependency in the package.json file.</span><br><span class="line"></span><br><span class="line">Press ^C at any time to quit.</span><br><span class="line">package name: (spa)</span><br><span class="line">version: (1.0.0)</span><br><span class="line">description:</span><br><span class="line">entry point: (index.js)</span><br><span class="line">test command:</span><br><span class="line">git repository:</span><br><span class="line">keywords:</span><br><span class="line">author:</span><br><span class="line">license: (ISC)</span><br><span class="line">About to write to D:\Learning\spa\package.json:</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;spa&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;index.js&quot;,</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;author&quot;: &quot;&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Is this OK? (yes) yes</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="パッケージインストール"><a href="#パッケージインストール" class="headerlink" title="パッケージインストール"></a>パッケージインストール</h3><p>次のコマンドで，自分の使いたいパッケージを指定する。<br>package.jsonに記入されると共に，パッケージがダウンロードされる。この時，依存関係にあるパッケージを同時にダウンロードされる。<br>ダウンロードされたパッケージはnode_modules以下に配置される。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install パッケージ名</span><br><span class="line">&#x2F;&#x2F;もしくは</span><br><span class="line">npm i パッケージ名</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install パッケージ名</span><br><span class="line">//もしくは</span><br><span class="line">npm i パッケージ名</span><br></pre></td></tr></table></figure>
 
 <p>既にpackage.jsonに記入がある場合は，次のコマンドを入力する。<br>package.jsonさえコピーすれば，別の端末で同じ環境を構築することができる。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">&#x2F;&#x2F;もしくは</span><br><span class="line">npm i</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">//もしくは</span><br><span class="line">npm i</span><br></pre></td></tr></table></figure>
 
 <p>次のオプションを付ける事ができる。</p>
 <blockquote>
@@ -381,46 +381,46 @@
 <p>テストツールなど、開発者が使用するパッケージの場合に指定します。package.json の devDependencies に記録されます。このパッケージを npm install しても、インストールされません。ただし、パッケージを Git から clone して npm install した場合は開発者とみなされ、インストールされます。</p>
 </blockquote>
 <p>パッケージをアンインストールするには次のコマンドを使う。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall パッケージ名</span><br><span class="line">npm un パッケージ名</span><br><span class="line">npm unlink パッケージ名</span><br><span class="line">npm remove パッケージ名</span><br><span class="line">npm rm パッケージ名</span><br><span class="line">npm r パッケージ名</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall パッケージ名</span><br><span class="line">npm un パッケージ名</span><br><span class="line">npm unlink パッケージ名</span><br><span class="line">npm remove パッケージ名</span><br><span class="line">npm rm パッケージ名</span><br><span class="line">npm r パッケージ名</span><br></pre></td></tr></table></figure>
 
 <p>上記- -saveオプション等使う事が出来る。</p>
 <h3 id="パッケージ情報"><a href="#パッケージ情報" class="headerlink" title="パッケージ情報"></a>パッケージ情報</h3><p>インストール済みのパッケージ一覧を表示する。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm list</span><br><span class="line">npm ls</span><br><span class="line">npm la</span><br><span class="line">npm ll</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm list</span><br><span class="line">npm ls</span><br><span class="line">npm la</span><br><span class="line">npm ll</span><br></pre></td></tr></table></figure>
 
 <p>依存関係のパッケージを省いた一覧は次のオプションを付ける。(自分がインストールしたパッケージのみ)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list --depth&#x3D;0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm list --depth=0</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="パッケージアップデート"><a href="#パッケージアップデート" class="headerlink" title="パッケージアップデート"></a>パッケージアップデート</h3><p>使用しているパッケージに更新されているか確認する。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm outdated</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm outdated</span><br></pre></td></tr></table></figure>
 
 <p>パッケージをアップデートする。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update パッケージ</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update パッケージ</span><br></pre></td></tr></table></figure>
 
 <p>パッケージ名を省略するとpackage.jsonに記入された全てのパッケージをアップデートする。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="パッケージアンインストール"><a href="#パッケージアンインストール" class="headerlink" title="パッケージアンインストール"></a>パッケージアンインストール</h3><p>パッケージをアンインストールする。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall パッケージ</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall パッケージ</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="パッケージ検索"><a href="#パッケージ検索" class="headerlink" title="パッケージ検索"></a>パッケージ検索</h3><p>キーワードに関連するパッケージを npm リポジトリから検索します</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm search キーワード</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm search キーワード</span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="パッケージの詳細情報"><a href="#パッケージの詳細情報" class="headerlink" title="パッケージの詳細情報"></a>パッケージの詳細情報</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm info パッケージ</span><br><span class="line">npm view パッケージ</span><br><span class="line">npm show パッケージ</span><br></pre></td></tr></table></figure>
+<h3 id="パッケージの詳細情報"><a href="#パッケージの詳細情報" class="headerlink" title="パッケージの詳細情報"></a>パッケージの詳細情報</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm info パッケージ</span><br><span class="line">npm view パッケージ</span><br><span class="line">npm show パッケージ</span><br></pre></td></tr></table></figure>
 
 
 
-<h3 id="パッケージのバージョン"><a href="#パッケージのバージョン" class="headerlink" title="パッケージのバージョン"></a>パッケージのバージョン</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm info パッケージ version  &#x2F;&#x2F; 最新バージョンを表示</span><br><span class="line">npm info パッケージ versions  &#x2F;&#x2F; インストール可能なバージョン一欄を表示</span><br></pre></td></tr></table></figure>
+<h3 id="パッケージのバージョン"><a href="#パッケージのバージョン" class="headerlink" title="パッケージのバージョン"></a>パッケージのバージョン</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm info パッケージ version  // 最新バージョンを表示</span><br><span class="line">npm info パッケージ versions  // インストール可能なバージョン一欄を表示</span><br></pre></td></tr></table></figure>
 
 <h3 id="タスク実行"><a href="#タスク実行" class="headerlink" title="タスク実行"></a>タスク実行</h3><p>タスクはpackage.jsonのscript:に記述します。</p>
-<figure class="highlight json"><figcaption><span>npmタスク</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"build"</span>: <span class="string">"browserify src/main.js &gt; build/bundle.js"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><figcaption><span>npmタスク</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;browserify src/main.js &gt; build/bundle.js&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
 <p>此方は，少し複雑なので項を改め纏めます。</p>
 
@@ -434,7 +434,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/demski/tags/Node/" rel="tag">Node</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/npm/" rel="tag">npm</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E9%96%8B%E7%99%BA%E3%83%84%E3%83%BC%E3%83%AB/" rel="tag">開発ツール</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Node/" rel="tag">Node</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/npm/" rel="tag">npm</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E9%96%8B%E7%99%BA%E3%83%84%E3%83%BC%E3%83%AB/" rel="tag">開発ツール</a>
 
             </div>
         
@@ -550,7 +550,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -787,7 +787,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -799,7 +799,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -833,29 +833,6 @@
                             </span>
                         </span>
                         <div class="media-content hide-xs font-merryweather"><p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/01/18/atom/"
-                            aria-label=": Atomの基本的な操作メモ"
-                        >
-                            <h3 class="media-heading">Atomの基本的な操作メモ</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年1月18日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="Atomとは？"><a href="#Atomとは？" class="headerlink" title="Atomとは？"></a>Atomとは？</h2><p>Atomは,Github社製のオープンソースのテキストエディター。<br>これから主流になっていくと思われる。<br>パッケージ形式で機能を拡張できる。  </p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -929,85 +906,6 @@
                 
                 <div class="media">
                     
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/"
-                            aria-label=": CentOS7 on vagrant"
-                        >
-                            <h3 class="media-heading">CentOS7 on vagrant</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年11月6日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
-                            aria-label=": CentOS on vagrant -LAMP編"
-                        >
-                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年12月7日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
-                            aria-label=": hexoで使用中のpluginのメモ"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
-                            aria-label=": hexoで使用中のpluginのメモ"
-                        >
-                            <h3 class="media-heading">hexoで使用中のpluginのメモ</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2017年3月18日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -1044,29 +942,162 @@
                     <div class="media-left">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
-                            aria-label=": Javascrpt 変数の巻き上げ"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitHubを使う　～登録まで"
                         >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/learn-javascript.png" width="90" height="90"/>
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/03/24/git1/Git-Icon-1788C.png" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
-                            aria-label=": Javascrpt 変数の巻き上げ"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitHubを使う　～登録まで"
                         >
-                            <h3 class="media-heading">Javascrpt 変数の巻き上げ</h3>
+                            <h3 class="media-heading">WindowsでGitHubを使う　～登録まで</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
                                 
-                                    2018年12月25日
+                                    2019年3月24日
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>javascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。<br>javascrpt特有で最重要ポイントの一つ。<br>これを分かってると，コードの読み方が一歩プロに近づく…カモ</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>バージョン管理ツールであるGitをインストールして，GitHubと連携させるまでのメモ</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/04/24/css-tips1/css3.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <h3 class="media-heading">Css-tips1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年4月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/Windows10Logo.svg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <h3 class="media-heading">Windos10 ショートカットキー</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>最近，マウスよりキーボードだけで色々済ませたほうが楽なことに気付いた。<br>記憶力が乏しいので，よく使いそうなものからメモ。(但し，知ってるのは省略（Ctrl + Cとか）)</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <h3 class="media-heading">EditorConfigの使い方</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年6月8日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案[^1] されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a target="_blank" rel="noopener" href="https://editorconfig.org/">公式ページ</a>を翻訳・要約記事にしてみました。</p>
+<p>[^1]:  <a target="_blank" rel="noopener" href="https://google.github.io/styleguide/htmlcssguide.html">google HTML&#x2F;CSS Style Guid</a>  <a target="_blank" rel="noopener" href="https://www.w3schools.com/html/html5_syntax.asp">w3schools</a> ,  <a target="_blank" rel="noopener" href="http://met.hanatoweb.jp/guideline/html5/">hanatoweb</a> など。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>

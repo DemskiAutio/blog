@@ -337,11 +337,11 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#はじめに"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ボックスモデル"><span class="toc-text">ボックスモデル</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ボックスモデル配置の大前提"><span class="toc-text">ボックスモデル配置の大前提</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ボックスの構成要素"><span class="toc-text">ボックスの構成要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#包含ブロック"><span class="toc-text">包含ブロック</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ボックスの配置"><span class="toc-text">ボックスの配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#marginの相殺"><span class="toc-text">marginの相殺</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考サイト"><span class="toc-text">参考サイト</span></a></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E3%83%A2%E3%83%87%E3%83%AB"><span class="toc-text">ボックスモデル</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E3%83%A2%E3%83%87%E3%83%AB%E9%85%8D%E7%BD%AE%E3%81%AE%E5%A4%A7%E5%89%8D%E6%8F%90"><span class="toc-text">ボックスモデル配置の大前提</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E3%81%AE%E6%A7%8B%E6%88%90%E8%A6%81%E7%B4%A0"><span class="toc-text">ボックスの構成要素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E5%90%AB%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF"><span class="toc-text">包含ブロック</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E3%81%AE%E9%85%8D%E7%BD%AE"><span class="toc-text">ボックスの配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#margin%E3%81%AE%E7%9B%B8%E6%AE%BA"><span class="toc-text">marginの相殺</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E3%82%B5%E3%82%A4%E3%83%88"><span class="toc-text">参考サイト</span></a></li></ol>
 
-<h2 id="ボックスモデル"><a href="#ボックスモデル" class="headerlink" title="ボックスモデル"></a>ボックスモデル</h2><p>HTML5と言うと，HTMLのバージョンとしてのHTML5(狭い意味)と，Javascriptを初めとしたWeb技術としてのHTML5(広い意味)がある。<br>今回は前者の意味でHTML5という言葉を用いている。<br>というのも，HTML5ではセマンティクスの観点からHTMLは文章構造・意味を表すのを担い，デザイン部分はCSS3(以下CSS)が担うという風に，明確に区別が定義されるようになった。(らしい…)<br>ボックスモデルは文章の構造・意味的な部分よりもデザイン的な部分が大きい為，CSSが担うことになった。<br>その事を端的に表しているのが「display」プロパティ。<br>この要素は[ブロック・インライン等の、要素の表示形式を指定する際に使用」される。<br>つまり，HTML5の殆どのタグが，自由にブロック・インラインどちらかのボックスに変えることが出来る。<br><a href="http://www.d-toybox.com/spec/CSS3/box/index.html#L706" target="_blank" rel="noopener">http://www.d-toybox.com/spec/CSS3/box/index.html#L706</a></p>
+<h2 id="ボックスモデル"><a href="#ボックスモデル" class="headerlink" title="ボックスモデル"></a>ボックスモデル</h2><p>HTML5と言うと，HTMLのバージョンとしてのHTML5(狭い意味)と，Javascriptを初めとしたWeb技術としてのHTML5(広い意味)がある。<br>今回は前者の意味でHTML5という言葉を用いている。<br>というのも，HTML5ではセマンティクスの観点からHTMLは文章構造・意味を表すのを担い，デザイン部分はCSS3(以下CSS)が担うという風に，明確に区別が定義されるようになった。(らしい…)<br>ボックスモデルは文章の構造・意味的な部分よりもデザイン的な部分が大きい為，CSSが担うことになった。<br>その事を端的に表しているのが「display」プロパティ。<br>この要素は[ブロック・インライン等の、要素の表示形式を指定する際に使用」される。<br>つまり，HTML5の殆どのタグが，自由にブロック・インラインどちらかのボックスに変えることが出来る。<br><a target="_blank" rel="noopener" href="http://www.d-toybox.com/spec/CSS3/box/index.html#L706">http://www.d-toybox.com/spec/CSS3/box/index.html#L706</a></p>
 <p>ただ，ブラウザの仕様上，特に指定がない場合はHTML4時代の名残としてp要素はブロックレベルでa要素はインラインレベルでというように(ブラウザが判断して)表示されるようです。</p>
 <h2 id="ボックスモデル配置の大前提"><a href="#ボックスモデル配置の大前提" class="headerlink" title="ボックスモデル配置の大前提"></a>ボックスモデル配置の大前提</h2><h3 id="ボックスの構成要素"><a href="#ボックスの構成要素" class="headerlink" title="ボックスの構成要素"></a>ボックスの構成要素</h3><p>要素が宣言されると，ブラウザは次の部品を構成する。</p>
 <ul>
@@ -362,7 +362,7 @@
 <li>入れ子関係にあるボックス同士(但し，間にboder,paddingがない場合)</li>
 </ul>
 <p>の間で起こる。<br>相殺が起こった場合，大きい方の数値が採用される。<br>相殺を回避するには，boder,paddingを設定するか，overflow:hidden　を設定する。<br>また，floatを設定した場合も相殺は起こらない。</p>
-<h2 id="参考サイト"><a href="#参考サイト" class="headerlink" title="参考サイト"></a>参考サイト</h2><p><a href="http://momdo.s35.xrea.com/web-html-test/CSS3-ja/" target="_blank" rel="noopener">CSS3の日本語訳集</a><br><a href="http://jtdan.com/spec/" target="_blank" rel="noopener">W3C仕様書などのまとめ【保存版】</a><br><a href="https://developer.mozilla.org/ja/docs/Web/HTML/Block-level_elements" target="_blank" rel="noopener">MDN web docs:ブロックレベル要素</a></p>
+<h2 id="参考サイト"><a href="#参考サイト" class="headerlink" title="参考サイト"></a>参考サイト</h2><p><a target="_blank" rel="noopener" href="http://momdo.s35.xrea.com/web-html-test/CSS3-ja/">CSS3の日本語訳集</a><br><a target="_blank" rel="noopener" href="http://jtdan.com/spec/">W3C仕様書などのまとめ【保存版】</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/ja/docs/Web/HTML/Block-level_elements">MDN web docs:ブロックレベル要素</a></p>
 
             
 
@@ -374,7 +374,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/demski/tags/HTML5/" rel="tag">HTML5</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/css/" rel="tag">css</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/html/" rel="tag">html</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/tips/" rel="tag">tips</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/HTML5/" rel="tag">HTML5</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/css/" rel="tag">css</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/html/" rel="tag">html</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/tips/" rel="tag">tips</a>
 
             </div>
         
@@ -490,7 +490,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -727,7 +727,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -739,7 +739,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -773,29 +773,6 @@
                             </span>
                         </span>
                         <div class="media-content hide-xs font-merryweather"><p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/01/18/atom/"
-                            aria-label=": Atomの基本的な操作メモ"
-                        >
-                            <h3 class="media-heading">Atomの基本的な操作メモ</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年1月18日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="Atomとは？"><a href="#Atomとは？" class="headerlink" title="Atomとは？"></a>Atomとは？</h2><p>Atomは,Github社製のオープンソースのテキストエディター。<br>これから主流になっていくと思われる。<br>パッケージ形式で機能を拡張できる。  </p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -869,85 +846,6 @@
                 
                 <div class="media">
                     
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/"
-                            aria-label=": CentOS7 on vagrant"
-                        >
-                            <h3 class="media-heading">CentOS7 on vagrant</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年11月6日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
-                            aria-label=": CentOS on vagrant -LAMP編"
-                        >
-                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年12月7日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
-                            aria-label=": hexoで使用中のpluginのメモ"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
-                            aria-label=": hexoで使用中のpluginのメモ"
-                        >
-                            <h3 class="media-heading">hexoで使用中のpluginのメモ</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2017年3月18日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -984,29 +882,162 @@
                     <div class="media-left">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
-                            aria-label=": Javascrpt 変数の巻き上げ"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitHubを使う　～登録まで"
                         >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/learn-javascript.png" width="90" height="90"/>
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/03/24/git1/Git-Icon-1788C.png" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
-                            aria-label=": Javascrpt 変数の巻き上げ"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitHubを使う　～登録まで"
                         >
-                            <h3 class="media-heading">Javascrpt 変数の巻き上げ</h3>
+                            <h3 class="media-heading">WindowsでGitHubを使う　～登録まで</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
                                 
-                                    2018年12月25日
+                                    2019年3月24日
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>javascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。<br>javascrpt特有で最重要ポイントの一つ。<br>これを分かってると，コードの読み方が一歩プロに近づく…カモ</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>バージョン管理ツールであるGitをインストールして，GitHubと連携させるまでのメモ</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/04/24/css-tips1/css3.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <h3 class="media-heading">Css-tips1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年4月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/Windows10Logo.svg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <h3 class="media-heading">Windos10 ショートカットキー</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>最近，マウスよりキーボードだけで色々済ませたほうが楽なことに気付いた。<br>記憶力が乏しいので，よく使いそうなものからメモ。(但し，知ってるのは省略（Ctrl + Cとか）)</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <h3 class="media-heading">EditorConfigの使い方</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年6月8日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案[^1] されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a target="_blank" rel="noopener" href="https://editorconfig.org/">公式ページ</a>を翻訳・要約記事にしてみました。</p>
+<p>[^1]:  <a target="_blank" rel="noopener" href="https://google.github.io/styleguide/htmlcssguide.html">google HTML&#x2F;CSS Style Guid</a>  <a target="_blank" rel="noopener" href="https://www.w3schools.com/html/html5_syntax.asp">w3schools</a> ,  <a target="_blank" rel="noopener" href="http://met.hanatoweb.jp/guideline/html5/">hanatoweb</a> など。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>

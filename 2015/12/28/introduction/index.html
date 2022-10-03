@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。\n\n\n環境\nWindows8.1\nnode.js v0.10.33\nnpm v1.4.28.\nhexo v2.8.3  \n\nWindows8.1にnode.jsをインストールして環境を構築。その後hexoをコマンドプロプントでインストール。\nHexoをインストールコマンドプロプントもしくはGitBashで,下記コマンドを実行\n1$ npm install -g hexo\n\nこれで，hexoの環境ができあがる。\n1$ hexo -v\n\nで，バージョンが表示されれば成功  \nblogの作成コンソールでblogを作りたいフォルダに移動して，以下のコマンドを実行\n1$ hexo init BLOGNAME\n\nこれで，BLOGNAMEというフォルダができるので移動\n12$ cd BLOGNAME$ npm install\n\nこれでブログが作成されたので，ローカルサーバーを立ち上げ確認\n1$ hexo server\n\nで立ち上げ,http://localhost:4000で確認\ngithub に Github Pagesのリポジトリを作成new repositoryから，Repository nameを「username.github.io」にして作成。usernameを一致させないと，失敗するっぽい。\nSSH公開鍵の登録SSHキーを作成して，ローカルとgithubアカウントを紐付ける。コンソールで作っていくが,GitBashで作った方がうまくいくみたい。コマンドは以下の通り\n12345$ cd ~/.ssh$ ssh-keygen ssh-kygenGenerating public/private rsa key pair.(以下略)\n途中でパスワードを設定するか聞かれるが,特に設定したくない場合は空白のままenter。\n.sshフォルダにid_rsaとid_rsa.pubというファイルがあれば成功。id_rsa.pubが公開鍵になるので,メモ帳などで開いて内容をコピー。Account settings &gt; SSH keys &gt; Add SSH key で先程コピーした内容を貼付け。登録成功の画面が現われたら登録完了\nフォルダをgithub上のリポジトリに紐付けローカルのblogフォルダとGithbuPagesリポジトリと紐付けるため以下のコマンドを実行\n1234$ touch README.md$ echo \"hello github.io!!\" &gt; index.html$ git init$ git remote add origin git@github.com:/username.github.io.git\n\nファイルをアップロード下記のコマンドを実行して，ファイルをアップロード\n123$ git add .$ git commit -m \"first commit\"$ git push origin master\n\n成功すれば，http://username.github.ioに公開されているはず。\nHexo コマンド12345678910111213141516171819202122232425Commands:  clean     Removed generated files and cache.  config    Get or set configurations.  deploy    Deploy your website.  generate  Generate static files.  help      Get help on a command.  init      Create a new Hexo folder.  list      List the information of the site  migrate   Migrate your site from other system to Hexo.  new       Create a new post.  publish   Moves a draft post from _drafts to _posts folder.  render    Render files with renderer plugins.  server    Start the server.  version   Display version information.Global Options:  --config  Specify config file instead of using _config.yml  --cwd     Specify the CWD  --debug   Display all verbose messages in the terminal  --draft   Display draft posts  --safe    Disable all plugins and scripts  --silent  Hide output on consoleFor more help, you can use 'hexo help [command]' for the detailed informationor you can check the docs: http://hexo.io/docs/\n","dateCreated":"2015-12-28T18:29:53+09:00","dateModified":"2020-05-26T21:53:06+09:00","datePublished":"2015-12-28T18:29:53+09:00","description":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。","headline":"hexo + githubページでブログ構築","image":["hexo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2015/12/28/introduction/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2015/12/28/introduction/","keywords":"Hexo","thumbnailUrl":"hexo.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。\n\n\n環境\nWindows8.1\nnode.js v0.10.33\nnpm v1.4.28.\nhexo v2.8.3\n\nWindows8.1にnode.jsをインストールして環境を構築。その後hexoをコマンドプロプントでインストール。\nHexoをインストールコマンドプロプントもしくはGitBashで,下記コマンドを実行\n1$ npm install -g hexo\n\nこれで，hexoの環境ができあがる。\n1$ hexo -v\n\nで，バージョンが表示されれば成功  \nblogの作成コンソールでblogを作りたいフォルダに移動して，以下のコマンドを実行\n1$ hexo init BLOGNAME\n\nこれで，BLOGNAMEというフォルダができるので移動\n12$ cd BLOGNAME$ npm install\n\nこれでブログが作成されたので，ローカルサーバーを立ち上げ確認\n1$ hexo server\n\nで立ち上げ,http://localhost:4000で確認\ngithub に Github Pagesのリポジトリを作成new repositoryから，Repository nameを「username.github.io」にして作成。usernameを一致させないと，失敗するっぽい。\nSSH公開鍵の登録SSHキーを作成して，ローカルとgithubアカウントを紐付ける。コンソールで作っていくが,GitBashで作った方がうまくいくみたい。コマンドは以下の通り\n12345$ cd ~/.ssh$ ssh-keygen ssh-kygenGenerating public/private rsa key pair.(以下略)\n途中でパスワードを設定するか聞かれるが,特に設定したくない場合は空白のままenter。\n.sshフォルダにid_rsaとid_rsa.pubというファイルがあれば成功。id_rsa.pubが公開鍵になるので,メモ帳などで開いて内容をコピー。Account settings &gt; SSH keys &gt; Add SSH key で先程コピーした内容を貼付け。登録成功の画面が現われたら登録完了\nフォルダをgithub上のリポジトリに紐付けローカルのblogフォルダとGithbuPagesリポジトリと紐付けるため以下のコマンドを実行\n1234$ touch README.md$ echo &quot;hello github.io!!&quot; &gt; index.html$ git init$ git remote add origin git@github.com:/username.github.io.git\n\nファイルをアップロード下記のコマンドを実行して，ファイルをアップロード\n123$ git add .$ git commit -m &quot;first commit&quot;$ git push origin master\n\n成功すれば，http://username.github.ioに公開されているはず。\nHexo コマンド1234567891011121314151617181920212223242526Commands:  clean     Removed generated files and cache.  config    Get or set configurations.  deploy    Deploy your website.  generate  Generate static files.  help      Get help on a command.  init      Create a new Hexo folder.  list      List the information of the site  migrate   Migrate your site from other system to Hexo.  new       Create a new post.  publish   Moves a draft post from _drafts to _posts folder.  render    Render files with renderer plugins.  server    Start the server.  version   Display version information.Global Options:  --config  Specify config file instead of using _config.yml  --cwd     Specify the CWD  --debug   Display all verbose messages in the terminal  --draft   Display draft posts  --safe    Disable all plugins and scripts  --silent  Hide output on consoleFor more help, you can use &#x27;hexo help [command]&#x27; for the detailed informationor you can check the docs: http://hexo.io/docs/\n","dateCreated":"2015-12-28T18:29:53+09:00","dateModified":"2020-05-26T21:53:06+09:00","datePublished":"2015-12-28T18:29:53+09:00","description":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。","headline":"hexo + githubページでブログ構築","image":["hexo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2015/12/28/introduction/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2015/12/28/introduction/","keywords":"Hexo","thumbnailUrl":"hexo.png"}</script>
     <meta name="description" content="hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="hexo + githubページでブログ構築">
@@ -328,13 +328,13 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p>
-<a id="more"></a>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#環境"><span class="toc-text">環境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexoをインストール"><span class="toc-text">Hexoをインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blogの作成"><span class="toc-text">blogの作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-に-Github-Pagesのリポジトリを作成"><span class="toc-text">github に Github Pagesのリポジトリを作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH公開鍵の登録"><span class="toc-text">SSH公開鍵の登録</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#フォルダをgithub上のリポジトリに紐付け"><span class="toc-text">フォルダをgithub上のリポジトリに紐付け</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ファイルをアップロード"><span class="toc-text">ファイルをアップロード</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo-コマンド"><span class="toc-text">Hexo コマンド</span></a></li></ol>
+<span id="more"></span>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83"><span class="toc-text">環境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">Hexoをインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blog%E3%81%AE%E4%BD%9C%E6%88%90"><span class="toc-text">blogの作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-%E3%81%AB-Github-Pages%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E4%BD%9C%E6%88%90"><span class="toc-text">github に Github Pagesのリポジトリを作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="toc-text">SSH公開鍵の登録</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E3%82%92github%E4%B8%8A%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AB%E7%B4%90%E4%BB%98%E3%81%91"><span class="toc-text">フォルダをgithub上のリポジトリに紐付け</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%83%AD%E3%83%BC%E3%83%89"><span class="toc-text">ファイルをアップロード</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo-%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">Hexo コマンド</span></a></li></ol>
 <h2 id="環境"><a href="#環境" class="headerlink" title="環境"></a>環境</h2><ul>
 <li>Windows8.1</li>
 <li>node.js v0.10.33</li>
 <li>npm v1.4.28.</li>
-<li>hexo v2.8.3  </li>
+<li>hexo v2.8.3</li>
 </ul>
 <p>Windows8.1にnode.jsをインストールして環境を構築。<br>その後hexoをコマンドプロプントでインストール。</p>
 <h2 id="Hexoをインストール"><a href="#Hexoをインストール" class="headerlink" title="Hexoをインストール"></a>Hexoをインストール</h2><p>コマンドプロプントもしくはGitBashで,下記コマンドを実行</p>
@@ -353,20 +353,20 @@
 <p>これでブログが作成されたので，ローカルサーバーを立ち上げ確認</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<p>で立ち上げ,<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a>で確認</p>
+<p>で立ち上げ,<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a>で確認</p>
 <h2 id="github-に-Github-Pagesのリポジトリを作成"><a href="#github-に-Github-Pagesのリポジトリを作成" class="headerlink" title="github に Github Pagesのリポジトリを作成"></a>github に Github Pagesのリポジトリを作成</h2><p>new repositoryから，Repository nameを「username.github.io」にして作成。<br>usernameを一致させないと，失敗するっぽい。</p>
 <h2 id="SSH公開鍵の登録"><a href="#SSH公開鍵の登録" class="headerlink" title="SSH公開鍵の登録"></a>SSH公開鍵の登録</h2><p>SSHキーを作成して，ローカルとgithubアカウントを紐付ける。<br>コンソールで作っていくが,GitBashで作った方がうまくいくみたい。<br>コマンドは以下の通り</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.ssh</span><br><span class="line">$ ssh-keygen</span><br><span class="line"> ssh-kygen</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">(以下略)</span><br></pre></td></tr></table></figure>
 <p>途中でパスワードを設定するか聞かれるが,特に設定したくない場合は空白のままenter。</p>
 <p>.sshフォルダにid_rsaとid_rsa.pubというファイルがあれば成功。<br>id_rsa.pubが公開鍵になるので,メモ帳などで開いて内容をコピー。<br>Account settings &gt; SSH keys &gt; Add SSH key で先程コピーした内容を貼付け。<br>登録成功の画面が現われたら登録完了</p>
 <h2 id="フォルダをgithub上のリポジトリに紐付け"><a href="#フォルダをgithub上のリポジトリに紐付け" class="headerlink" title="フォルダをgithub上のリポジトリに紐付け"></a>フォルダをgithub上のリポジトリに紐付け</h2><p>ローカルのblogフォルダとGithbuPagesリポジトリと紐付けるため以下のコマンドを実行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ touch README.md</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">"hello github.io!!"</span> &gt; index.html</span><br><span class="line">$ git init</span><br><span class="line">$ git remote add origin git@github.com:/username.github.io.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">touch</span> README.md</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;hello github.io!!&quot;</span> &gt; index.html</span><br><span class="line">$ git init</span><br><span class="line">$ git remote add origin git@github.com:/username.github.io.git</span><br></pre></td></tr></table></figure>
 
 <h2 id="ファイルをアップロード"><a href="#ファイルをアップロード" class="headerlink" title="ファイルをアップロード"></a>ファイルをアップロード</h2><p>下記のコマンドを実行して，ファイルをアップロード</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">"first commit"</span></span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;first commit&quot;</span></span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
 
-<p>成功すれば，<a href="http://username.github.io" target="_blank" rel="noopener">http://username.github.io</a>に公開されているはず。</p>
-<h2 id="Hexo-コマンド"><a href="#Hexo-コマンド" class="headerlink" title="Hexo コマンド"></a>Hexo コマンド</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Commands:</span><br><span class="line">  clean     Removed generated files and cache.</span><br><span class="line">  config    Get or <span class="built_in">set</span> configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  <span class="built_in">help</span>      Get <span class="built_in">help</span> on a <span class="built_in">command</span>.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages <span class="keyword">in</span> the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more <span class="built_in">help</span>, you can use <span class="string">'hexo help [command]'</span> <span class="keyword">for</span> the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></table></figure>
+<p>成功すれば，<a target="_blank" rel="noopener" href="http://username.github.io/">http://username.github.io</a>に公開されているはず。</p>
+<h2 id="Hexo-コマンド"><a href="#Hexo-コマンド" class="headerlink" title="Hexo コマンド"></a>Hexo コマンド</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Commands:</span><br><span class="line">  clean     Removed generated files and cache.</span><br><span class="line">  config    Get or <span class="built_in">set</span> configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  <span class="built_in">help</span>      Get <span class="built_in">help</span> on a <span class="built_in">command</span>.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages <span class="keyword">in</span> the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more <span class="built_in">help</span>, you can use <span class="string">&#x27;hexo help [command]&#x27;</span> <span class="keyword">for</span> the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
             
 
@@ -378,7 +378,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/demski/tags/Hexo/" rel="tag">Hexo</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Hexo/" rel="tag">Hexo</a>
 
             </div>
         
@@ -391,9 +391,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2016/01/18/atom/"
-                    data-tooltip="Atomの基本的な操作メモ"
-                    aria-label="前: Atomの基本的な操作メモ"
+                    href="/demski/2016/02/14/horo/"
+                    data-tooltip="Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
+                    aria-label="前: Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -405,7 +405,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
+                    href="/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
                     data-tooltip="Hello World"
                     aria-label="次: Hello World"
                 >
@@ -494,7 +494,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -520,9 +520,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2016/01/18/atom/"
-                    data-tooltip="Atomの基本的な操作メモ"
-                    aria-label="前: Atomの基本的な操作メモ"
+                    href="/demski/2016/02/14/horo/"
+                    data-tooltip="Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
+                    aria-label="前: Stylishを使ってGoogleに月島ほろちゃんを召喚しよう by FireFox"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -534,7 +534,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
+                    href="/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
                     data-tooltip="Hello World"
                     aria-label="次: Hello World"
                 >
@@ -731,7 +731,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -743,7 +743,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -777,29 +777,6 @@
                             </span>
                         </span>
                         <div class="media-content hide-xs font-merryweather"><p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/01/18/atom/"
-                            aria-label=": Atomの基本的な操作メモ"
-                        >
-                            <h3 class="media-heading">Atomの基本的な操作メモ</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年1月18日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="Atomとは？"><a href="#Atomとは？" class="headerlink" title="Atomとは？"></a>Atomとは？</h2><p>Atomは,Github社製のオープンソースのテキストエディター。<br>これから主流になっていくと思われる。<br>パッケージ形式で機能を拡張できる。  </p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -873,85 +850,6 @@
                 
                 <div class="media">
                     
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/11/06/CentOS7OnVagrant/"
-                            aria-label=": CentOS7 on vagrant"
-                        >
-                            <h3 class="media-heading">CentOS7 on vagrant</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年11月6日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2016/12/07/CentOS7OnVagrant_LAMP/"
-                            aria-label=": CentOS on vagrant -LAMP編"
-                        >
-                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2016年12月7日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
-                            aria-label=": hexoで使用中のpluginのメモ"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/hexo.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2017/03/18/HexoPlgin/"
-                            aria-label=": hexoで使用中のpluginのメモ"
-                        >
-                            <h3 class="media-heading">hexoで使用中のpluginのメモ</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2017年3月18日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>hexoには様々な拡張機能がプラグインとして提供されている。<br>その中から，今自分が使っているモノのリストとその使い方をメモしておく。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -988,29 +886,162 @@
                     <div class="media-left">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
-                            aria-label=": Javascrpt 変数の巻き上げ"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitHubを使う　～登録まで"
                         >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/learn-javascript.png" width="90" height="90"/>
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/03/24/git1/Git-Icon-1788C.png" width="90" height="90"/>
                         </a>
                     </div>
                     
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2018/12/25/javascrpt-theory1/"
-                            aria-label=": Javascrpt 変数の巻き上げ"
+                            href="https://demskiautio.github.io/demski/2019/03/24/git1/"
+                            aria-label=": WindowsでGitHubを使う　～登録まで"
                         >
-                            <h3 class="media-heading">Javascrpt 変数の巻き上げ</h3>
+                            <h3 class="media-heading">WindowsでGitHubを使う　～登録まで</h3>
                         </a>
                         <span class="media-meta">
                             <span class="media-date text-small">
                                 
-                                    2018年12月25日
+                                    2019年3月24日
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>javascrptの重要な概念の一つ，「変数の巻き上げ(hoisting)」についてのまとめ。<br>javascrpt特有で最重要ポイントの一つ。<br>これを分かってると，コードの読み方が一歩プロに近づく…カモ</p></div>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>バージョン管理ツールであるGitをインストールして，GitHubと連携させるまでのメモ</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/04/24/css-tips1/css3.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/04/24/css-tips1/"
+                            aria-label=": Css-tips1"
+                        >
+                            <h3 class="media-heading">Css-tips1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年4月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>わかったつもりで実は分かってなかったHTML５の基礎知識を纏めたメモ。<br>今回は，結構罠に嵌まる確率が高いmargin・paddingについてまとめてみた。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/Windows10Logo.svg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/24/windos10-tips/"
+                            aria-label=": Windos10 ショートカットキー"
+                        >
+                            <h3 class="media-heading">Windos10 ショートカットキー</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月24日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>最近，マウスよりキーボードだけで色々済ませたほうが楽なことに気付いた。<br>記憶力が乏しいので，よく使いそうなものからメモ。(但し，知ってるのは省略（Ctrl + Cとか）)</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
+                            aria-label=": HTML5 Boilerplate入門"
+                        >
+                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年5月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
+                            aria-label=": EditorConfigの使い方"
+                        >
+                            <h3 class="media-heading">EditorConfigの使い方</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2019年6月8日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案[^1] されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a target="_blank" rel="noopener" href="https://editorconfig.org/">公式ページ</a>を翻訳・要約記事にしてみました。</p>
+<p>[^1]:  <a target="_blank" rel="noopener" href="https://google.github.io/styleguide/htmlcssguide.html">google HTML&#x2F;CSS Style Guid</a>  <a target="_blank" rel="noopener" href="https://www.w3schools.com/html/html5_syntax.asp">w3schools</a> ,  <a target="_blank" rel="noopener" href="http://met.hanatoweb.jp/guideline/html5/">hanatoweb</a> など。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
