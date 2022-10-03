@@ -17,16 +17,16 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめに『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  \n\n\n\n環境\nOS:Windows10Pro64bit\nCPU:AMD A10-7850\nメモリ 16.0GB デュアル-Channel DDR3\nマザーボードASRock FM2A88X+ Killer\n\nインストールVirtualBox-Downloads→Vagrant-Downloadsの順にインストール。VagrantがVirtualBoxに依存するため。\nBOXの追加から初期化VagrantdCloudからBOXを持ってくる。https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1もしくは，こちらからダウンロード。http://www.vagrantbox.es/\nCentOS7の場合12vagrant init centos/7vagrant up --provider virtualbox\n\nboxがない場合，ダウンロードしてくれる。「１」でボックスのダウンロードと初期化（vagrantファイルの生成）を一気に行っている。「２」では仮想マシンソフトを「virtualbox」であることを示すオプション「–provider」をつけて，仮想マシンを立ち上げている。\n一気にやってうまくいかないときは以下の通り\n123vagrant box add box名 URLvagrant init box名vagrant up\n\n仮想マシンの編集カレントディレクトリのvagrantファイルを編集\n1234567891011121314//ファイルの共有フォルダ設定 config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;//VirtualサーバーのIPアドレス設定config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;//VirtualBoxのGUIモードの設定をONにするconfig.vm.provider &quot;virtualbox&quot; do |vb|  #   # Display the VirtualBox GUI when booting the machine     vb.gui = true  #  #   # Customize the amount of memory on the VM:  #   vb.memory = &quot;1024&quot;   end\n何故か，CUIのままだと立ち上がらない。(バグ？）\n仮想マシン立ち上げコマンドプロンプトで\n1vagrant up\n\nとすると，仮想マシンが立ち上がる。次に，新たにターミナルを起動してCentOS7にログインする。デフォルトだとユーザーもパスワードも「vagrant」となる。続いて「CentOS7」の環境を整えていく。\nCentOS7環境の整備CentOS7の管理権限にアップする「su」コマンド実行後に行うと便利。  \nレポジトリ追加参考:http://qiita.com/bezeklik/items/9766003c19f9664602fe#remis-rpm-repository\nEPEL123456789101112yum -y install epel-release    #### EPEL インストールrpm -qa | grep epel            #### EPEL インストール確認cp -p /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.org    #### バックアップcat /etc/yum.repos.d/epel.repo | grep &#x27;enabled&#x27;    #### 設定確認 (置換前)sed -i &#x27;s/enabled=1/enabled=0/g&#x27; /etc/yum.repos.d/epel.repo        #### EPEL 無効化cat /etc/yum.repos.d/epel.repo | grep &#x27;enabled&#x27;    #### 設定確認 (置換後)yum -y install &lt;パッケージ名&gt; --enablerepo=epel    #### EPEL を使ったパッケージインストールyum -y update epel-release --enablerepo=epel       #### EPLE リポジトリアップデート\n\nRemi’s RPM repository123yum install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm  yum install yum-utilsyum-config-manager --enable remi-php70\n\nキャッシュクリア1yum clean all\n\nyumのアップデート1yum update -y all\n\nyum確認1yum list all\n\n\nCentOS7のyum自動アップデート1yum install yum-cron.noarch\n\nvimで以下のファイルを編集。\n1234vi /etc/yum/yum-cron.confapply_updates = no↓apply_updates = yes\n\nデーモン起動，自動起動設定\n12systemctl start yum-cronsystemctl enable yum-cron\n\n\nDeveloper Tools 類をインストール123yum -y groupinstall &quot;Development tools&quot;yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-develyum -y install gcc-c++\n\n\nここまでで，CentOS7の基礎セットアップ完了。ここから，色々展開できるので，稿を分けます\n展開リスト\nLAMP環境構築\nnode環境構築\nMean環境       etc,,,\n\n","dateCreated":"2021-11-06T20:26:36+09:00","dateModified":"2022-10-03T10:56:30+09:00","datePublished":"2021-11-06T20:26:36+09:00","description":"はじめに『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  ","headline":"CentOS7 on vagrant","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/","keywords":"Vagrant, CentOS7, 仮想環境, web"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめに『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  \n\n\n\n環境\nOS:Windows10Pro64bit\nCPU:AMD A10-7850\nメモリ 16.0GB デュアル-Channel DDR3\nマザーボードASRock FM2A88X+ Killer\n\nインストールVirtualBox-Downloads→Vagrant-Downloadsの順にインストール。VagrantがVirtualBoxに依存するため。\nBOXの追加から初期化VagrantdCloudからBOXを持ってくる。https://atlas.hashicorp.com/boxes/search?utm_source=vagrantcloud.com&amp;vagrantcloud=1もしくは，こちらからダウンロード。http://www.vagrantbox.es/\nCentOS7の場合12vagrant init centos/7vagrant up --provider virtualbox\n\nboxがない場合，ダウンロードしてくれる。「１」でボックスのダウンロードと初期化（vagrantファイルの生成）を一気に行っている。「２」では仮想マシンソフトを「virtualbox」であることを示すオプション「–provider」をつけて，仮想マシンを立ち上げている。\n一気にやってうまくいかないときは以下の通り\n123vagrant box add box名 URLvagrant init box名vagrant up\n\n仮想マシンの編集カレントディレクトリのvagrantファイルを編集\n1234567891011121314//ファイルの共有フォルダ設定 config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;//VirtualサーバーのIPアドレス設定config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;//VirtualBoxのGUIモードの設定をONにするconfig.vm.provider &quot;virtualbox&quot; do |vb|  #   # Display the VirtualBox GUI when booting the machine     vb.gui = true  #  #   # Customize the amount of memory on the VM:  #   vb.memory = &quot;1024&quot;   end\n何故か，CUIのままだと立ち上がらない。(バグ？）\n仮想マシン立ち上げコマンドプロンプトで\n1vagrant up\n\nとすると，仮想マシンが立ち上がる。次に，新たにターミナルを起動してCentOS7にログインする。デフォルトだとユーザーもパスワードも「vagrant」となる。続いて「CentOS7」の環境を整えていく。\nCentOS7環境の整備CentOS7の管理権限にアップする「su」コマンド実行後に行うと便利。  \nレポジトリ追加参考:http://qiita.com/bezeklik/items/9766003c19f9664602fe#remis-rpm-repository\nEPEL123456789101112yum -y install epel-release    #### EPEL インストールrpm -qa | grep epel            #### EPEL インストール確認cp -p /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.org    #### バックアップcat /etc/yum.repos.d/epel.repo | grep &#x27;enabled&#x27;    #### 設定確認 (置換前)sed -i &#x27;s/enabled=1/enabled=0/g&#x27; /etc/yum.repos.d/epel.repo        #### EPEL 無効化cat /etc/yum.repos.d/epel.repo | grep &#x27;enabled&#x27;    #### 設定確認 (置換後)yum -y install &lt;パッケージ名&gt; --enablerepo=epel    #### EPEL を使ったパッケージインストールyum -y update epel-release --enablerepo=epel       #### EPLE リポジトリアップデート\n\nRemi’s RPM repository123yum install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm  yum install yum-utilsyum-config-manager --enable remi-php70\n\nキャッシュクリア1yum clean all\n\nyumのアップデート1yum update -y all\n\nyum確認1yum list all\n\n\nCentOS7のyum自動アップデート1yum install yum-cron.noarch\n\nvimで以下のファイルを編集。\n1234vi /etc/yum/yum-cron.confapply_updates = no↓apply_updates = yes\n\nデーモン起動，自動起動設定\n12systemctl start yum-cronsystemctl enable yum-cron\n\n\nDeveloper Tools 類をインストール123yum -y groupinstall &quot;Development tools&quot;yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-develyum -y install gcc-c++\n\n\nここまでで，CentOS7の基礎セットアップ完了。ここから，色々展開できるので，稿を分けます\n展開リスト\nLAMP環境構築\nnode環境構築\nMean環境       etc,,,\n\n","dateCreated":"2018-11-06T20:26:36+09:00","dateModified":"2022-10-03T11:12:12+09:00","datePublished":"2018-11-06T20:26:36+09:00","description":"はじめに『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  ","headline":"CentOS7 on vagrant","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/","keywords":"Vagrant, CentOS7, 仮想環境, web"}</script>
     <meta name="description" content="はじめに『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="CentOS7 on vagrant">
-<meta property="og:url" content="https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/index.html">
+<meta property="og:url" content="https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/index.html">
 <meta property="og:site_name" content="ヴェルフェゴールのため息">
 <meta property="og:description" content="はじめに『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2021-11-06T11:26:36.000Z">
-<meta property="article:modified_time" content="2022-10-03T01:56:30.766Z">
+<meta property="article:published_time" content="2018-11-06T11:26:36.000Z">
+<meta property="article:modified_time" content="2022-10-03T02:12:12.786Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="Vagrant">
 <meta property="article:tag" content="CentOS7">
@@ -313,9 +313,9 @@
     
     
         <div class="post-meta">
-    <time datetime="2021-11-06T20:26:36+09:00">
+    <time datetime="2018-11-06T20:26:36+09:00">
 	
-		    2021/11/06
+		    2018/11/06
     	
     </time>
     
@@ -407,7 +407,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    href="/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     data-tooltip="CentOS on vagrant -LAMP編"
                     aria-label="前: CentOS on vagrant -LAMP編"
                 >
@@ -421,9 +421,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2021/03/18/HexoPlgin/"
-                    data-tooltip="hexoで使用中のpluginのメモ"
-                    aria-label="次: hexoで使用中のpluginのメモ"
+                    href="/demski/2017/10/16/powershell-color/"
+                    data-tooltip="PowerShell のColorを変えよう"
+                    aria-label="次: PowerShell のColorを変えよう"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -437,7 +437,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -448,7 +448,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -461,7 +461,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -474,7 +474,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -488,7 +488,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -536,7 +536,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    href="/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     data-tooltip="CentOS on vagrant -LAMP編"
                     aria-label="前: CentOS on vagrant -LAMP編"
                 >
@@ -550,9 +550,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2021/03/18/HexoPlgin/"
-                    data-tooltip="hexoで使用中のpluginのメモ"
-                    aria-label="次: hexoで使用中のpluginのメモ"
+                    href="/demski/2017/10/16/powershell-color/"
+                    data-tooltip="PowerShell のColorを変えよう"
+                    aria-label="次: PowerShell のColorを変えよう"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -566,7 +566,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -577,7 +577,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -590,7 +590,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -603,7 +603,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -617,7 +617,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -647,7 +647,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -660,7 +660,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -673,7 +673,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/"
+                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
@@ -747,7 +747,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s50917000i3otv8ziqakwb/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -899,6 +899,52 @@
                 
                 <div class="media">
                     
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
+                            aria-label=": CentOS7 on vagrant"
+                        >
+                            <h3 class="media-heading">CentOS7 on vagrant</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
+                            aria-label=": CentOS on vagrant -LAMP編"
+                        >
+                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年12月7日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -996,73 +1042,6 @@
                     <hr>
                 </div>
                 
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月25日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <h3 class="media-heading">EditorConfigの使い方</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月8日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案[^1] されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a target="_blank" rel="noopener" href="https://editorconfig.org/">公式ページ</a>を翻訳・要約記事にしてみました。</p>
-<p>[^1]:  <a target="_blank" rel="noopener" href="https://google.github.io/styleguide/htmlcssguide.html">google HTML&#x2F;CSS Style Guid</a>  <a target="_blank" rel="noopener" href="https://www.w3schools.com/html/html5_syntax.asp">w3schools</a> ,  <a target="_blank" rel="noopener" href="http://met.hanatoweb.jp/guideline/html5/">hanatoweb</a> など。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
             </div>
         </div>
         <div class="modal-footer">
@@ -1089,9 +1068,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/';
+            this.page.url = 'https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/';
               
-            this.page.identifier = '2021/11/06/CentOS7OnVagrant/';
+            this.page.identifier = '2018/11/06/CentOS7OnVagrant/';
               
           };
           (function() {

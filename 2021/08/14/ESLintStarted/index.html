@@ -17,16 +17,16 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにESLint は JavaScript のための静的検証ツール。コードを実行する前に明らかなバグを見つけたり、括弧やスペースの使い方などのスタイルを統一したりするのに役立つ。以前メモしたEditorConfigも，コードスタイル統一ができるが，これにJavaScripの文法チェック機能が付いた感じ。React.jsやAngular.jsなどにも対応しているので，Atomにその環境を構築したのでそのメモ。\n\n\n\n\nESLintとは公式ホームぺージESLint によると\n\nESLintはコードを静的に分析して、問題をすばやく見つけます。 ESLintはほとんどのテキストエディターに組み込まれており、ESLintを継続的インテグレーションパイプラインの一部として実行できます。\n\nとの事。Node.jsのnpmパッケージとして提供されている。\n特徴\nすべての検証ルールを自由に on&#x2F;off できる\nカスタムルールを簡単に作れる\nEcmaScript 2015 &#x2F; 2016やReactなどの構文にも対応\nJSX 記法 をサポートしている\nBabel と連携している。\nプラグインが豊富\n\nAtom にESLintの環境を構築するnpm パッケージなので，様々なエディタに導入する事ができるのも特徴。自分はGitHub製のAtomを使用しているので，これにESLintを組み込んでいく。\n「linter-eslint」をインストールAtomでESLintを使うためのパッケージである「linter-eslint」をインストールする。他のプラグインと同様に設定画面のインストールから検索してインストールするか，コマンドプロンプトで次のコマンドを叩く。\nlinter-eslintCLI1apm install linter-eslint\n\nさらに，依存関係にあるlinterといパッケージもインストールする。(インストール順は関係なさそう)\nlinterCLI1apm install linter\n\nlinterはAtomエディターの基本的なリンタープロバイダー。他の言語用のLinterをインストールすることで文法チェック等ができるようになる。\nさらに以下のインストールを入れると，Atomエディタの下部にリアルタイムにエラーをチェックし表示してくれる。\nlinter-eslintCLI1apm install linter-ui-default\n\nESLint 本体のインストール次にESLintの本体をnpmでインストールする。インストール箇所は，プロジェクト単体かグローバルにインストールできる。ESLint本体には，プラグインを組み込むことで各所で策定されたルールを簡単に導入する事ができる。\nESLintCLI12345678# ローカルインストールnpm install eslint --save-dev# グローバルインストールnpm install -g eslint --save-dev# プラグインを適用する場合npm install --save-dev [eslint-plugins]\n\n次に「.eslintrc」ファイルをプロジェクトフォルダに作成する。これはESLintの設定ファイルで，ルールの設定もここで指定する。設定できるルールは，公式ページを参照のこと。\n.eslintrc ファイルの作成どの項目を，どの形式でチェックするかを指定する「.eslintrc」ファイルを作成する。作成自体は簡単で次のコマンドを叩き，質問に回答するだけ。\nmofo-styleインストールCLI123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869npx eslint --initPS D:\\練習\\ReactStudy\\sample&gt; eslint --init How would you like to use ESLint? ...  To check syntax only&gt; To check syntax and find problems&gt; To check syntax, find problems, and enforce code style構文のみをチェックするには&gt;構文をチェックして問題を見つけるには&gt;構文をチェックし、問題を見つけて、コードスタイルを適用するには   What type of modules does your project use? ...&gt; JavaScript modules (import/export)&gt; CommonJS (require/exports)&gt; None of these&gt; プロジェクトはどのタイプのモジュールを使用しますか？ ...&gt; JavaScriptモジュール（インポート/エクスポート）&gt; CommonJS（必須/エクスポート）&gt; どれでもない   Which framework does your project use? ...&gt; React&gt; Vue.js&gt; None of these&gt; プロジェクトはどのフレームワークを使用していますか？ ...&gt; React&gt; Vue.js&gt; どれでもない    Does your project use TypeScript?        Where does your code run? ...  (Press &lt;space&gt; to select, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection)√ Browser√ Node? How would you like to define a style for your project? ...？ プロジェクトのスタイルをどのように定義しますか？ ...BrowserNode&gt; Use a popular style guide&gt; Answer questions about your style&gt; Inspect your JavaScript file(s)&gt; 人気のあるスタイルガイドを使用する&gt; あなたのスタイルについての質問に答える&gt; JavaScriptファイルを検査する   Which style guide do you want to follow? ...   どんなスタイルガイドをフォローしたいですか？ ...&gt; Airbnb: https://github.com/airbnb/javascript&gt; Standard: https://github.com/standard/standard&gt; Google: https://github.com/google/eslint-config-google   What format do you want your config file to be in? ...&gt; JavaScript&gt; YAML&gt; JSON&gt; 構成ファイルをどの形式にしたいですか？ ...&gt; JavaScript&gt; YAML&gt; JSON   eslint-plugin-react@^7.20.0 eslint-config-airbnb@latest eslint@^5.16.0 || ^6.8.0 || ^7.2.0 eslint-plugin-import@^2.21.2 eslint-plugin-jsx-a11y@^6.3.0 eslint-plugin-react-hooks@^4 || ^3 || ^2.3.0 || ^1.7.0√ Would you like to install them now with npm? · No / Yes今すぐnpmでインストールしますか？\n\n取り合えず人気のある「airbnb」を設定した例。敢えて選ばずに好きなルールを適用するなり，自作するなりもできる。\n.eslintrcの記述「.eslintrc」にルールを記述していく。面倒くさい場合は下記を記入すると，すべてが適用される。\n.eslintrcCLI123{  \"extends\": \"eslint:recommended\"}\n\n\nプラグインを使うJavaScrptのスタイルガイドは，複数のIT系デベロッパーが公表している。主なものに\n\nGoogle JavaScript Style Guide\nJavaScript style guide | MDN\nFelix’s Node.js Style Guide\nAirbnb JavaScript Guide\n\n今回はFireFoxブラウザの開発元であるMozilla Foundation JS Style Guideを採用。理由は，単に好きなブラウザなので(適当～)\n導入については，以下のGithubを参照にしていく。\n\nMozillaFoundation&#x2F;mofo-style\n\nmofo-styleインストールCLI1npm install mofo-style --save-dev\n\n最新のES6に対応させるには此方を参照。 Configuring ESLint\n終わりに今迄はコードが完成してからブラウザのdeveloperツールで一つ一つバグを潰してた。なので，リアルタイムで警告してくれるのは嬉しい。まだ，厳格なルール設定のママなので，今いらないルールを無効化する方法を調べていきたい。\n参考AtomにESLint導入したESLintをAtomに導入し、Reactの構文にも対応したAirbnbのJSスタイルガイドを使うAtomにreact+es6対応したeslintの環境を構築する\n","dateCreated":"2020-08-14T22:48:58+09:00","dateModified":"2020-08-22T20:02:36+09:00","datePublished":"2020-08-14T22:48:58+09:00","description":"はじめにESLint は JavaScript のための静的検証ツール。コードを実行する前に明らかなバグを見つけたり、括弧やスペースの使い方などのスタイルを統一したりするのに役立つ。以前メモしたEditorConfigも，コードスタイル統一ができるが，これにJavaScripの文法チェック機能が付いた感じ。React.jsやAngular.jsなどにも対応しているので，Atomにその環境を構築したのでそのメモ。","headline":"ESLint事始め","image":["eslint-1.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/","keywords":"JavaScript, プログラミング, 基礎, theory","thumbnailUrl":"eslint-1.svg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにESLint は JavaScript のための静的検証ツール。コードを実行する前に明らかなバグを見つけたり、括弧やスペースの使い方などのスタイルを統一したりするのに役立つ。以前メモしたEditorConfigも，コードスタイル統一ができるが，これにJavaScripの文法チェック機能が付いた感じ。React.jsやAngular.jsなどにも対応しているので，Atomにその環境を構築したのでそのメモ。\n\n\n\n\nESLintとは公式ホームぺージESLint によると\n\nESLintはコードを静的に分析して、問題をすばやく見つけます。 ESLintはほとんどのテキストエディターに組み込まれており、ESLintを継続的インテグレーションパイプラインの一部として実行できます。\n\nとの事。Node.jsのnpmパッケージとして提供されている。\n特徴\nすべての検証ルールを自由に on&#x2F;off できる\nカスタムルールを簡単に作れる\nEcmaScript 2015 &#x2F; 2016やReactなどの構文にも対応\nJSX 記法 をサポートしている\nBabel と連携している。\nプラグインが豊富\n\nAtom にESLintの環境を構築するnpm パッケージなので，様々なエディタに導入する事ができるのも特徴。自分はGitHub製のAtomを使用しているので，これにESLintを組み込んでいく。\n「linter-eslint」をインストールAtomでESLintを使うためのパッケージである「linter-eslint」をインストールする。他のプラグインと同様に設定画面のインストールから検索してインストールするか，コマンドプロンプトで次のコマンドを叩く。\nlinter-eslintCLI1apm install linter-eslint\n\nさらに，依存関係にあるlinterといパッケージもインストールする。(インストール順は関係なさそう)\nlinterCLI1apm install linter\n\nlinterはAtomエディターの基本的なリンタープロバイダー。他の言語用のLinterをインストールすることで文法チェック等ができるようになる。\nさらに以下のインストールを入れると，Atomエディタの下部にリアルタイムにエラーをチェックし表示してくれる。\nlinter-eslintCLI1apm install linter-ui-default\n\nESLint 本体のインストール次にESLintの本体をnpmでインストールする。インストール箇所は，プロジェクト単体かグローバルにインストールできる。ESLint本体には，プラグインを組み込むことで各所で策定されたルールを簡単に導入する事ができる。\nESLintCLI12345678# ローカルインストールnpm install eslint --save-dev# グローバルインストールnpm install -g eslint --save-dev# プラグインを適用する場合npm install --save-dev [eslint-plugins]\n\n次に「.eslintrc」ファイルをプロジェクトフォルダに作成する。これはESLintの設定ファイルで，ルールの設定もここで指定する。設定できるルールは，公式ページを参照のこと。\n.eslintrc ファイルの作成どの項目を，どの形式でチェックするかを指定する「.eslintrc」ファイルを作成する。作成自体は簡単で次のコマンドを叩き，質問に回答するだけ。\nmofo-styleインストールCLI123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869npx eslint --initPS D:\\練習\\ReactStudy\\sample&gt; eslint --init How would you like to use ESLint? ...  To check syntax only&gt; To check syntax and find problems&gt; To check syntax, find problems, and enforce code style構文のみをチェックするには&gt;構文をチェックして問題を見つけるには&gt;構文をチェックし、問題を見つけて、コードスタイルを適用するには   What type of modules does your project use? ...&gt; JavaScript modules (import/export)&gt; CommonJS (require/exports)&gt; None of these&gt; プロジェクトはどのタイプのモジュールを使用しますか？ ...&gt; JavaScriptモジュール（インポート/エクスポート）&gt; CommonJS（必須/エクスポート）&gt; どれでもない   Which framework does your project use? ...&gt; React&gt; Vue.js&gt; None of these&gt; プロジェクトはどのフレームワークを使用していますか？ ...&gt; React&gt; Vue.js&gt; どれでもない    Does your project use TypeScript?        Where does your code run? ...  (Press &lt;space&gt; to select, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection)√ Browser√ Node? How would you like to define a style for your project? ...？ プロジェクトのスタイルをどのように定義しますか？ ...BrowserNode&gt; Use a popular style guide&gt; Answer questions about your style&gt; Inspect your JavaScript file(s)&gt; 人気のあるスタイルガイドを使用する&gt; あなたのスタイルについての質問に答える&gt; JavaScriptファイルを検査する   Which style guide do you want to follow? ...   どんなスタイルガイドをフォローしたいですか？ ...&gt; Airbnb: https://github.com/airbnb/javascript&gt; Standard: https://github.com/standard/standard&gt; Google: https://github.com/google/eslint-config-google   What format do you want your config file to be in? ...&gt; JavaScript&gt; YAML&gt; JSON&gt; 構成ファイルをどの形式にしたいですか？ ...&gt; JavaScript&gt; YAML&gt; JSON   eslint-plugin-react@^7.20.0 eslint-config-airbnb@latest eslint@^5.16.0 || ^6.8.0 || ^7.2.0 eslint-plugin-import@^2.21.2 eslint-plugin-jsx-a11y@^6.3.0 eslint-plugin-react-hooks@^4 || ^3 || ^2.3.0 || ^1.7.0√ Would you like to install them now with npm? · No / Yes今すぐnpmでインストールしますか？\n\n取り合えず人気のある「airbnb」を設定した例。敢えて選ばずに好きなルールを適用するなり，自作するなりもできる。\n.eslintrcの記述「.eslintrc」にルールを記述していく。面倒くさい場合は下記を記入すると，すべてが適用される。\n.eslintrcCLI123{  \"extends\": \"eslint:recommended\"}\n\n\nプラグインを使うJavaScrptのスタイルガイドは，複数のIT系デベロッパーが公表している。主なものに\n\nGoogle JavaScript Style Guide\nJavaScript style guide | MDN\nFelix’s Node.js Style Guide\nAirbnb JavaScript Guide\n\n今回はFireFoxブラウザの開発元であるMozilla Foundation JS Style Guideを採用。理由は，単に好きなブラウザなので(適当～)\n導入については，以下のGithubを参照にしていく。\n\nMozillaFoundation&#x2F;mofo-style\n\nmofo-styleインストールCLI1npm install mofo-style --save-dev\n\n最新のES6に対応させるには此方を参照。 Configuring ESLint\n終わりに今迄はコードが完成してからブラウザのdeveloperツールで一つ一つバグを潰してた。なので，リアルタイムで警告してくれるのは嬉しい。まだ，厳格なルール設定のママなので，今いらないルールを無効化する方法を調べていきたい。\n参考AtomにESLint導入したESLintをAtomに導入し、Reactの構文にも対応したAirbnbのJSスタイルガイドを使うAtomにreact+es6対応したeslintの環境を構築する\n","dateCreated":"2021-08-14T22:48:58+09:00","dateModified":"2022-10-03T11:01:38+09:00","datePublished":"2021-08-14T22:48:58+09:00","description":"はじめにESLint は JavaScript のための静的検証ツール。コードを実行する前に明らかなバグを見つけたり、括弧やスペースの使い方などのスタイルを統一したりするのに役立つ。以前メモしたEditorConfigも，コードスタイル統一ができるが，これにJavaScripの文法チェック機能が付いた感じ。React.jsやAngular.jsなどにも対応しているので，Atomにその環境を構築したのでそのメモ。","headline":"ESLint事始め","image":["eslint-1.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/","keywords":"JavaScript, プログラミング, 基礎, theory","thumbnailUrl":"eslint-1.svg"}</script>
     <meta name="description" content="はじめにESLint は JavaScript のための静的検証ツール。コードを実行する前に明らかなバグを見つけたり、括弧やスペースの使い方などのスタイルを統一したりするのに役立つ。以前メモしたEditorConfigも，コードスタイル統一ができるが，これにJavaScripの文法チェック機能が付いた感じ。React.jsやAngular.jsなどにも対応しているので，Atomにその環境を構築した">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="ESLint事始め">
-<meta property="og:url" content="https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/index.html">
+<meta property="og:url" content="https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/index.html">
 <meta property="og:site_name" content="ヴェルフェゴールのため息">
 <meta property="og:description" content="はじめにESLint は JavaScript のための静的検証ツール。コードを実行する前に明らかなバグを見つけたり、括弧やスペースの使い方などのスタイルを統一したりするのに役立つ。以前メモしたEditorConfigも，コードスタイル統一ができるが，これにJavaScripの文法チェック機能が付いた感じ。React.jsやAngular.jsなどにも対応しているので，Atomにその環境を構築した">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2020-08-14T13:48:58.000Z">
-<meta property="article:modified_time" content="2020-08-22T11:02:36.203Z">
+<meta property="article:published_time" content="2021-08-14T13:48:58.000Z">
+<meta property="article:modified_time" content="2022-10-03T02:01:38.926Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="JavaScript">
 <meta property="article:tag" content="プログラミング">
@@ -42,8 +42,8 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671?s=640"/>
     
     
-        <meta property="og:image" content="https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/eslint-1.svg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/eslint-1.svg"/>
+        <meta property="og:image" content="https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/eslint-1.svg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/eslint-1.svg"/>
     
     
     
@@ -316,9 +316,9 @@
     
     
         <div class="post-meta">
-    <time datetime="2020-08-14T22:48:58+09:00">
+    <time datetime="2021-08-14T22:48:58+09:00">
 	
-		    2020/08/14
+		    2021/08/14
     	
     </time>
     
@@ -415,14 +415,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2020/12/25/javascrpt-theory1/"
-                    data-tooltip="Javascrpt 変数の巻き上げ"
-                    aria-label="前: Javascrpt 変数の巻き上げ"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -432,9 +429,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2020/02/27/npm-command/"
-                    data-tooltip="npmコマンドについてのまとめ"
-                    aria-label="次: npmコマンドについてのまとめ"
+                    href="/demski/2021/03/18/HexoPlgin/"
+                    data-tooltip="hexoで使用中のpluginのメモ"
+                    aria-label="次: hexoで使用中のpluginのメモ"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -448,7 +445,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -459,7 +456,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -472,7 +469,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -485,7 +482,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -499,7 +496,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -544,14 +541,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2020/12/25/javascrpt-theory1/"
-                    data-tooltip="Javascrpt 変数の巻き上げ"
-                    aria-label="前: Javascrpt 変数の巻き上げ"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -561,9 +555,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2020/02/27/npm-command/"
-                    data-tooltip="npmコマンドについてのまとめ"
-                    aria-label="次: npmコマンドについてのまとめ"
+                    href="/demski/2021/03/18/HexoPlgin/"
+                    data-tooltip="hexoで使用中のpluginのメモ"
+                    aria-label="次: hexoで使用中のpluginのメモ"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">次</span>
@@ -577,7 +571,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -588,7 +582,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -601,7 +595,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -614,7 +608,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -628,7 +622,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -658,7 +652,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -671,7 +665,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -684,7 +678,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/"
+                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
@@ -758,7 +752,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s50917000i3otv8ziqakwb/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -910,6 +904,52 @@
                 
                 <div class="media">
                     
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
+                            aria-label=": CentOS7 on vagrant"
+                        >
+                            <h3 class="media-heading">CentOS7 on vagrant</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
+                            aria-label=": CentOS on vagrant -LAMP編"
+                        >
+                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年12月7日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -1007,73 +1047,6 @@
                     <hr>
                 </div>
                 
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月25日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <h3 class="media-heading">EditorConfigの使い方</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月8日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案[^1] されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a target="_blank" rel="noopener" href="https://editorconfig.org/">公式ページ</a>を翻訳・要約記事にしてみました。</p>
-<p>[^1]:  <a target="_blank" rel="noopener" href="https://google.github.io/styleguide/htmlcssguide.html">google HTML&#x2F;CSS Style Guid</a>  <a target="_blank" rel="noopener" href="https://www.w3schools.com/html/html5_syntax.asp">w3schools</a> ,  <a target="_blank" rel="noopener" href="http://met.hanatoweb.jp/guideline/html5/">hanatoweb</a> など。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
             </div>
         </div>
         <div class="modal-footer">
@@ -1100,9 +1073,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/';
+            this.page.url = 'https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/';
               
-            this.page.identifier = '2020/08/14/ESLintStarted/';
+            this.page.identifier = '2021/08/14/ESLintStarted/';
               
           };
           (function() {

@@ -17,16 +17,16 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめに前回の記事『CentOS7 on vagrant』の続き。今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。\n\n\n\n環境\nOS:Windows10Pro64bit\nCPU:AMD A10-7850\nメモリ 16.0GB デュアル-Channel DDR3\nマザーボードASRock FM2A88X+ Killer\n\n前提\nVagrantを使ってVirtualBox上にCentOS7をインストールしてること。\n\n\nミドルウェアをインストールここからPHPやMySQL等のミドルウェアをインストール・設定していく。\nPHP5.6の場合現在，インストールされているか，されているならバージョンはいくつかを以下のコマンドで確認\n1rpm -qa | grep php\n\n入っていたらバージョンが、入っていないなら何も表示されない。\nインストールには，基本的に下記を実行すると良い。\n12$#sudo yum install php$# sudo yum install httpd\n\n但し、これだと古いバージョンが入るので，EPELやRemi’s RPM等のリポジトリからインストールする。\nPHPのバージョンはVer5.6が最新普及版だと思うので，このバージョンを選択。次のバージョンであるVer7は，普及にはもう少しかかりそう。\n1$# yum install -y --enablerepo=remi,remi-php56 php\n\n次に，いろいろパッケージやプラグイン類をインストールしていく。何がどんな機能を提供しているのか，いまひとつ分ってないので取りあえず適当にインストール。\n必要なものインストール１123$# yum install vim bash-completion wget curl lsof -y$# yum install ansible docker-io -y$# yum install yum-utils deltarpm -y\n\n必要なものインストール２1$# yum install -y --enablerepo=epel,remi libmcrypt-devel libaio libaio-devel libmcrypt libtidy openssl-devel perl-DBI\n\nPHPのプラグインインストール1$# yum install -y --enablerepo=remi,remi-php56 php-intl php-soap php-mcrypt php-mbstring php-gd php-devel php-odbc php-xml php-xmlrpc httpd-devel pcre-devel icu libicu-devel php-mysql php-mysqlnd php-pdo php-pear php-tidy\n\n※a-blogインストールでの躓きぽイント\n画像操作系インストール12$# yum install  -y --enablerepo=epel,remi,remi-php56 ImageMagick$# yum install -y --enablerepo=epel,remi,remi-php56 php-pecl-imagick\n\nopcacheのインストール12$# yum -y --enablerepo=epel,remi,remi-php56 install php-opcache.x86_64$# yum -y --enablerepo=remi,remi-php56 install php-pecl-apcu php-pecl-mongo php-pecl-memcache php-pecl-memcached\n\nphp.iniの設定php.iniは，PHPの設定ファイル。これを正しく設定しないと，Webサーバーがうまく動かなかったりする。CentOS7のphp.iniファイルは以下のパスにある。\n1$#vi /etc/php.ini\n「vi」コマンドでエディタを起動してファイルを開き編集していく。量が膨大なので設定箇所だけ以下に示す。設定箇所はvimなら「&#x2F;」で検索しながらがおすすめ。\n123456789101112131415161718//timezoneの設定date.timezone = &quot;Asia/Tokyo&quot;//Dynamic Extensionsに追記extension=php_mbstring.dll//コメントアウトを外して設定[mbstring]mbstring.language = Japanesembstring.internal_encoding = UTF-8mbstring.http_input = passmbstring.http_output = passmbstring.encoding_translation = Offmbstring.detect_order = UTF-8,SJIS,EUC-JP,JIS,ASCIImbstring.substitute_character = nonembstring.func_overload = 0mbstring.strict_detection = Off;mbstring.http_output_conv_mimetype=\n\nMarinaDB続いて，データベースである「MarinaDB」をインストール。通常は「MySQL」が使われるが，後継ソフトである「MarinaDB」が今後普及しそうなので，こちらを選択。  \n既存のSqlを削除123456789# yum remove -y mariadb mariadb-libs# rpm -qa | grep -i &quot;mariadb&quot;//※何も表示されなかったら OK//他にMySql関係が入ってないか確認# rpm -qa mysql*//ディレクトリ削除# rm -rf /var/lib/mysql\n\n下ごしらえ12//GPG-KEYをインストールrpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\n\n公式からリポジトリ設定を取得。Vimでファイルを作成http://downloads.mariadb.org/mariadb/repositories/\n12345678910//リポジトリの設定変更# vi /etc/yum.repos.d/mariadb.repo# MariaDB 10.1 CentOS repository list - created 2016-09-30 03:37 UTC# http://downloads.mariadb.org/mariadb/repositories/[mariadb]name = MariaDBbaseurl = http://yum.mariadb.org/10.1/centos7-amd64gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDBgpgcheck=1\n\nインストール1yum -y install --enablerepo=mariadb MariaDB-common MariaDB-devel MariaDB-shared MariaDB-compat MariaDB-server MariaDB-client\n\n設定ファイルをコピー1$ # cp -p /usr/share/mysql/my-small.cnf /etc/my.cnf.d/server.cnf\n文字コード設定123456vi /etc/my.cnf.d/server.cnf[client]default-character-set = utf8[mysqld]character-set-server = utf8\nMariaDB サービス登録・起動CentOS7でMarinaDBを起動しサービスに登録する。\n12$# systemctl start mysql.service$# systemctl enable mysql.service\n\nPHP・MySql(MarinaDB)インストール後に必要になるかもしれない作業ファイヤーウォールの無効化CentOS7では，デフォルトでファイヤーウォールが起動しており，外部からの通信を遮断したりしてるので，無効化する。実環境で使うときは設定するなり，サードパティ入れるなりしたいといけないと思う。  \n1234//ファイアウォール停止$# systemctl stop firewalld//ファイアウォール自動起動解除$# systemctl disable firewalld\n\nSELinuxの無効化SELinuxはファイヤーウォールとは別の，ホワイトリスト式のセキュリティソフトらしい。開発中は，プログラムが動かなくなったり，細かく設定するのも面倒なので，無効化してしまう。\n12345678910111213141516//SELinux状態確認$# getenforce//SELinux有効時の表示Enforcing//SELinux無効化$# setenforce 0//SELinux状態確認$# getenforce//SELinux無効時の表示Permissive//SELinux設定ファイル編集$# vi /etc/sysconfig/selinuxSELINUX=enforcing↓SELINUX=disabled　←　システム起動時にSELinuxを無効化\n\nシステムの起動と自動化12345$# systemctl start システム名.service //起動$# systemctl enable システム名.service //自動起動登録$# systemctl restart システム名.service //リスタート$# systemctl status システム名.service //状態確認$# systemctl stop システム名.service //停止\n\n\nまとめVegrantでVM上にCeentOS7＋LAMP環境を作成した。これで，心置きなくWebサーバー環境が必要な開発も進められる。さぁ，バリバリプログラミンするぞ～（←プロナマちゃん風に）\n","dateCreated":"2021-12-07T19:31:48+09:00","dateModified":"2022-10-03T10:56:24+09:00","datePublished":"2021-12-07T19:31:48+09:00","description":"はじめに前回の記事『CentOS7 on vagrant』の続き。今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。","headline":"CentOS on vagrant -LAMP編","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/","keywords":"Vagrant, CentOS7, 仮想環境, web, LAMP"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめに前回の記事『CentOS7 on vagrant』の続き。今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。\n\n\n\n環境\nOS:Windows10Pro64bit\nCPU:AMD A10-7850\nメモリ 16.0GB デュアル-Channel DDR3\nマザーボードASRock FM2A88X+ Killer\n\n前提\nVagrantを使ってVirtualBox上にCentOS7をインストールしてること。\n\n\nミドルウェアをインストールここからPHPやMySQL等のミドルウェアをインストール・設定していく。\nPHP5.6の場合現在，インストールされているか，されているならバージョンはいくつかを以下のコマンドで確認\n1rpm -qa | grep php\n\n入っていたらバージョンが、入っていないなら何も表示されない。\nインストールには，基本的に下記を実行すると良い。\n12$#sudo yum install php$# sudo yum install httpd\n\n但し、これだと古いバージョンが入るので，EPELやRemi’s RPM等のリポジトリからインストールする。\nPHPのバージョンはVer5.6が最新普及版だと思うので，このバージョンを選択。次のバージョンであるVer7は，普及にはもう少しかかりそう。\n1$# yum install -y --enablerepo=remi,remi-php56 php\n\n次に，いろいろパッケージやプラグイン類をインストールしていく。何がどんな機能を提供しているのか，いまひとつ分ってないので取りあえず適当にインストール。\n必要なものインストール１123$# yum install vim bash-completion wget curl lsof -y$# yum install ansible docker-io -y$# yum install yum-utils deltarpm -y\n\n必要なものインストール２1$# yum install -y --enablerepo=epel,remi libmcrypt-devel libaio libaio-devel libmcrypt libtidy openssl-devel perl-DBI\n\nPHPのプラグインインストール1$# yum install -y --enablerepo=remi,remi-php56 php-intl php-soap php-mcrypt php-mbstring php-gd php-devel php-odbc php-xml php-xmlrpc httpd-devel pcre-devel icu libicu-devel php-mysql php-mysqlnd php-pdo php-pear php-tidy\n\n※a-blogインストールでの躓きぽイント\n画像操作系インストール12$# yum install  -y --enablerepo=epel,remi,remi-php56 ImageMagick$# yum install -y --enablerepo=epel,remi,remi-php56 php-pecl-imagick\n\nopcacheのインストール12$# yum -y --enablerepo=epel,remi,remi-php56 install php-opcache.x86_64$# yum -y --enablerepo=remi,remi-php56 install php-pecl-apcu php-pecl-mongo php-pecl-memcache php-pecl-memcached\n\nphp.iniの設定php.iniは，PHPの設定ファイル。これを正しく設定しないと，Webサーバーがうまく動かなかったりする。CentOS7のphp.iniファイルは以下のパスにある。\n1$#vi /etc/php.ini\n「vi」コマンドでエディタを起動してファイルを開き編集していく。量が膨大なので設定箇所だけ以下に示す。設定箇所はvimなら「&#x2F;」で検索しながらがおすすめ。\n123456789101112131415161718//timezoneの設定date.timezone = &quot;Asia/Tokyo&quot;//Dynamic Extensionsに追記extension=php_mbstring.dll//コメントアウトを外して設定[mbstring]mbstring.language = Japanesembstring.internal_encoding = UTF-8mbstring.http_input = passmbstring.http_output = passmbstring.encoding_translation = Offmbstring.detect_order = UTF-8,SJIS,EUC-JP,JIS,ASCIImbstring.substitute_character = nonembstring.func_overload = 0mbstring.strict_detection = Off;mbstring.http_output_conv_mimetype=\n\nMarinaDB続いて，データベースである「MarinaDB」をインストール。通常は「MySQL」が使われるが，後継ソフトである「MarinaDB」が今後普及しそうなので，こちらを選択。  \n既存のSqlを削除123456789# yum remove -y mariadb mariadb-libs# rpm -qa | grep -i &quot;mariadb&quot;//※何も表示されなかったら OK//他にMySql関係が入ってないか確認# rpm -qa mysql*//ディレクトリ削除# rm -rf /var/lib/mysql\n\n下ごしらえ12//GPG-KEYをインストールrpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\n\n公式からリポジトリ設定を取得。Vimでファイルを作成http://downloads.mariadb.org/mariadb/repositories/\n12345678910//リポジトリの設定変更# vi /etc/yum.repos.d/mariadb.repo# MariaDB 10.1 CentOS repository list - created 2016-09-30 03:37 UTC# http://downloads.mariadb.org/mariadb/repositories/[mariadb]name = MariaDBbaseurl = http://yum.mariadb.org/10.1/centos7-amd64gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDBgpgcheck=1\n\nインストール1yum -y install --enablerepo=mariadb MariaDB-common MariaDB-devel MariaDB-shared MariaDB-compat MariaDB-server MariaDB-client\n\n設定ファイルをコピー1$ # cp -p /usr/share/mysql/my-small.cnf /etc/my.cnf.d/server.cnf\n文字コード設定123456vi /etc/my.cnf.d/server.cnf[client]default-character-set = utf8[mysqld]character-set-server = utf8\nMariaDB サービス登録・起動CentOS7でMarinaDBを起動しサービスに登録する。\n12$# systemctl start mysql.service$# systemctl enable mysql.service\n\nPHP・MySql(MarinaDB)インストール後に必要になるかもしれない作業ファイヤーウォールの無効化CentOS7では，デフォルトでファイヤーウォールが起動しており，外部からの通信を遮断したりしてるので，無効化する。実環境で使うときは設定するなり，サードパティ入れるなりしたいといけないと思う。  \n1234//ファイアウォール停止$# systemctl stop firewalld//ファイアウォール自動起動解除$# systemctl disable firewalld\n\nSELinuxの無効化SELinuxはファイヤーウォールとは別の，ホワイトリスト式のセキュリティソフトらしい。開発中は，プログラムが動かなくなったり，細かく設定するのも面倒なので，無効化してしまう。\n12345678910111213141516//SELinux状態確認$# getenforce//SELinux有効時の表示Enforcing//SELinux無効化$# setenforce 0//SELinux状態確認$# getenforce//SELinux無効時の表示Permissive//SELinux設定ファイル編集$# vi /etc/sysconfig/selinuxSELINUX=enforcing↓SELINUX=disabled　←　システム起動時にSELinuxを無効化\n\nシステムの起動と自動化12345$# systemctl start システム名.service //起動$# systemctl enable システム名.service //自動起動登録$# systemctl restart システム名.service //リスタート$# systemctl status システム名.service //状態確認$# systemctl stop システム名.service //停止\n\n\nまとめVegrantでVM上にCeentOS7＋LAMP環境を作成した。これで，心置きなくWebサーバー環境が必要な開発も進められる。さぁ，バリバリプログラミンするぞ～（←プロナマちゃん風に）\n","dateCreated":"2018-12-07T19:31:48+09:00","dateModified":"2022-10-03T11:12:11+09:00","datePublished":"2018-12-07T19:31:48+09:00","description":"はじめに前回の記事『CentOS7 on vagrant』の続き。今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。","headline":"CentOS on vagrant -LAMP編","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/","keywords":"Vagrant, CentOS7, 仮想環境, web, LAMP"}</script>
     <meta name="description" content="はじめに前回の記事『CentOS7 on vagrant』の続き。今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="CentOS on vagrant -LAMP編">
-<meta property="og:url" content="https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/index.html">
+<meta property="og:url" content="https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/index.html">
 <meta property="og:site_name" content="ヴェルフェゴールのため息">
 <meta property="og:description" content="はじめに前回の記事『CentOS7 on vagrant』の続き。今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2021-12-07T10:31:48.000Z">
-<meta property="article:modified_time" content="2022-10-03T01:56:24.084Z">
+<meta property="article:published_time" content="2018-12-07T10:31:48.000Z">
+<meta property="article:modified_time" content="2022-10-03T02:12:11.024Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="Vagrant">
 <meta property="article:tag" content="CentOS7">
@@ -314,9 +314,9 @@
     
     
         <div class="post-meta">
-    <time datetime="2021-12-07T19:31:48+09:00">
+    <time datetime="2018-12-07T19:31:48+09:00">
 	
-		    2021/12/07
+		    2018/12/07
     	
     </time>
     
@@ -417,11 +417,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2019/03/24/git1/"
+                    data-tooltip="WindowsでGitHubを使う　～登録まで"
+                    aria-label="前: WindowsでGitHubを使う　～登録まで"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -431,7 +434,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2021/11/06/CentOS7OnVagrant/"
+                    href="/demski/2018/11/06/CentOS7OnVagrant/"
                     data-tooltip="CentOS7 on vagrant"
                     aria-label="次: CentOS7 on vagrant"
                 >
@@ -447,7 +450,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -458,7 +461,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -471,7 +474,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -484,7 +487,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -498,7 +501,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -543,11 +546,14 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a
-                        class="post-action-btn btn btn--disabled"
-                        aria-hidden="true"
-                    >
-                        
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/demski/2019/03/24/git1/"
+                    data-tooltip="WindowsでGitHubを使う　～登録まで"
+                    aria-label="前: WindowsでGitHubを使う　～登録まで"
+                >
+                    
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">前</span>
                     </a>
@@ -557,7 +563,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/2021/11/06/CentOS7OnVagrant/"
+                    href="/demski/2018/11/06/CentOS7OnVagrant/"
                     data-tooltip="CentOS7 on vagrant"
                     aria-label="次: CentOS7 on vagrant"
                 >
@@ -573,7 +579,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -584,7 +590,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     title="Facebookで共有"
                     aria-label="Facebookで共有"
                 >
@@ -597,7 +603,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     title="Twitterで共有"
                     aria-label="Twitterで共有"
                 >
@@ -610,7 +616,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                    target="new" href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                     title="Google+で共有"
                     aria-label="Google+で共有"
                 >
@@ -624,7 +630,7 @@
                     <a
                         class="post-action-btn btn btn--default"
                         href="#disqus_thread"
-                        aria-label="Kommentieren"
+                        aria-label="Leave a comment"
                     >
                         <i class="fa fa-comment"></i>
                     </a>
@@ -654,7 +660,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                         aria-label="Facebookで共有"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Facebookで共有</span>
@@ -667,7 +673,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                        href="https://twitter.com/intent/tweet?text=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                         aria-label="Twitterで共有"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Twitterで共有</span>
@@ -680,7 +686,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/"
+                        href="https://plus.google.com/share?url=https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
                         aria-label="Google+で共有"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Google+で共有</span>
@@ -754,7 +760,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/cl8s50917000i3otv8ziqakwb/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -906,6 +912,52 @@
                 
                 <div class="media">
                     
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/"
+                            aria-label=": CentOS7 on vagrant"
+                        >
+                            <h3 class="media-heading">CentOS7 on vagrant</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年11月6日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>『Vagrant』を使って『Oracle VM Virtualbox』にCentOS7をインストールして，LAMP環境やMEAN環境を作成したので，その時のメモ。<br>仮想環境は，何度でも作っては壊して出来るから非常に役に立ってます。  </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/"
+                            aria-label=": CentOS on vagrant -LAMP編"
+                        >
+                            <h3 class="media-heading">CentOS on vagrant -LAMP編</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2018年12月7日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>前回の記事『CentOS7 on vagrant』の続き。<br><br>今回は，CentOS7上にWebサーバー環境の基本となるLAMP環境を整える。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
                     <div class="media-left">
                         <a
                             class="link-unstyled"
@@ -1003,73 +1055,6 @@
                     <hr>
                 </div>
                 
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <img class="media-image" src="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplate.png" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"
-                            aria-label=": HTML5 Boilerplate入門"
-                        >
-                            <h3 class="media-heading">HTML5 Boilerplate入門</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年5月25日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
-                <div class="media">
-                    
-                    <div class="media-left">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <img class="media-image" src="https://res.cloudinary.com/autio/image/upload/v1559987876/blogs/main_byolkb.jpg" width="90" height="90"/>
-                        </a>
-                    </div>
-                    
-                    <div class="media-body">
-                        <a
-                            class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/2019/06/08/editor-config/"
-                            aria-label=": EditorConfigの使い方"
-                        >
-                            <h3 class="media-heading">EditorConfigの使い方</h3>
-                        </a>
-                        <span class="media-meta">
-                            <span class="media-date text-small">
-                                
-                                    2019年6月8日
-                                
-                            </span>
-                        </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>EditorConfigは，コーディング規則を各自が使うエディタ間で統一するのに役立つツールです。<br>コーディングすると時に，インデントの数や改行の位置，「,」を文末にするか文頭にするか等，色々なコーディング規約が提案[^1] されています。<br>しかし，チームでコーディグする場合，経験や好みによって個々人が好きな書き方をしてしまい，複数のルールが混在することになります。<br>それを防ぐ手段として，なかなか便利なので，メモがてら<a target="_blank" rel="noopener" href="https://editorconfig.org/">公式ページ</a>を翻訳・要約記事にしてみました。</p>
-<p>[^1]:  <a target="_blank" rel="noopener" href="https://google.github.io/styleguide/htmlcssguide.html">google HTML&#x2F;CSS Style Guid</a>  <a target="_blank" rel="noopener" href="https://www.w3schools.com/html/html5_syntax.asp">w3schools</a> ,  <a target="_blank" rel="noopener" href="http://met.hanatoweb.jp/guideline/html5/">hanatoweb</a> など。</p></div>
-                    </div>
-                    <div style="clear:both;"></div>
-                    <hr>
-                </div>
-                
             </div>
         </div>
         <div class="modal-footer">
@@ -1096,9 +1081,9 @@
     
         <script>
           var disqus_config = function() {
-            this.page.url = 'https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/';
+            this.page.url = 'https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/';
               
-            this.page.identifier = '2021/12/07/CentOS7OnVagrant_LAMP/';
+            this.page.identifier = '2018/12/07/CentOS7OnVagrant_LAMP/';
               
           };
           (function() {

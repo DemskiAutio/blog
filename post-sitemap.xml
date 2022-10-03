@@ -8,6 +8,38 @@
     </url>
 
     <url>
+        <loc>https://demskiautio.github.io/demski/2020/01/18/atom/</loc>
+        <lastmod>2022-10-03T02:12:32.405Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2018/11/06/CentOS7OnVagrant/</loc>
+        <lastmod>2022-10-03T02:12:12.786Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2018/12/07/CentOS7OnVagrant_LAMP/</loc>
+        <lastmod>2022-10-03T02:12:11.024Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://demskiautio.github.io/demski/2021/08/14/ESLintStarted/</loc>
+        <lastmod>2022-10-03T02:01:38.926Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://demskiautio.github.io/demski/2016/04/04/floating-point/</loc>
         <lastmod>2022-10-03T01:57:50.125Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -32,30 +64,6 @@
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/2021/11/06/CentOS7OnVagrant/</loc>
-        <lastmod>2022-10-03T01:56:30.766Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2021/12/07/CentOS7OnVagrant_LAMP/</loc>
-        <lastmod>2022-10-03T01:56:24.084Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2021/01/18/atom/</loc>
-        <lastmod>2022-10-03T01:56:17.670Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://demskiautio.github.io/demski/2020/02/27/npm-command/</loc>
         <lastmod>2021-02-11T03:50:34.076Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -74,14 +82,6 @@
     <url>
         <loc>https://demskiautio.github.io/demski/2017/10/16/powershell-color/</loc>
         <lastmod>2021-02-11T03:50:33.962Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://demskiautio.github.io/demski/2020/08/14/ESLintStarted/</loc>
-        <lastmod>2020-08-22T11:02:36.203Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -136,7 +136,7 @@
     </url>
 
     <url>
-        <loc>https://demskiautio.github.io/demski/1970/01/01/cl8s4he8u000icwtv7uhcfvtd/</loc>
+        <loc>https://demskiautio.github.io/demski/1970/01/01/cl8s50917000i3otv8ziqakwb/</loc>
         <lastmod>2019-05-23T10:06:45.131Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
