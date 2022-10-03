@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。\n\n\n\n\n「DISM.exe」と「sfc /scannow」，「chkedsk」Windows7の頃までは 「sfc /scannow」 が有名でしたが，Win8.1以降には 「DISM.exe」 というのが加わったようです。この二つの違いは 「DISM.exe」はWindowsのシステムイメージの破損の確認と修復を、「sfc /scannow」は保護されているすべてのシステムファイルをスキャンして破損したファイルがあった場合は「C:\\Windows\\System32\\dllcache」の圧縮フォルダにあるキャッシュコピーから復元します。\n実行順は「DISM.exe」から始め，それでも不安定なら「sfc /scannow」を実行します。\n「DISM.exe」の実行方法まずは，管理者権限でPowerShellを起動します。スタートアイコンを右クリックして出てきたメニューからWindows PowerShell(管理者)(A)というのをクリックします。すると，PowerShellが管理者権限付きで起動します。(途中で警告がでたら「はい」を選びます)。そしたら，\n1DISM.exe /Online /Cleanup-image /Restorehealth\n\nと入力してEnterキーを押すとDISM.exeがスタートします。ステータスが100％になるまで待ちます。時間はケース・バイ・ケースですが，おおよそ15分～1時間位は覚悟しましょう。「操作は正常に完了しました。」と表示されれば終了です。\n「/RestoreHeealth」の前に「/ScanHealth」で確認作業のひと手間をかけるといいらしい…（2020/08/12追記）\nDISM.exeのオプション先ほど叩いたコマンドのうち「/」以降はオプション指定です。とは言え「/?」を叩けばオプションの簡単な説明が出てきます。さらに詳しく見たいオプションがあれば，そのオプション後に「/?」を叩けば説明が表示されます。\nDISM のヘルプ\n\n「sfc /scannow」の実行方法DISM.exeを実行しても不安定なら，「sfc /scannow」を実行します。実行法はDISM.exeと同じように管理者権限付きのPowerShellを起動してコマンドを叩くだけです。例によって100%になるまで待ちます。\n「Windowsリソース保護は、整合性違反を検出しませんでした。」\nと表示されれば問題ありません。もし\n「破損したファイルを検出し、正常に修復しました。」\n\nと表示された場合は，修復されたので問題ありません。Windowsを再起動しましょう。\n「Windows リソース保護は要求された操作を実行できませんでした。」\nと表示されたら，Windowsのセーフモードで立ち上げて%WinDir%\\WinSxS\\Temp の下に PendingDeletes フォルダーと PendingRenames フォルダーが存在することを確認します。このファイルが何なのかはよくわかりません。まぁ，あってもなくても「sfc /scannow」を試してみましょう。\n「Windows リソース保護は、破損したファイルを検出しましたが、その一部を修正できませんでした。 詳細は CBS.Log (%WinDir%\\Logs\\CBS\\CBS.log) にあります。」\nと出たら修復失敗です。logファイルなんて見ても分かりませんので「sfc /scannow」での回復は諦めましょう。\n「chkdsk」こちらは，ディスクのエラーを確認するためのコマンドです。(因みに，ドライブを右クリックで出てくるオプションからでも実行できます。)ただ「chkdsk」はオプションを指定せずに実行すると、一切の修復作業を行いません。エラーがあるかを確認するだけです。オプションには以下のものがあります。\n/f    ファイルシステムを修復する。あくまでもソフトウェア的な修復で、ハードディスクのセクタチェックは行わない。最も使用頻度の高いオプション。\n\n\n/r    不良セクタを検出し、不良クラスタから読み出し可能なデータは回収する。また、「/f」のオプションを包括する。領域内の全セクタをチェックするため、非常に時間がかかる。読めないデータはそのまま失われるので、過信は禁物。  \n\n\n/b    ファイルシステムに登録されている不良クラスタをチェックし直す。また、「/r」のオプションを包括する。  \n\n\nということなので，通常は「/f」オプションをつけて実行します。ただ，checkdskはドライブに大きな負荷をかけることになります。因みに，最近主流になり始めているSSDには効果が無いという情報がちらほら見かけます。その反面，しつこく何回か叩いたら回復したという情報も。自分ではまだここまで試すエラーが出てないので，真相はわかりません。残念。\nまとめWindowsの調子が悪い時は\n\n「Windows PowerShell」を管理者権限で起動\nDISM.exe /Online /Cleanup-image /Restorehealth を実行\nsfc /scannow を実行\nchkdsk /fを試す。ダメ元で/rを叩きまくる。\n\n\n\nと，こんな感じになるかと思います。以上，Windowsの調子が悪い時に試すコマンドの紹介でした。\n参考\n「己で解決！泣かぬなら己で鳴こうホトトギス」 DISM.exeとsfc /scannowでWindowsを修復する\n\n「Windowsのサポート」 システム ファイル チェッカー ツールを使用して不足または破損しているシステム ファイルを修復する\n\nSSDに不良ブロックができても諦めてはいけない件\n\n\n","dateCreated":"2019-06-28T18:26:02+09:00","dateModified":"2019-06-28T18:26:02+09:00","datePublished":"2019-06-28T18:26:02+09:00","description":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。","headline":"Windows10が不安定な時にコマンドプロンプトから回復する方法","image":["microsoft-windows-22.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/","keywords":"Windows10, PowerShell, 回復, コマンドプロンプト","thumbnailUrl":"microsoft-windows-22.svg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。\n\n\n\n\n「DISM.exe」と「sfc /scannow」，「chkedsk」Windows7の頃までは 「sfc /scannow」 が有名でしたが，Win8.1以降には 「DISM.exe」 というのが加わったようです。この二つの違いは 「DISM.exe」はWindowsのシステムイメージの破損の確認と修復を、「sfc /scannow」は保護されているすべてのシステムファイルをスキャンして破損したファイルがあった場合は「C:\\Windows\\System32\\dllcache」の圧縮フォルダにあるキャッシュコピーから復元します。\n実行順は「DISM.exe」から始め，それでも不安定なら「sfc /scannow」を実行します。\n「DISM.exe」の実行方法まずは，管理者権限でPowerShellを起動します。スタートアイコンを右クリックして出てきたメニューからWindows PowerShell(管理者)(A)というのをクリックします。すると，PowerShellが管理者権限付きで起動します。(途中で警告がでたら「はい」を選びます)。そしたら，\n1DISM.exe /Online /Cleanup-image /Restorehealth\n\nと入力してEnterキーを押すとDISM.exeがスタートします。ステータスが100％になるまで待ちます。時間はケース・バイ・ケースですが，おおよそ15分～1時間位は覚悟しましょう。「操作は正常に完了しました。」と表示されれば終了です。\nDISM.exeのオプション先ほど叩いたコマンドのうち「/」以降はオプション指定です。とは言え「/?」を叩けばオプションの簡単な説明が出てきます。さらに詳しく見たいオプションがあれば，そのオプション後に「/?」を叩けば説明が表示されます。\nDISM のヘルプ\n\n「sfc /scannow」の実行方法DISM.exeを実行しても不安定なら，「sfc /scannow」を実行します。実行法はDISM.exeと同じように管理者権限付きのPowerShellを起動してコマンドを叩くだけです。例によって100%になるまで待ちます。\n「Windowsリソース保護は、整合性違反を検出しませんでした。」\nと表示されれば問題ありません。もし\n「破損したファイルを検出し、正常に修復しました。」\n\nと表示された場合は，修復されたので問題ありません。Windowsを再起動しましょう。\n「Windows リソース保護は要求された操作を実行できませんでした。」\nと表示されたら，Windowsのセーフモードで立ち上げて%WinDir%\\WinSxS\\Temp の下に PendingDeletes フォルダーと PendingRenames フォルダーが存在することを確認します。このファイルが何なのかはよくわかりません。まぁ，あってもなくても「sfc /scannow」を試してみましょう。\n「Windows リソース保護は、破損したファイルを検出しましたが、その一部を修正できませんでした。 詳細は CBS.Log (%WinDir%\\Logs\\CBS\\CBS.log) にあります。」\nと出たら修復失敗です。logファイルなんて見ても分かりませんので「sfc /scannow」での回復は諦めましょう。\n「chkdsk」こちらは，ディスクのエラーを確認するためのコマンドです。(因みに，ドライブを右クリックで出てくるオプションからでも実行できます。)ただ「chkdsk」はオプションを指定せずに実行すると、一切の修復作業を行いません。エラーがあるかを確認するだけです。オプションには以下のものがあります。\n/f    ファイルシステムを修復する。あくまでもソフトウェア的な修復で、ハードディスクのセクタチェックは行わない。最も使用頻度の高いオプション。\n\n\n/r    不良セクタを検出し、不良クラスタから読み出し可能なデータは回収する。また、「/f」のオプションを包括する。領域内の全セクタをチェックするため、非常に時間がかかる。読めないデータはそのまま失われるので、過信は禁物。  \n\n\n/b    ファイルシステムに登録されている不良クラスタをチェックし直す。また、「/r」のオプションを包括する。  \n\n\nということなので，通常は「/f」オプションをつけて実行します。ただ，checkdskはドライブに大きな負荷をかけることになります。因みに，最近主流になり始めているSSDには効果が無いという情報がちらほら見かけます。その反面，しつこく何回か叩いたら回復したという情報も。自分ではまだここまで試すエラーが出てないので，真相はわかりません。残念。\nまとめWindowsの調子が悪い時は\n\n「Windows PowerShell」を管理者権限で起動\nDISM.exe /Online /Cleanup-image /Restorehealth を実行\nsfc /scannow を実行\nchkdsk /fを試す。ダメ元で/rを叩きまくる。\n\n\n\nと，こんな感じになるかと思います。以上，Windowsの調子が悪い時に試すコマンドの紹介でした。\n参考\n「己で解決！泣かぬなら己で鳴こうホトトギス」 DISM.exeとsfc /scannowでWindowsを修復する\n\n「Windowsのサポート」 システム ファイル チェッカー ツールを使用して不足または破損しているシステム ファイルを修復する\n\nSSDに不良ブロックができても諦めてはいけない件\n\n\n","dateCreated":"2019-06-28T18:26:02+09:00","dateModified":"2021-02-11T12:50:34+09:00","datePublished":"2019-06-28T18:26:02+09:00","description":"初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。","headline":"Windows10が不安定な時にコマンドプロンプトから回復する方法","image":["microsoft-windows-22.svg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/","keywords":"Windows10, PowerShell, 回復, コマンドプロンプト","thumbnailUrl":"microsoft-windows-22.svg"}</script>
     <meta name="description" content="初めにWindows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Windows10が不安定な時にコマンドプロンプトから回復する方法">
@@ -27,7 +27,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://demskiautio.github.io/demski/2019/06/28/WindowsRepair/help.png">
 <meta property="article:published_time" content="2019-06-28T09:26:02.000Z">
-<meta property="article:modified_time" content="2019-06-28T09:26:02.000Z">
+<meta property="article:modified_time" content="2021-02-11T03:50:34.003Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="Windows10">
 <meta property="article:tag" content="PowerShell">
@@ -51,7 +51,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/demski/assets/css/style-gfinubp8xpoianjy3izfgazfpyfbeaudia1pivtogbbck02wh4dzksr7vmam.min.css">
+<link rel="stylesheet" href="/demski/assets/css/style-sbhyqei89ywqo7mj1t0zh6t5dbbxx8w8nx4zjhm5mdjtdykpdjjm9fshdxcy.min.css">
 
     <!--STYLES END-->
     
@@ -341,7 +341,7 @@
             <h2 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h2><p>Windows10を使っていて，突然動作しなくなったりクラッシュが発生することがあります。<br>そんな時の為に，Windowsにはシステムファイルをチェック・修復するツール「SFC.exe」があります。<br>それを使うにはコマンドプロンプトかPowerShellでコマンドを叩いてやると楽です。<br>ただ，いくつか注意点などあるしいちいちコマンドを覚えるのも面倒なので，備忘録として記事に残しておきます。</p>
 <a id="more"></a>
 
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E3%82%81%E3%81%AB"><span class="toc-text">初めに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8CDISM-exe%E3%80%8D%E3%81%A8%E3%80%8Csfc-scannow%E3%80%8D%EF%BC%8C%E3%80%8Cchkedsk%E3%80%8D"><span class="toc-text">「DISM.exe」と「sfc &#x2F;scannow」，「chkedsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8CDISM-exe%E3%80%8D%E3%81%AE%E5%AE%9F%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="toc-text">「DISM.exe」の実行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DISM-exe%E3%81%AE%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3"><span class="toc-text">DISM.exeのオプション</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8Csfc-scannow%E3%80%8D%E3%81%AE%E5%AE%9F%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="toc-text">「sfc &#x2F;scannow」の実行方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8Cchkdsk%E3%80%8D"><span class="toc-text">「chkdsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初めに"><span class="toc-text">初めに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「DISM-exe」と「sfc-scannow」，「chkedsk」"><span class="toc-text">「DISM.exe」と「sfc &#x2F;scannow」，「chkedsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「DISM-exe」の実行方法"><span class="toc-text">「DISM.exe」の実行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DISM-exeのオプション"><span class="toc-text">DISM.exeのオプション</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「sfc-scannow」の実行方法"><span class="toc-text">「sfc &#x2F;scannow」の実行方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#「chkdsk」"><span class="toc-text">「chkdsk」</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#まとめ"><span class="toc-text">まとめ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol>
 
 <h2 id="「DISM-exe」と「sfc-scannow」，「chkedsk」"><a href="#「DISM-exe」と「sfc-scannow」，「chkedsk」" class="headerlink" title="「DISM.exe」と「sfc /scannow」，「chkedsk」"></a>「DISM.exe」と「sfc /scannow」，「chkedsk」</h2><p>Windows7の頃までは <strong>「sfc /scannow」</strong> が有名でしたが，Win8.1以降には <strong>「DISM.exe」</strong> というのが加わったようです。<br>この二つの違いは <em>「DISM.exe」はWindowsのシステムイメージの破損の確認と修復を、「sfc /scannow」は保護されているすべてのシステムファイルをスキャンして破損したファイルがあった場合は「C:\Windows\System32\dllcache」の圧縮フォルダにあるキャッシュコピーから復元します。</em></p>
 <p><strong>実行順は「DISM.exe」から始め，それでも不安定なら「sfc /scannow」を実行します。</strong></p>
@@ -349,7 +349,6 @@
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DISM.exe /Online /Cleanup-image /Restorehealth</span><br></pre></td></tr></table></figure>
 
 <p>と入力してEnterキーを押すとDISM.exeがスタートします。<br>ステータスが100％になるまで待ちます。<br>時間はケース・バイ・ケースですが，おおよそ15分～1時間位は覚悟しましょう。<br>「操作は正常に完了しました。」と表示されれば終了です。</p>
-<p>「/RestoreHeealth」の前に「/ScanHealth」で確認作業のひと手間をかけるといいらしい…（2020/08/12追記）</p>
 <h3 id="DISM-exeのオプション"><a href="#DISM-exeのオプション" class="headerlink" title="DISM.exeのオプション"></a>DISM.exeのオプション</h3><p>先ほど叩いたコマンドのうち「/」以降はオプション指定です。<br>とは言え「/?」を叩けばオプションの簡単な説明が出てきます。<br>さらに詳しく見たいオプションがあれば，そのオプション後に「/?」を叩けば説明が表示されます。</p>
 <div class="figure " style="width:100%;"><a class="fancybox" href="help.png" title="DISM のヘルプ" data-caption="DISM のヘルプ" data-fancybox="console"><img class="fig-img" src="help.png" style="width:100%;height:100%;"alt="DISM のヘルプ"></a><span class="caption">DISM のヘルプ</span></div><div style="clear:both;"></div>
 
@@ -385,11 +384,11 @@
 
 <p>と，こんな感じになるかと思います。<br>以上，Windowsの調子が悪い時に試すコマンドの紹介でした。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><p><a target="_blank" rel="noopener" href="https://onoredekaiketsu.com/repair-windows-with-dism-and-sfc-scannow/">「己で解決！泣かぬなら己で鳴こうホトトギス」 DISM.exeとsfc /scannowでWindowsを修復する</a></p>
+<li><p><a href="https://onoredekaiketsu.com/repair-windows-with-dism-and-sfc-scannow/" target="_blank" rel="noopener">「己で解決！泣かぬなら己で鳴こうホトトギス」 DISM.exeとsfc /scannowでWindowsを修復する</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://support.microsoft.com/ja-jp/help/929833/use-the-system-file-checker-tool-to-repair-missing-or-corrupted-system">「Windowsのサポート」 システム ファイル チェッカー ツールを使用して不足または破損しているシステム ファイルを修復する</a></p>
+<li><p><a href="https://support.microsoft.com/ja-jp/help/929833/use-the-system-file-checker-tool-to-repair-missing-or-corrupted-system" target="_blank" rel="noopener">「Windowsのサポート」 システム ファイル チェッカー ツールを使用して不足または破損しているシステム ファイルを修復する</a></p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://qiita.com/ryotuxtuki/items/884e8430b11e33f07b61">SSDに不良ブロックができても諦めてはいけない件</a></p>
+<li><p><a href="https://qiita.com/ryotuxtuki/items/884e8430b11e33f07b61" target="_blank" rel="noopener">SSDに不良ブロックができても諦めてはいけない件</a></p>
 </li>
 </ul>
 
@@ -403,7 +402,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/PowerShell/" rel="tag">PowerShell</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Windows10/" rel="tag">Windows10</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88/" rel="tag">コマンドプロンプト</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E5%9B%9E%E5%BE%A9/" rel="tag">回復</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/PowerShell/" rel="tag">PowerShell</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/Windows10/" rel="tag">Windows10</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88/" rel="tag">コマンドプロンプト</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E5%9B%9E%E5%BE%A9/" rel="tag">回復</a>
 
             </div>
         
@@ -519,7 +518,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -530,7 +529,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2022 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -756,7 +755,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -768,7 +767,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1059,7 +1058,7 @@
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/demski/assets/js/script-zkg2ltxncv78nizr5pcqwmnabnai8efsnxbzkcq7wrft2fxfobigr7xewtco.min.js"></script>
+<script src="/demski/assets/js/script-kdyicsiinx0v7nldqjnda7ou55sr31zhtklgvjjle8moqrzx1gasxgdqrocp.min.js"></script>
 
 <!--SCRIPTS END-->
 

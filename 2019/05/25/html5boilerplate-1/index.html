@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにHTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。その一つの回答として，いくつものフレームワークが提案されています。HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。このページでは，一通り作成準備を終わらせるまでを記録します。\n\n\n\n一式をダウンロードまずは，公式ページにアクセスします。中央のDownloadボタンを押せば最新のファイル一式がダウンロードできます。  \nHtml5Boilerplate公式ページ\n\nなお，\nnpm [lang:console]1npm i html5-boilerplate --save\nで,パッケージマネージャーのnpmでローカルインソールできます。\n解凍zipファイルで落ちてくるので，何も考えず解凍します。すると，下記のファイル群が出てきます。\nHtml5Boilerplatehome一式  \n\nあらゆるページが構築できるよう，ツールやCSS・Javascriptなど多くのファイルが含まれています。一つのプロジェクトで全てを使うことはないので，この中から必要なモノを取捨選択していくことになります。公式も「Delete キー歓迎」だそうですｗ\nピックアップ静的なホームページ構築に必要そうなファイルをピックアップします。\n\n.editorconfig…各エディタごとに共通のコーディングさせるためのツール。\n\nhumans.txt…制作者を明示的にするためのファイル？\n\nrobots.txt…検索エンジンのクローラー（ロボット）のWEBページのへのアクセスを制限するためのファイルで、ロボットに向けた命令文（アクセスを許可/許可しない）を記述します\n\nsite.webmanifest…ウェブマニフェスト。オフライン作業やプッシュ通知の受け取りなどのその他の可能性を持ったウェブサイトを構築できる。\n\n\nビルドビルドとはWebページのパフォーマンス(読み込み速度など)を上げるため，HTML・CSS・JavaScriptなどの空白を削除する事。HTML5 BoilerplateではのANT ビルド・スクリプトが含まれています。  \nビルドによって  \n\n\nYUI Compressor によって JavaScript を組み合わせ、縮小化します。\nCSS を組み合わせ、縮小化します。\njpegtran と optipng によって JPG ファイルと PNG ファイルを最適化します。\n開発専用のコードを削除します。\nhtmlcompressor を使って HTML を縮小化し、構成します。\nインテリジェントなキャッシングを行えるように、ファイル名を変更します (具体的には、更新されたファイルのキャッシュを破棄します)。\n\n\nとのこと。ANTについては別記事に。\n余分な豆知識Boilerplateは定型文という意味。\n参考HTML5 Boilerplate を使用して Web 開発を容易に始める byIBMHTML5 BoilerplateのGitHubページ\n","dateCreated":"2019-05-25T13:46:56+09:00","dateModified":"2019-05-25T13:46:56+09:00","datePublished":"2019-05-25T13:46:56+09:00","description":"初めにHTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。その一つの回答として，いくつものフレームワークが提案されています。HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。このページでは，一通り作成準備を終わらせるまでを記録します。","headline":"HTML5 Boilerplate入門","image":["html5boilerplate.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/","keywords":"HTML5, コーディング, Html5Boilerplate, CSS3","thumbnailUrl":"html5boilerplate.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"初めにHTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。その一つの回答として，いくつものフレームワークが提案されています。HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。このページでは，一通り作成準備を終わらせるまでを記録します。\n\n\n\n一式をダウンロードまずは，公式ページにアクセスします。中央のDownloadボタンを押せば最新のファイル一式がダウンロードできます。  \nHtml5Boilerplate公式ページ\n\nなお，\nnpm []1npm i html5-boilerplate --save\nで,パッケージマネージャーのnpmでローカルインソールできます。\n解凍zipファイルで落ちてくるので，何も考えず解凍します。すると，下記のファイル群が出てきます。\nHtml5Boilerplatehome一式  \n\nあらゆるページが構築できるよう，ツールやCSS・Javascriptなど多くのファイルが含まれています。一つのプロジェクトで全てを使うことはないので，この中から必要なモノを取捨選択していくことになります。公式も「Delete キー歓迎」だそうですｗ\nピックアップ静的なホームページ構築に必要そうなファイルをピックアップします。\n\n.editorconfig…各エディタごとに共通のコーディングさせるためのツール。\n\nhumans.txt…制作者を明示的にするためのファイル？\n\nrobots.txt…検索エンジンのクローラー（ロボット）のWEBページのへのアクセスを制限するためのファイルで、ロボットに向けた命令文（アクセスを許可/許可しない）を記述します\n\nsite.webmanifest…ウェブマニフェスト。オフライン作業やプッシュ通知の受け取りなどのその他の可能性を持ったウェブサイトを構築できる。\n\n\nビルドビルドとはWebページのパフォーマンス(読み込み速度など)を上げるため，HTML・CSS・JavaScriptなどの空白を削除する事。HTML5 BoilerplateではのANT ビルド・スクリプトが含まれています。  \nビルドによって  \n\n\nYUI Compressor によって JavaScript を組み合わせ、縮小化します。\nCSS を組み合わせ、縮小化します。\njpegtran と optipng によって JPG ファイルと PNG ファイルを最適化します。\n開発専用のコードを削除します。\nhtmlcompressor を使って HTML を縮小化し、構成します。\nインテリジェントなキャッシングを行えるように、ファイル名を変更します (具体的には、更新されたファイルのキャッシュを破棄します)。\n\n\nとのこと。ANTについては別記事に。\n余分な豆知識Boilerplateは定型文という意味。\n参考HTML5 Boilerplate を使用して Web 開発を容易に始める byIBMHTML5 BoilerplateのGitHubページ\n","dateCreated":"2019-05-25T13:46:56+09:00","dateModified":"2019-06-07T21:14:10+09:00","datePublished":"2019-05-25T13:46:56+09:00","description":"初めにHTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。その一つの回答として，いくつものフレームワークが提案されています。HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。このページでは，一通り作成準備を終わらせるまでを記録します。","headline":"HTML5 Boilerplate入門","image":["html5boilerplate.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/","keywords":"HTML5, コーディング, Html5Boilerplate, CSS3","thumbnailUrl":"html5boilerplate.png"}</script>
     <meta name="description" content="初めにHTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。その一つの回答として，いくつものフレームワークが提案されています。HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。このペ">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="HTML5 Boilerplate入門">
@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/html5boilerplatehome.png">
 <meta property="og:image" content="https://demskiautio.github.io/demski/2019/05/25/html5boilerplate-1/capture1.PNG">
 <meta property="article:published_time" content="2019-05-25T04:46:56.000Z">
-<meta property="article:modified_time" content="2019-05-25T04:46:56.000Z">
+<meta property="article:modified_time" content="2019-06-07T12:14:10.298Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="HTML5">
 <meta property="article:tag" content="コーディング">
@@ -52,7 +52,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/demski/assets/css/style-gfinubp8xpoianjy3izfgazfpyfbeaudia1pivtogbbck02wh4dzksr7vmam.min.css">
+<link rel="stylesheet" href="/demski/assets/css/style-sbhyqei89ywqo7mj1t0zh6t5dbbxx8w8nx4zjhm5mdjtdykpdjjm9fshdxcy.min.css">
 
     <!--STYLES END-->
     
@@ -341,13 +341,13 @@
         <div class="main-content-wrap">
             <h1 id="初めに"><a href="#初めに" class="headerlink" title="初めに"></a>初めに</h1><p>HTML5 Boilerplateは，必要なファイル一式が詰まったHTML5フレームワークです。<br>チームでの開発では，ファイル構造，基本的な命名規則，使用するライブラリーなどを共有することが多々あります。<br>その一つの回答として，いくつものフレームワークが提案されています。<br>HTML5 Boilerplateはその中でも割と古参のフレームワークであり，カスタマイズ性に優れているとされています。<br>このページでは，一通り作成準備を終わらせるまでを記録します。</p>
 <a id="more"></a>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E3%82%81%E3%81%AB"><span class="toc-text">初めに</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%BC%8F%E3%82%92%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89"><span class="toc-text">一式をダウンロード</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%87%8D"><span class="toc-text">解凍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%94%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97"><span class="toc-text">ピックアップ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%93%E3%83%AB%E3%83%89"><span class="toc-text">ビルド</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%99%E5%88%86%E3%81%AA%E8%B1%86%E7%9F%A5%E8%AD%98"><span class="toc-text">余分な豆知識</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#初めに"><span class="toc-text">初めに</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一式をダウンロード"><span class="toc-text">一式をダウンロード</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解凍"><span class="toc-text">解凍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ピックアップ"><span class="toc-text">ピックアップ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ビルド"><span class="toc-text">ビルド</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#余分な豆知識"><span class="toc-text">余分な豆知識</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol></li></ol>
 
-<h2 id="一式をダウンロード"><a href="#一式をダウンロード" class="headerlink" title="一式をダウンロード"></a>一式をダウンロード</h2><p>まずは，<a target="_blank" rel="noopener" href="https://html5boilerplate.com/" title="HTML5 Boilerplate">公式ページ</a>にアクセスします。<br>中央のDownloadボタンを押せば最新のファイル一式がダウンロードできます。  </p>
+<h2 id="一式をダウンロード"><a href="#一式をダウンロード" class="headerlink" title="一式をダウンロード"></a>一式をダウンロード</h2><p>まずは，<a href="https://html5boilerplate.com/" target="_blank" rel="noopener" title="HTML5 Boilerplate">公式ページ</a>にアクセスします。<br>中央のDownloadボタンを押せば最新のファイル一式がダウンロードできます。  </p>
 <div class="figure fig-25" style="width:100%;"><a class="fancybox" href="html5boilerplatehome.png" title="Html5Boilerplate公式ページ" data-caption="Html5Boilerplate公式ページ" data-fancybox="default"><img class="fig-img" src="html5boilerplatehome.png" style="width:100%;height:100%;"alt="Html5Boilerplate公式ページ"></a><span class="caption">Html5Boilerplate公式ページ</span></div><div style="clear:both;"></div>
 
 <p>なお，</p>
-<figure class="highlight plain"><figcaption><span>npm [lang:console]</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i html5-boilerplate --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight console"><figcaption><span>npm []</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i html5-boilerplate --save</span><br></pre></td></tr></table></figure>
 <p>で,パッケージマネージャーのnpmでローカルインソールできます。</p>
 <h2 id="解凍"><a href="#解凍" class="headerlink" title="解凍"></a>解凍</h2><p>zipファイルで落ちてくるので，何も考えず解凍します。<br>すると，下記のファイル群が出てきます。</p>
 <div class="figure fig-25" style="width:100%;"><a class="fancybox" href="capture1.PNG" title="Html5Boilerplatehome一式" data-caption="Html5Boilerplatehome一式" data-fancybox="default"><img class="fig-img" src="capture1.PNG" style="width:100%;height:100%;"alt="Html5Boilerplatehome一式"></a><span class="caption">Html5Boilerplatehome一式</span></div><div style="clear:both;"></div>  
@@ -355,13 +355,13 @@
 <p>あらゆるページが構築できるよう，ツールやCSS・Javascriptなど多くのファイルが含まれています。<br>一つのプロジェクトで全てを使うことはないので，この中から必要なモノを取捨選択していくことになります。<br>公式も「Delete キー歓迎」だそうですｗ</p>
 <h2 id="ピックアップ"><a href="#ピックアップ" class="headerlink" title="ピックアップ"></a>ピックアップ</h2><p>静的なホームページ構築に必要そうなファイルをピックアップします。</p>
 <ol>
-<li><p><a target="_blank" rel="noopener" href="https://editorconfig.org/">.editorconfig</a>…各エディタごとに共通のコーディングさせるためのツール。</p>
+<li><p><a href="https://editorconfig.org/" target="_blank" rel="noopener">.editorconfig</a>…各エディタごとに共通のコーディングさせるためのツール。</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="http://humanstxt.org/JA">humans.txt</a>…制作者を明示的にするためのファイル？</p>
+<li><p><a href="http://humanstxt.org/JA" target="_blank" rel="noopener">humans.txt</a>…制作者を明示的にするためのファイル？</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="http://www.robotstxt.org/">robots.txt</a>…検索エンジンのクローラー（ロボット）のWEBページのへのアクセスを制限するためのファイルで、ロボットに向けた命令文（アクセスを許可/許可しない）を記述します</p>
+<li><p><a href="http://www.robotstxt.org/" target="_blank" rel="noopener">robots.txt</a>…検索エンジンのクローラー（ロボット）のWEBページのへのアクセスを制限するためのファイルで、ロボットに向けた命令文（アクセスを許可/許可しない）を記述します</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/ja/docs/Web/Manifest">site.webmanifest</a>…ウェブマニフェスト。オフライン作業やプッシュ通知の受け取りなどのその他の可能性を持ったウェブサイトを構築できる。</p>
+<li><p><a href="https://developer.mozilla.org/ja/docs/Web/Manifest" target="_blank" rel="noopener">site.webmanifest</a>…ウェブマニフェスト。オフライン作業やプッシュ通知の受け取りなどのその他の可能性を持ったウェブサイトを構築できる。</p>
 </li>
 </ol>
 <h2 id="ビルド"><a href="#ビルド" class="headerlink" title="ビルド"></a>ビルド</h2><p>ビルドとはWebページのパフォーマンス(読み込み速度など)を上げるため，HTML・CSS・JavaScriptなどの空白を削除する事。<br>HTML5 BoilerplateではのANT ビルド・スクリプトが含まれています。  </p>
@@ -378,7 +378,7 @@
 </blockquote>
 <p>とのこと。<br>ANTについては別記事に。</p>
 <h2 id="余分な豆知識"><a href="#余分な豆知識" class="headerlink" title="余分な豆知識"></a>余分な豆知識</h2><p>Boilerplateは定型文という意味。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/jp/web/library/wa-html5boilerplate/index.html">HTML5 Boilerplate を使用して Web 開発を容易に始める byIBM</a><br><a target="_blank" rel="noopener" href="https://github.com/h5bp/html5-boilerplate">HTML5 BoilerplateのGitHubページ</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.ibm.com/developerworks/jp/web/library/wa-html5boilerplate/index.html" target="_blank" rel="noopener">HTML5 Boilerplate を使用して Web 開発を容易に始める byIBM</a><br><a href="https://github.com/h5bp/html5-boilerplate" target="_blank" rel="noopener">HTML5 BoilerplateのGitHubページ</a></p>
 
             
 
@@ -390,7 +390,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/CSS3/" rel="tag">CSS3</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/HTML5/" rel="tag">HTML5</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Html5Boilerplate/" rel="tag">Html5Boilerplate</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0/" rel="tag">コーディング</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/CSS3/" rel="tag">CSS3</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/HTML5/" rel="tag">HTML5</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/Html5Boilerplate/" rel="tag">Html5Boilerplate</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0/" rel="tag">コーディング</a>
 
             </div>
         
@@ -506,7 +506,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -517,7 +517,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2022 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -743,7 +743,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -755,7 +755,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1046,7 +1046,7 @@
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/demski/assets/js/script-zkg2ltxncv78nizr5pcqwmnabnai8efsnxbzkcq7wrft2fxfobigr7xewtco.min.js"></script>
+<script src="/demski/assets/js/script-kdyicsiinx0v7nldqjnda7ou55sr31zhtklgvjjle8moqrzx1gasxgdqrocp.min.js"></script>
 
 <!--SCRIPTS END-->
 

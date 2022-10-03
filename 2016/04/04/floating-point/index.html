@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  \n\nMozillaのMDN Javascript再入門によると，\n\nJavaScript における数値は，仕様によると「倍精度 64 ビットフォーマット IEEE 754 値 (double-precision 64-bit format IEEE 754 values)」です。\n\nと，いきなり難しいことを言ってきます…。ということで，以下に調べてみた結果をメモ。\n\n\nIEEE 754IEEE＝「Institute of Electrical and Electronics Engineers＝米国電気電子技術者協会」の略。IEEEは電気工学を源流とする通信・電子・情報工学とその関連分野の学会であり，事実上コンピューターの色々な仕様の世界標準決定機関です。で，「IEEE754」は，この学会が取り決めた「 浮動小数点演算に関する標準規格」です。\n不動小数点とはコンピューターは厳密には「0」と「1」で構成される2進数しか扱えません。そこで，(小数点を含む)整数を表すのに特別な方法が必要となってきます。  \n小数点を表すには固定小数点数と浮動小数点数があります。固定小数点とは，普段よく目にする「3.1424,,,,,」のように表現すること。この方式ではコンピューターが理解することができません。  \n一方，不動小数点では「指数形式(○○×△△の□□乗)」という形で表します。具体的には，「3.14」を表すのに「31.4×10－1，314.0×10－2，3.14×100，31.4×10－1，314.0×10－2,,,」と色んな形で表現することができます。表現する形が多いということは，コンピューターやソフトを作るときに作り手が好き勝手に決められることになります。ところが，それでは互換性とかの問題で扱いにくいのでIEEEが基準を示し，作り手がそれを採用して互換性を保つようになりました。\nということで，以下はIEEE745に沿った浮動小数点です。\nIEEE 754における浮動小数点浮動小数点で表現するのに，指数形式を部分的に分けて使います。「○○×△△の□□乗」は\n\n○○を仮数部(符号)\n△△を基数部\n□□乗を指数部\n\nと呼びます。そして，求められる計算精度とデータ容量の問題を考慮して以下の2つの形式が定められています。\n\n半精度浮動小数点数では，符号部 1 ビット ・ 指数部 5 ビット ・ 仮数部 10 ビット =16ビット\n単精度浮動小数点数では，符号部 1 ビット ・ 指数部 8 ビット ・ 仮数部 23 ビット =32ビット\n倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 11 ビット ・ 仮数部 52 ビット =64ビット\n四倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 15 ビット ・ 仮数部 112 ビット=127ビット\n\nとして扱います。最近よく言われる「32bit版Windows10」「64bit版Windows10」といのは，ここに由来しています。さらに，\n\n符号部は「正の値なら0」,「 負の値なら1」とする。\n仮数部は，整数部分が 1 であるような2進小数の小数部分（ケチ表現）を表す。\n指数部は，符号なし2進整数とし，半精度では 15，単精度では 127，倍精度では 1023，四倍精度では 16383 のゲタを履かせたゲタ履き表現で表す。\n\n固定小数点を浮動小数点に変換実際に単精度で「3.25」を浮動小数点に変換してみます。\n10進数から2進数10進数を整数と小数点以下の2つに分けます。理由は，それぞれ2進数に直す方法が異なるから。整数はひたすら2で割りその余りを出します。3を2進数にすると，\n123&#x2F;2→1余り11&#x2F;2→0余り1\n\n並びは下からなので，答えは「11」となります。\n続いて小数点以下を2進数にします。方法は10進数の小数部を2倍して商を求めます。商の小数部を繰り返し2倍していき，その整数部が2進数になります。つまり，「0.25」を計算すると\n120.25*2→0.5 整数部00.5*2→1 整数部1\n\n並びは整数とは逆で上から読むので，答えは「01」となります。よって，「3.25」の2進数は「11.01」となります。\n2進数を「1.◯◯×2^△」にする\n符号は正の数なので「0」。\n指数は2に小数点を動かした桁と同数に127(単精度)を足すので，「1+127＝128」とります。  \n\n128を2進数に直すと\n12345678128&#x2F;2→64余り064&#x2F;2→32余り032&#x2F;2→16余り016&#x2F;2→8余り08&#x2F;2→4余り04&#x2F;2→2余り02&#x2F;2→1余り01&#x2F;2→0余り1\n\nよって答えは「1000 0000」。\n仮数は整数部が「1」固定の2進数になるように小数点を左に移動するので，1.101。  これを「正規化」といいます。仮数は23ビット(単精度)で小数点より右側だけなので，足りない分を0でうめて101000000000 00000000000。\n浮動小数点は符号，指数，仮数を合わせて01000000010100000000000000000000となります。以上で，「3.25」を32bitの浮動小数点に変換できました。\nJavascriptでは……冒頭のJavascriptの「数値」の扱いの仕様に戻ると「倍精度 64 ビットフォーマット」で扱うとなってます。ところが，読み進めると\n\n実のところ，整数値は 32 ビット int 型として扱われます。また一部の実装では，32 ビット整数値ではなく Number で有効な命令の実行を求められるまでの間，32 ビット整数値として保存します。これはビット演算を行う際に重要なことです。\n\nとあります。よくわかりません。^^;とりあえず，長くなったので項目を改めます。\n参照サイトITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』一から勉強させてください(￣ω￣;)MDN Javascript再入門\n","dateCreated":"2016-04-04T18:28:07+09:00","dateModified":"2016-04-04T18:28:07+09:00","datePublished":"2016-04-04T18:28:07+09:00","description":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  ","headline":"浮動小数点","image":["mathematics.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2016/04/04/floating-point/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2016/04/04/floating-point/","keywords":"プログラミング, Javascript, 数値, 数学","thumbnailUrl":"mathematics.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  \n\nMozillaのMDN Javascript再入門によると，\n\nJavaScript における数値は，仕様によると「倍精度 64 ビットフォーマット IEEE 754 値 (double-precision 64-bit format IEEE 754 values)」です。\n\nと，いきなり難しいことを言ってきます…。ということで，以下に調べてみた結果をメモ。\n\n\nIEEE 754IEEE＝「Institute of Electrical and Electronics Engineers＝米国電気電子技術者協会」の略。IEEEは電気工学を源流とする通信・電子・情報工学とその関連分野の学会であり，事実上コンピューターの色々な仕様の世界標準決定機関です。で，「IEEE754」は，この学会が取り決めた「 浮動小数点演算に関する標準規格」です。\n不動小数点とはコンピューターは厳密には「0」と「1」で構成される2進数しか扱えません。そこで，(小数点を含む)整数を表すのに特別な方法が必要となってきます。  \n小数点を表すには固定小数点数と浮動小数点数があります。固定小数点とは，普段よく目にする「3.1424,,,,,」のように表現すること。この方式ではコンピューターが理解することができません。  \n一方，不動小数点では「指数形式(○○×△△の□□乗)」という形で表します。具体的には，「3.14」を表すのに「31.4×10－1，314.0×10－2，3.14×100，31.4×10－1，314.0×10－2,,,」と色んな形で表現することができます。表現する形が多いということは，コンピューターやソフトを作るときに作り手が好き勝手に決められることになります。ところが，それでは互換性とかの問題で扱いにくいのでIEEEが基準を示し，作り手がそれを採用して互換性を保つようになりました。\nということで，以下はIEEE745に沿った浮動小数点です。\nIEEE 754における浮動小数点浮動小数点で表現するのに，指数形式を部分的に分けて使います。「○○×△△の□□乗」は\n\n○○を仮数部(符号)\n△△を基数部\n□□乗を指数部\n\nと呼びます。そして，求められる計算精度とデータ容量の問題を考慮して以下の2つの形式が定められています。\n\n半精度浮動小数点数では，符号部 1 ビット ・ 指数部 5 ビット ・ 仮数部 10 ビット =16ビット\n単精度浮動小数点数では，符号部 1 ビット ・ 指数部 8 ビット ・ 仮数部 23 ビット =32ビット\n倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 11 ビット ・ 仮数部 52 ビット =64ビット\n四倍精度浮動小数点数では，符号部 1 ビット ・ 指数部 15 ビット ・ 仮数部 112 ビット=127ビット\n\nとして扱います。最近よく言われる「32bit版Windows10」「64bit版Windows10」といのは，ここに由来しています。さらに，\n\n符号部は「正の値なら0」,「 負の値なら1」とする。\n仮数部は，整数部分が 1 であるような2進小数の小数部分（ケチ表現）を表す。\n指数部は，符号なし2進整数とし，半精度では 15，単精度では 127，倍精度では 1023，四倍精度では 16383 のゲタを履かせたゲタ履き表現で表す。\n\n固定小数点を浮動小数点に変換実際に単精度で「3.25」を浮動小数点に変換してみます。\n10進数から2進数10進数を整数と小数点以下の2つに分けます。理由は，それぞれ2進数に直す方法が異なるから。整数はひたすら2で割りその余りを出します。3を2進数にすると，\n123&#x2F;2→1余り11&#x2F;2→0余り1\n\n並びは下からなので，答えは「11」となります。\n続いて小数点以下を2進数にします。方法は10進数の小数部を2倍して商を求めます。商の小数部を繰り返し2倍していき，その整数部が2進数になります。つまり，「0.25」を計算すると\n120.25*2→0.5 整数部00.5*2→1 整数部1\n\n並びは整数とは逆で上から読むので，答えは「01」となります。よって，「3.25」の2進数は「11.01」となります。\n2進数を「1.◯◯×2^△」にする\n符号は正の数なので「0」。\n指数は2に小数点を動かした桁と同数に127(単精度)を足すので，「1+127＝128」とります。  \n\n128を2進数に直すと\n12345678128&#x2F;2→64余り064&#x2F;2→32余り032&#x2F;2→16余り016&#x2F;2→8余り08&#x2F;2→4余り04&#x2F;2→2余り02&#x2F;2→1余り01&#x2F;2→0余り1\n\nよって答えは「1000 0000」。\n仮数は整数部が「1」固定の2進数になるように小数点を左に移動するので，1.101。  これを「正規化」といいます。仮数は23ビット(単精度)で小数点より右側だけなので，足りない分を0でうめて101000000000 00000000000。\n浮動小数点は符号，指数，仮数を合わせて01000000010100000000000000000000となります。以上で，「3.25」を32bitの浮動小数点に変換できました。\nJavascriptでは……冒頭のJavascriptの「数値」の扱いの仕様に戻ると「倍精度 64 ビットフォーマット」で扱うとなってます。ところが，読み進めると\n\n実のところ，整数値は 32 ビット int 型として扱われます。また一部の実装では，32 ビット整数値ではなく Number で有効な命令の実行を求められるまでの間，32 ビット整数値として保存します。これはビット演算を行う際に重要なことです。\n\nとあります。よくわかりません。^^;とりあえず，長くなったので項目を改めます。\n参照サイトITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』一から勉強させてください(￣ω￣;)MDN Javascript再入門\n","dateCreated":"2016-04-04T18:28:07+09:00","dateModified":"2019-05-23T19:02:55+09:00","datePublished":"2016-04-04T18:28:07+09:00","description":"Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  ","headline":"浮動小数点","image":["mathematics.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2016/04/04/floating-point/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2016/04/04/floating-point/","keywords":"プログラミング, Javascript, 数値, 数学","thumbnailUrl":"mathematics.jpg"}</script>
     <meta name="description" content="Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="浮動小数点">
@@ -26,7 +26,7 @@
 <meta property="og:description" content="Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。">
 <meta property="og:locale" content="ja_JP">
 <meta property="article:published_time" content="2016-04-04T09:28:07.000Z">
-<meta property="article:modified_time" content="2016-04-04T09:28:07.000Z">
+<meta property="article:modified_time" content="2019-05-23T10:02:55.621Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="プログラミング">
 <meta property="article:tag" content="Javascript">
@@ -49,7 +49,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/demski/assets/css/style-gfinubp8xpoianjy3izfgazfpyfbeaudia1pivtogbbck02wh4dzksr7vmam.min.css">
+<link rel="stylesheet" href="/demski/assets/css/style-sbhyqei89ywqo7mj1t0zh6t5dbbxx8w8nx4zjhm5mdjtdykpdjjm9fshdxcy.min.css">
 
     <!--STYLES END-->
     
@@ -338,12 +338,12 @@
         <div class="main-content-wrap">
             <p>Javascriptの勉強をし直しているので，分かってなかったことなんかをメモしています。<br>今回は，数値計算とかでよく出てくる浮動小数点について調べてみました。  </p>
 <a id="more"></a>
-<p>Mozillaの<a target="_blank" rel="noopener" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/A_re-introduction_to_JavaScript">MDN Javascript再入門</a><br>によると，</p>
+<p>Mozillaの<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/A_re-introduction_to_JavaScript" target="_blank" rel="noopener">MDN Javascript再入門</a><br>によると，</p>
 <blockquote>
 <p>JavaScript における数値は，仕様によると「倍精度 64 ビットフォーマット IEEE 754 値 (double-precision 64-bit format IEEE 754 values)」です。</p>
 </blockquote>
 <p>と，いきなり難しいことを言ってきます…。<br>ということで，以下に調べてみた結果をメモ。</p>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IEEE-754"><span class="toc-text">IEEE 754</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%8B%95%E5%B0%8F%E6%95%B0%E7%82%B9%E3%81%A8%E3%81%AF"><span class="toc-text">不動小数点とは</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IEEE-754%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B5%AE%E5%8B%95%E5%B0%8F%E6%95%B0%E7%82%B9"><span class="toc-text">IEEE 754における浮動小数点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BA%E5%AE%9A%E5%B0%8F%E6%95%B0%E7%82%B9%E3%82%92%E6%B5%AE%E5%8B%95%E5%B0%8F%E6%95%B0%E7%82%B9%E3%81%AB%E5%A4%89%E6%8F%9B"><span class="toc-text">固定小数点を浮動小数点に変換</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E9%80%B2%E6%95%B0%E3%81%8B%E3%82%892%E9%80%B2%E6%95%B0"><span class="toc-text">10進数から2進数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E9%80%B2%E6%95%B0%E3%82%92%E3%80%8C1-%E2%97%AF%E2%97%AF%C3%972-%E2%96%B3%E3%80%8D%E3%81%AB%E3%81%99%E3%82%8B"><span class="toc-text">2進数を「1.◯◯×2^△」にする</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascript%E3%81%A7%E3%81%AF%E2%80%A6%E2%80%A6"><span class="toc-text">Javascriptでは……</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E7%85%A7%E3%82%B5%E3%82%A4%E3%83%88"><span class="toc-text">参照サイト</span></a></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IEEE-754"><span class="toc-text">IEEE 754</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不動小数点とは"><span class="toc-text">不動小数点とは</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IEEE-754における浮動小数点"><span class="toc-text">IEEE 754における浮動小数点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#固定小数点を浮動小数点に変換"><span class="toc-text">固定小数点を浮動小数点に変換</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10進数から2進数"><span class="toc-text">10進数から2進数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2進数を「1-◯◯×2-△」にする"><span class="toc-text">2進数を「1.◯◯×2^△」にする</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Javascriptでは……"><span class="toc-text">Javascriptでは……</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参照サイト"><span class="toc-text">参照サイト</span></a></li></ol>
 
 <h2 id="IEEE-754"><a href="#IEEE-754" class="headerlink" title="IEEE 754"></a>IEEE 754</h2><p>IEEE＝「Institute of Electrical and Electronics Engineers＝米国電気電子技術者協会」の略。<br>IEEEは電気工学を源流とする通信・電子・情報工学とその関連分野の学会であり，事実上コンピューターの色々な仕様の世界標準決定機関です。<br>で，「IEEE754」は，この学会が取り決めた「 浮動小数点演算に関する標準規格」です。</p>
 <h2 id="不動小数点とは"><a href="#不動小数点とは" class="headerlink" title="不動小数点とは"></a>不動小数点とは</h2><p>コンピューターは厳密には「0」と「1」で構成される2進数しか扱えません。<br>そこで，(小数点を含む)整数を表すのに特別な方法が必要となってきます。  </p>
@@ -393,7 +393,7 @@
 <p>実のところ，整数値は 32 ビット int 型として扱われます。また一部の実装では，32 ビット整数値ではなく Number で有効な命令の実行を求められるまでの間，32 ビット整数値として保存します。これはビット演算を行う際に重要なことです。</p>
 </blockquote>
 <p>とあります。<br>よくわかりません。^^;<br>とりあえず，長くなったので項目を改めます。</p>
-<h2 id="参照サイト"><a href="#参照サイト" class="headerlink" title="参照サイト"></a>参照サイト</h2><p><a target="_blank" rel="noopener" href="http://itpro.nikkeibp.co.jp/members/ITPro/ITBASIC/20020624/" title="１週間で学ぶIT基礎の基礎">ITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』</a><br><a target="_blank" rel="noopener" href="http://dangerous-animal141.hatenablog.com/entry/2014/05/10/000000" title="動小数点数について本気出して考えてみた">一から勉強させてください(￣ω￣;)</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/A_re-introduction_to_JavaScript" title="Javascript再入門">MDN Javascript再入門</a></p>
+<h2 id="参照サイト"><a href="#参照サイト" class="headerlink" title="参照サイト"></a>参照サイト</h2><p><a href="http://itpro.nikkeibp.co.jp/members/ITPro/ITBASIC/20020624/" target="_blank" rel="noopener" title="１週間で学ぶIT基礎の基礎">ITpro『【5分で覚えるIT基礎の基礎】ゼロから学ぶ2進数　第4回』</a><br><a href="http://dangerous-animal141.hatenablog.com/entry/2014/05/10/000000" target="_blank" rel="noopener" title="動小数点数について本気出して考えてみた">一から勉強させてください(￣ω￣;)</a><br><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/A_re-introduction_to_JavaScript" target="_blank" rel="noopener" title="Javascript再入門">MDN Javascript再入門</a></p>
 
             
 
@@ -405,7 +405,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Javascript/" rel="tag">Javascript</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0/" rel="tag">プログラミング</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E6%95%B0%E5%80%A4/" rel="tag">数値</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/Javascript/" rel="tag">Javascript</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0/" rel="tag">プログラミング</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E6%95%B0%E5%80%A4/" rel="tag">数値</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/%E6%95%B0%E5%AD%A6/" rel="tag">数学</a>
 
             </div>
         
@@ -521,7 +521,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -532,7 +532,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2022 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -758,7 +758,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -770,7 +770,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1061,7 +1061,7 @@
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/demski/assets/js/script-zkg2ltxncv78nizr5pcqwmnabnai8efsnxbzkcq7wrft2fxfobigr7xewtco.min.js"></script>
+<script src="/demski/assets/js/script-kdyicsiinx0v7nldqjnda7ou55sr31zhtklgvjjle8moqrzx1gasxgdqrocp.min.js"></script>
 
 <!--SCRIPTS END-->
 

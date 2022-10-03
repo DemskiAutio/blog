@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにWindows10のPowerShellの文字色を変更する事ができたので，その時のメモ。デフォルトだと，背景と同色で見えねーって事がありましたので・・・簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。\n\n\n\n準備\n特にいらない(PowerShellを立ち上げられればOK。まぁ，その他細かいことは各自で確認)\n\n実行方法PowerShellにPS1ファイルの実行権限を与えるPowerShellのデフォルトでは，セキュリティの観点から権限（Execution Policy）が制限された状態になっている。これを変更して，最低限のスクリプトやコマンドを実行できるようにする。  \nPowerShellを「管理者権限」で立ち上げたら，現在の設定を確認する。\n12PS C:\\MyScript&gt; Get-ExecutionPolicy ……現在のポリシーの取得Restricted ……結果\n\n全てのスクリプトが実行禁止にされてる状態だというのがわかる。次のコマンドで，権限を最低限のスクリプトが動くようにする。\n1234PS C:\\MyScript&gt; Set-ExecutionPolicy RemoteSigned ……ポリシーの設定実行ポリシーの変更実行ポリシーは、信頼されていないスクリプトからの保護に役立ちます。実行ポリシーを変更すると、about_Execution_Policies のヘルプ トピック (http://go.microsoft.com/fwlink/?LinkID=135170) で説明されているセキュリティ上の危険にさらされる可能性があります。実行ポリシーを変更しますか?[Y] はい(Y)  [N] いいえ(N)  [S] 中断(S)  [?] ヘルプ (既定値は &quot;Y&quot;):  ……［Enter］キーだけを押すと設定が変更される\n\nこの辺りの事は，先輩方が纏めてくれているので，スクショで拝借。\nPowerShellPolicy\n\n出典：Windows PowerShellを使ってみたメモ \nscoopをインストールscoopは，コマンドラインだけでアプリケーションやプログラムをインストールしてくれるパッケージ。  \n\n1iex (new-object net.webclient).downloadstring(&#39;https:&#x2F;&#x2F;get.scoop.sh&#39;)\n出典：Scoop(github)\n次に同じ方が開発されているconcfgをインストール  \nconcfgはPowerShellの設定をインポート・エクスポートするためのプログラム。  \nこれを利用することで，いろいろなテーマが簡単に利用できるようになる。古今東西，エディタなんかでお世話になってるthemeを基にしたカラーカスタマイズが揃ってるので，色々いじってみる。\n12345# concfgをインストール$ scoop install concfg# concfgでMonokaiテーマをインストール$ concfg import monokai\n\nレジストリを弄ってるので，書き換えたらいったん再起動したほうが良いかも。一応，再起動無しでも複数回書き換えられたので，使うテーマが決まったらでよさそう。\nthemeを基にカスタマイズあっちのテーマを入れたら，色が暗すぎて見えなかったり…。別の入れたらカラフル過ぎで目がチカチカしたり。なかなか良いthemeが見つからず，自分で手直ししたいな～と色々とググってたら，以下のようなサイトを見つけた。PS Theme Viewer](http://github.mindzgroup.com/concfg/) 現在はリンク先消滅した模様（2020/08/12）\n上のプルダウンからthemeを選んで，Load Selectedを押すと，そのthemeの色が下のカラー表各色の円を挟んだ右側に出力される。真ん中の円をクリックすると，右側のColor Editorが開いて，その色を編集することができる。Previewには，円の色が反映されてcheckできる。このthemeを使いたいけど，引数の色が～とかって時にそこだけ書き換えてみたり。ある程度納得できるカラーが決まったら，downloadをクリックすれば，Jsonファイルがdownloadできる。あとは，ファイルの名前を適当に変えて（いやなら変えんでもいいけどｗ）concfgのテーマフォルダに放り込んむ。自分の場合は下記のフォルダに入ってた。\nC:\\Users\\ユーザー名\\scoop\\apps\\concfg\\0.2017.6.17\\presets\n\n\nあとは，同じように\n12$ concfg import ダウンロードしたファイル名Ll Ii Oo 0\n\nで，反映してくれる。  \nというわけで，松本イズミバージョンを作ってみた。（背景は透過させてるだけです。PowerShellとは一切関わりありません。背景に画像つけ方知ってたら教えてください。）\nPowerShell松本イズミver\n\n終わりということで，なんとかPowerShellのカラーを変えることに成功。これで，色被りで見えなかった所も見えるようになりました。  \n参考\n Windows PowerShell オーナー マニュアル\nConcfgでPowershellをモダンでオシャレにしたかった\nlukesampson/scoop (github)\n\n","dateCreated":"2017-10-16T18:59:01+09:00","dateModified":"2017-10-16T18:59:01+09:00","datePublished":"2017-10-16T18:59:01+09:00","description":"はじめにWindows10のPowerShellの文字色を変更する事ができたので，その時のメモ。デフォルトだと，背景と同色で見えねーって事がありましたので・・・簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。","headline":"PowerShell のColorを変えよう","image":["powershell.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2017/10/16/powershell-color/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2017/10/16/powershell-color/","keywords":"Windows10, PowerShell, Scoop, concfg","thumbnailUrl":"powershell.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"はじめにWindows10のPowerShellの文字色を変更する事ができたので，その時のメモ。デフォルトだと，背景と同色で見えねーって事がありましたので・・・簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。\n\n\n\n準備\n特にいらない(PowerShellを立ち上げられればOK。まぁ，その他細かいことは各自で確認)\n\n実行方法PowerShellにPS1ファイルの実行権限を与えるPowerShellのデフォルトでは，セキュリティの観点から権限（Execution Policy）が制限された状態になっている。これを変更して，最低限のスクリプトやコマンドを実行できるようにする。  \nPowerShellを「管理者権限」で立ち上げたら，現在の設定を確認する。\n12PS C:\\MyScript&gt; Get-ExecutionPolicy ……現在のポリシーの取得Restricted ……結果\n\n全てのスクリプトが実行禁止にされてる状態だというのがわかる。次のコマンドで，権限を最低限のスクリプトが動くようにする。\n1234PS C:\\MyScript&gt; Set-ExecutionPolicy RemoteSigned ……ポリシーの設定実行ポリシーの変更実行ポリシーは、信頼されていないスクリプトからの保護に役立ちます。実行ポリシーを変更すると、about_Execution_Policies のヘルプ トピック (http://go.microsoft.com/fwlink/?LinkID=135170) で説明されているセキュリティ上の危険にさらされる可能性があります。実行ポリシーを変更しますか?[Y] はい(Y)  [N] いいえ(N)  [S] 中断(S)  [?] ヘルプ (既定値は \"Y\"):  ……［Enter］キーだけを押すと設定が変更される\n\nこの辺りの事は，先輩方が纏めてくれているので，スクショで拝借。\nPowerShellPolicy\n\n出典：Windows PowerShellを使ってみたメモ \nscoopをインストールscoopは，コマンドラインだけでアプリケーションやプログラムをインストールしてくれるパッケージ。  \n\n1iex (new-object net.webclient).downloadstring(&#39;https:&#x2F;&#x2F;get.scoop.sh&#39;)\n出典：Scoop(github)\n次に同じ方が開発されているconcfgをインストール  \nconcfgはPowerShellの設定をインポート・エクスポートするためのプログラム。  \nこれを利用することで，いろいろなテーマが簡単に利用できるようになる。古今東西，エディタなんかでお世話になってるthemeを基にしたカラーカスタマイズが揃ってるので，色々いじってみる。\n12345# concfgをインストール$ scoop install concfg# concfgでMonokaiテーマをインストール$ concfg import monokai\n\nレジストリを弄ってるので，書き換えたらいったん再起動したほうが良いかも。一応，再起動無しでも複数回書き換えられたので，使うテーマが決まったらでよさそう。\nthemeを基にカスタマイズあっちのテーマを入れたら，色が暗すぎて見えなかったり…。別の入れたらカラフル過ぎで目がチカチカしたり。なかなか良いthemeが見つからず，自分で手直ししたいな～と色々とググってたら，以下のようなサイトを見つけた。PS Theme Viewer\n上のプルダウンからthemeを選んで，Load Selectedを押すと，そのthemeの色が下のカラー表各色の円を挟んだ右側に出力される。真ん中の円をクリックすると，右側のColor Editorが開いて，その色を編集することができる。Previewには，円の色が反映されてcheckできる。このthemeを使いたいけど，引数の色が～とかって時にそこだけ書き換えてみたり。ある程度納得できるカラーが決まったら，downloadをクリックすれば，Jsonファイルがdownloadできる。あとは，ファイルの名前を適当に変えて（いやなら変えんでもいいけどｗ）concfgのテーマフォルダに放り込んむ。自分の場合は下記のフォルダに入ってた。\nC:\\Users\\ユーザー名\\scoop\\apps\\concfg\\0.2017.6.17\\presets\n\n\nあとは，同じように\n12$ concfg import ダウンロードしたファイル名Ll Ii Oo 0\n\nで，反映してくれる。  \nというわけで，松本イズミバージョンを作ってみた。（背景は透過させてるだけです。PowerShellとは一切関わりありません。背景に画像つけ方知ってたら教えてください。）\nPowerShell松本イズミver\n\n終わりということで，なんとかPowerShellのカラーを変えることに成功。これで，色被りで見えなかった所も見えるようになりました。  \n参考\n Windows PowerShell オーナー マニュアル\nConcfgでPowershellをモダンでオシャレにしたかった\nlukesampson/scoop (github)\n\n","dateCreated":"2017-10-16T18:59:01+09:00","dateModified":"2021-02-11T12:50:33+09:00","datePublished":"2017-10-16T18:59:01+09:00","description":"はじめにWindows10のPowerShellの文字色を変更する事ができたので，その時のメモ。デフォルトだと，背景と同色で見えねーって事がありましたので・・・簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。","headline":"PowerShell のColorを変えよう","image":["powershell.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2017/10/16/powershell-color/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2017/10/16/powershell-color/","keywords":"Windows10, PowerShell, Scoop, concfg","thumbnailUrl":"powershell.png"}</script>
     <meta name="description" content="はじめにWindows10のPowerShellの文字色を変更する事ができたので，その時のメモ。デフォルトだと，背景と同色で見えねーって事がありましたので・・・簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="PowerShell のColorを変えよう">
@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://demskiautio.github.io/demski/2017/10/16/powershell-color/PowerShellPolicy.PNG">
 <meta property="og:image" content="https://demskiautio.github.io/demski/2017/10/16/powershell-color/matumotoizumi.PNG">
 <meta property="article:published_time" content="2017-10-16T09:59:01.000Z">
-<meta property="article:modified_time" content="2017-10-16T09:59:01.000Z">
+<meta property="article:modified_time" content="2021-02-11T03:50:33.962Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="Windows10">
 <meta property="article:tag" content="PowerShell">
@@ -52,7 +52,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/demski/assets/css/style-gfinubp8xpoianjy3izfgazfpyfbeaudia1pivtogbbck02wh4dzksr7vmam.min.css">
+<link rel="stylesheet" href="/demski/assets/css/style-sbhyqei89ywqo7mj1t0zh6t5dbbxx8w8nx4zjhm5mdjtdykpdjjm9fshdxcy.min.css">
 
     <!--STYLES END-->
     
@@ -341,7 +341,7 @@
         <div class="main-content-wrap">
             <h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>Windows10のPowerShellの文字色を変更する事ができたので，その時のメモ。<br>デフォルトだと，背景と同色で見えねーって事がありましたので・・・<br>簡単に調べると，仕様で片付けられてたんですが，追加プラグインを用いたら文字色を変えられる方法を見つけたので，その備忘録です。</p>
 <a id="more"></a>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%96%E5%82%99"><span class="toc-text">準備</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9F%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="toc-text">実行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PowerShell%E3%81%ABPS1%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E5%AE%9F%E8%A1%8C%E6%A8%A9%E9%99%90%E3%82%92%E4%B8%8E%E3%81%88%E3%82%8B"><span class="toc-text">PowerShellにPS1ファイルの実行権限を与える</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scoop%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">scoopをインストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#theme%E3%82%92%E5%9F%BA%E3%81%AB%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA"><span class="toc-text">themeを基にカスタマイズ</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B5%82%E3%82%8F%E3%82%8A"><span class="toc-text">終わり</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#はじめに"><span class="toc-text">はじめに</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#準備"><span class="toc-text">準備</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#実行方法"><span class="toc-text">実行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PowerShellにPS1ファイルの実行権限を与える"><span class="toc-text">PowerShellにPS1ファイルの実行権限を与える</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scoopをインストール"><span class="toc-text">scoopをインストール</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#themeを基にカスタマイズ"><span class="toc-text">themeを基にカスタマイズ</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#終わり"><span class="toc-text">終わり</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li></ol></li></ol>
 
 <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2><ul>
 <li>特にいらない(PowerShellを立ち上げられればOK。まぁ，その他細かいことは各自で確認)</li>
@@ -351,23 +351,23 @@
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PS C:\MyScript&gt; Get-ExecutionPolicy ……現在のポリシーの取得</span><br><span class="line">Restricted ……結果</span><br></pre></td></tr></table></figure>
 
 <p>全てのスクリプトが実行禁止にされてる状態だというのがわかる。<br>次のコマンドで，権限を最低限のスクリプトが動くようにする。</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS C:\MyScript&gt; Set-ExecutionPolicy RemoteSigned ……ポリシーの設定</span><br><span class="line">実行ポリシーの変更</span><br><span class="line">実行ポリシーは、信頼されていないスクリプトからの保護に役立ちます。実行ポリシーを変更すると、about_Execution_Policies のヘルプ トピック (http://go.microsoft.com/fwlink/?LinkID=135170) で説明されているセキュリティ上の危険にさらされる可能性があります。実行ポリシーを変更しますか?</span><br><span class="line">[Y] はい(Y)  [N] いいえ(N)  [S] 中断(S)  [?] ヘルプ (既定値は &quot;Y&quot;):  ……［Enter］キーだけを押すと設定が変更される</span><br></pre></td></tr></table></figure>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PS C:\MyScript&gt; Set-ExecutionPolicy RemoteSigned ……ポリシーの設定</span><br><span class="line">実行ポリシーの変更</span><br><span class="line">実行ポリシーは、信頼されていないスクリプトからの保護に役立ちます。実行ポリシーを変更すると、about_Execution_Policies のヘルプ トピック (http://go.microsoft.com/fwlink/?LinkID=135170) で説明されているセキュリティ上の危険にさらされる可能性があります。実行ポリシーを変更しますか?</span><br><span class="line">[Y] はい(Y)  [N] いいえ(N)  [S] 中断(S)  [?] ヘルプ (既定値は "Y"):  ……［Enter］キーだけを押すと設定が変更される</span><br></pre></td></tr></table></figure>
 
 <p>この辺りの事は，先輩方が纏めてくれているので，スクショで拝借。</p>
 <div class="figure right" style="width:;"><a class="fancybox" href="PowerShellPolicy.PNG" title="PowerShellPolicy" data-caption="PowerShellPolicy" data-fancybox="default"><img class="fig-img" src="PowerShellPolicy.PNG" alt="PowerShellPolicy"></a><span class="caption">PowerShellPolicy</span></div><div style="clear:both;"></div>
 
-<p><span style="font-size: 14px">出典：<a target="_blank" rel="noopener" href="https://qiita.com/gcyagi/items/b86d2a24f2334b9c72ee">Windows PowerShellを使ってみたメモ</a> </span></p>
+<p><span style="font-size: 14px">出典：<a href="https://qiita.com/gcyagi/items/b86d2a24f2334b9c72ee" target="_blank" rel="noopener">Windows PowerShellを使ってみたメモ</a> </span></p>
 <h3 id="scoopをインストール"><a href="#scoopをインストール" class="headerlink" title="scoopをインストール"></a>scoopをインストール</h3><span class="highlight-text blue">scoop</span>は，コマンドラインだけでアプリケーションやプログラムをインストールしてくれるパッケージ。  
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iex (new-object net.webclient).downloadstring(&#39;https:&#x2F;&#x2F;get.scoop.sh&#39;)</span><br></pre></td></tr></table></figure>
-<p><span style="font-size: 14px">出典：<a target="_blank" rel="noopener" href="https://github.com/lukesampson/scoop">Scoop(github)</a></span></p>
+<p><span style="font-size: 14px">出典：<a href="https://github.com/lukesampson/scoop" target="_blank" rel="noopener">Scoop(github)</a></span></p>
 <p>次に同じ方が開発されているconcfgをインストール  </p>
 <span class="highlight-text blue">concfg</span>はPowerShellの設定をインポート・エクスポートするためのプログラム。  
 <p>これを利用することで，いろいろなテーマが簡単に利用できるようになる。<br>古今東西，エディタなんかでお世話になってるthemeを基にしたカラーカスタマイズが揃ってるので，色々いじってみる。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># concfgをインストール</span><br><span class="line">$ scoop install concfg</span><br><span class="line"></span><br><span class="line"># concfgでMonokaiテーマをインストール</span><br><span class="line">$ concfg import monokai</span><br></pre></td></tr></table></figure>
 
 <p>レジストリを弄ってるので，書き換えたらいったん再起動したほうが良いかも。<br>一応，再起動無しでも複数回書き換えられたので，使うテーマが決まったらでよさそう。</p>
-<h3 id="themeを基にカスタマイズ"><a href="#themeを基にカスタマイズ" class="headerlink" title="themeを基にカスタマイズ"></a>themeを基にカスタマイズ</h3><p>あっちのテーマを入れたら，色が暗すぎて見えなかったり…。<br>別の入れたらカラフル過ぎで目がチカチカしたり。<br>なかなか良いthemeが見つからず，自分で手直ししたいな～と色々とググってたら，以下のようなサイトを見つけた。<br><del>PS Theme Viewer](<a target="_blank" rel="noopener" href="http://github.mindzgroup.com/concfg/">http://github.mindzgroup.com/concfg/</a>)</del> 現在はリンク先消滅した模様（2020/08/12）</p>
+<h3 id="themeを基にカスタマイズ"><a href="#themeを基にカスタマイズ" class="headerlink" title="themeを基にカスタマイズ"></a>themeを基にカスタマイズ</h3><p>あっちのテーマを入れたら，色が暗すぎて見えなかったり…。<br>別の入れたらカラフル過ぎで目がチカチカしたり。<br>なかなか良いthemeが見つからず，自分で手直ししたいな～と色々とググってたら，以下のようなサイトを見つけた。<br><a href="http://github.mindzgroup.com/concfg/" target="_blank" rel="noopener">PS Theme Viewer</a></p>
 <p>上のプルダウンからthemeを選んで，Load Selectedを押すと，そのthemeの色が下のカラー表各色の円を挟んだ右側に出力される。<br>真ん中の円をクリックすると，右側のColor Editorが開いて，その色を編集することができる。<br>Previewには，円の色が反映されてcheckできる。<br>このthemeを使いたいけど，引数の色が～とかって時にそこだけ書き換えてみたり。<br>ある程度納得できるカラーが決まったら，downloadをクリックすれば，Jsonファイルがdownloadできる。<br>あとは，ファイルの名前を適当に変えて（いやなら変えんでもいいけどｗ）concfgのテーマフォルダに放り込んむ。<br>自分の場合は下記のフォルダに入ってた。</p>
 <div class="alert "><p>C:\Users\ユーザー名\scoop\apps\concfg\0.2017.6.17\presets</p>
 </div>
@@ -381,9 +381,9 @@
 
 <h2 id="終わり"><a href="#終わり" class="headerlink" title="終わり"></a>終わり</h2><p>ということで，なんとかPowerShellのカラーを変えることに成功。<br>これで，色被りで見えなかった所も見えるようになりました。  </p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://technet.microsoft.com/ja-jp/scriptcenter/powershell_owner.aspx"> Windows PowerShell オーナー マニュアル</a></li>
-<li><a target="_blank" rel="noopener" href="https://qiita.com/migeru/items/0dd6302120447b73ea56">ConcfgでPowershellをモダンでオシャレにしたかった</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/lukesampson/scoop/wiki/Theming-Powershell">lukesampson/scoop (github)</a></li>
+<li><a href="https://technet.microsoft.com/ja-jp/scriptcenter/powershell_owner.aspx" target="_blank" rel="noopener"> Windows PowerShell オーナー マニュアル</a></li>
+<li><a href="https://qiita.com/migeru/items/0dd6302120447b73ea56" target="_blank" rel="noopener">ConcfgでPowershellをモダンでオシャレにしたかった</a></li>
+<li><a href="https://github.com/lukesampson/scoop/wiki/Theming-Powershell" target="_blank" rel="noopener">lukesampson/scoop (github)</a></li>
 </ul>
 
             
@@ -396,7 +396,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/PowerShell/" rel="tag">PowerShell</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Scoop/" rel="tag">Scoop</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Windows10/" rel="tag">Windows10</a> <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/concfg/" rel="tag">concfg</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/PowerShell/" rel="tag">PowerShell</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/Scoop/" rel="tag">Scoop</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/Windows10/" rel="tag">Windows10</a> <a class="tag tag--primary tag--small t-link" href="/demski/tags/concfg/" rel="tag">concfg</a>
 
             </div>
         
@@ -512,7 +512,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -523,7 +523,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2022 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -749,7 +749,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -761,7 +761,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1052,7 +1052,7 @@
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/demski/assets/js/script-zkg2ltxncv78nizr5pcqwmnabnai8efsnxbzkcq7wrft2fxfobigr7xewtco.min.js"></script>
+<script src="/demski/assets/js/script-kdyicsiinx0v7nldqjnda7ou55sr31zhtklgvjjle8moqrzx1gasxgdqrocp.min.js"></script>
 
 <!--SCRIPTS END-->
 

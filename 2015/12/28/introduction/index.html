@@ -17,7 +17,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/demski/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。\n\n\n環境\nWindows8.1\nnode.js v0.10.33\nnpm v1.4.28.\nhexo v2.8.3  \n\nWindows8.1にnode.jsをインストールして環境を構築。その後hexoをコマンドプロプントでインストール。\nHexoをインストールコマンドプロプントもしくはGitBashで,下記コマンドを実行\n1$ npm install -g hexo\n\nこれで，hexoの環境ができあがる。\n1$ hexo -v\n\nで，バージョンが表示されれば成功  \nblogの作成コンソールでblogを作りたいフォルダに移動して，以下のコマンドを実行\n1$ hexo init BLOGNAME\n\nこれで，BLOGNAMEというフォルダができるので移動\n12$ cd BLOGNAME$ npm install\n\nこれでブログが作成されたので，ローカルサーバーを立ち上げ確認\n1$ hexo server\n\nで立ち上げ,http://localhost:4000で確認\ngithub に Github Pagesのリポジトリを作成new repositoryから，Repository nameを「username.github.io」にして作成。usernameを一致させないと，失敗するっぽい。\nSSH公開鍵の登録SSHキーを作成して，ローカルとgithubアカウントを紐付ける。コンソールで作っていくが,GitBashで作った方がうまくいくみたい。コマンドは以下の通り\n12345$ cd ~/.ssh$ ssh-keygen ssh-kygenGenerating public/private rsa key pair.(以下略)\n途中でパスワードを設定するか聞かれるが,特に設定したくない場合は空白のままenter。\n.sshフォルダにid_rsaとid_rsa.pubというファイルがあれば成功。id_rsa.pubが公開鍵になるので,メモ帳などで開いて内容をコピー。Account settings &gt; SSH keys &gt; Add SSH key で先程コピーした内容を貼付け。登録成功の画面が現われたら登録完了\nフォルダをgithub上のリポジトリに紐付けローカルのblogフォルダとGithbuPagesリポジトリと紐付けるため以下のコマンドを実行\n1234$ touch README.md$ echo &quot;hello github.io!!&quot; &gt; index.html$ git init$ git remote add origin git@github.com:/username.github.io.git\n\nファイルをアップロード下記のコマンドを実行して，ファイルをアップロード\n123$ git add .$ git commit -m &quot;first commit&quot;$ git push origin master\n\n成功すれば，http://username.github.ioに公開されているはず。\nHexo コマンド1234567891011121314151617181920212223242526Commands:  clean     Removed generated files and cache.  config    Get or set configurations.  deploy    Deploy your website.  generate  Generate static files.  help      Get help on a command.  init      Create a new Hexo folder.  list      List the information of the site  migrate   Migrate your site from other system to Hexo.  new       Create a new post.  publish   Moves a draft post from _drafts to _posts folder.  render    Render files with renderer plugins.  server    Start the server.  version   Display version information.Global Options:  --config  Specify config file instead of using _config.yml  --cwd     Specify the CWD  --debug   Display all verbose messages in the terminal  --draft   Display draft posts  --safe    Disable all plugins and scripts  --silent  Hide output on consoleFor more help, you can use &#x27;hexo help [command]&#x27; for the detailed informationor you can check the docs: http://hexo.io/docs/\n","dateCreated":"2015-12-28T18:29:53+09:00","dateModified":"2015-12-28T18:29:53+09:00","datePublished":"2015-12-28T18:29:53+09:00","description":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。","headline":"hexo + githubページでブログ構築","image":["hexo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2015/12/28/introduction/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2015/12/28/introduction/","keywords":"Hexo","thumbnailUrl":"hexo.png"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"},"articleBody":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。\n\n\n環境\nWindows8.1\nnode.js v0.10.33\nnpm v1.4.28.\nhexo v2.8.3  \n\nWindows8.1にnode.jsをインストールして環境を構築。その後hexoをコマンドプロプントでインストール。\nHexoをインストールコマンドプロプントもしくはGitBashで,下記コマンドを実行\n1$ npm install -g hexo\n\nこれで，hexoの環境ができあがる。\n1$ hexo -v\n\nで，バージョンが表示されれば成功  \nblogの作成コンソールでblogを作りたいフォルダに移動して，以下のコマンドを実行\n1$ hexo init BLOGNAME\n\nこれで，BLOGNAMEというフォルダができるので移動\n12$ cd BLOGNAME$ npm install\n\nこれでブログが作成されたので，ローカルサーバーを立ち上げ確認\n1$ hexo server\n\nで立ち上げ,http://localhost:4000で確認\ngithub に Github Pagesのリポジトリを作成new repositoryから，Repository nameを「username.github.io」にして作成。usernameを一致させないと，失敗するっぽい。\nSSH公開鍵の登録SSHキーを作成して，ローカルとgithubアカウントを紐付ける。コンソールで作っていくが,GitBashで作った方がうまくいくみたい。コマンドは以下の通り\n12345$ cd ~/.ssh$ ssh-keygen ssh-kygenGenerating public/private rsa key pair.(以下略)\n途中でパスワードを設定するか聞かれるが,特に設定したくない場合は空白のままenter。\n.sshフォルダにid_rsaとid_rsa.pubというファイルがあれば成功。id_rsa.pubが公開鍵になるので,メモ帳などで開いて内容をコピー。Account settings &gt; SSH keys &gt; Add SSH key で先程コピーした内容を貼付け。登録成功の画面が現われたら登録完了\nフォルダをgithub上のリポジトリに紐付けローカルのblogフォルダとGithbuPagesリポジトリと紐付けるため以下のコマンドを実行\n1234$ touch README.md$ echo \"hello github.io!!\" &gt; index.html$ git init$ git remote add origin git@github.com:/username.github.io.git\n\nファイルをアップロード下記のコマンドを実行して，ファイルをアップロード\n123$ git add .$ git commit -m \"first commit\"$ git push origin master\n\n成功すれば，http://username.github.ioに公開されているはず。\nHexo コマンド12345678910111213141516171819202122232425Commands:  clean     Removed generated files and cache.  config    Get or set configurations.  deploy    Deploy your website.  generate  Generate static files.  help      Get help on a command.  init      Create a new Hexo folder.  list      List the information of the site  migrate   Migrate your site from other system to Hexo.  new       Create a new post.  publish   Moves a draft post from _drafts to _posts folder.  render    Render files with renderer plugins.  server    Start the server.  version   Display version information.Global Options:  --config  Specify config file instead of using _config.yml  --cwd     Specify the CWD  --debug   Display all verbose messages in the terminal  --draft   Display draft posts  --safe    Disable all plugins and scripts  --silent  Hide output on consoleFor more help, you can use 'hexo help [command]' for the detailed informationor you can check the docs: http://hexo.io/docs/\n","dateCreated":"2015-12-28T18:29:53+09:00","dateModified":"2020-05-26T21:53:06+09:00","datePublished":"2015-12-28T18:29:53+09:00","description":"hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。","headline":"hexo + githubページでブログ構築","image":["hexo.png"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://demskiautio.github.io/demski/2015/12/28/introduction/"},"publisher":{"@type":"Organization","name":"Demski Autio","sameAs":["https://github.com/DemskiAutio","http://ja.stackoverflow.com/users/19344/demski-autio","https://twitter.com/Demski_Autio","mailto"],"image":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/716400513c68d22417cfabe80a020671"}},"url":"https://demskiautio.github.io/demski/2015/12/28/introduction/","keywords":"Hexo","thumbnailUrl":"hexo.png"}</script>
     <meta name="description" content="hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="hexo + githubページでブログ構築">
@@ -26,7 +26,7 @@
 <meta property="og:description" content="hexoとgithubページでブログを構築したので，手順をメモ。githubページに公開するときに少し迷ったので,その点を重点的に。">
 <meta property="og:locale" content="ja_JP">
 <meta property="article:published_time" content="2015-12-28T09:29:53.000Z">
-<meta property="article:modified_time" content="2015-12-28T09:29:53.000Z">
+<meta property="article:modified_time" content="2020-05-26T12:53:06.144Z">
 <meta property="article:author" content="Demski Autio">
 <meta property="article:tag" content="Hexo">
 <meta name="twitter:card" content="summary">
@@ -46,7 +46,7 @@
     
     <!--STYLES-->
     
-<link rel="stylesheet" href="/demski/assets/css/style-gfinubp8xpoianjy3izfgazfpyfbeaudia1pivtogbbck02wh4dzksr7vmam.min.css">
+<link rel="stylesheet" href="/demski/assets/css/style-sbhyqei89ywqo7mj1t0zh6t5dbbxx8w8nx4zjhm5mdjtdykpdjjm9fshdxcy.min.css">
 
     <!--STYLES END-->
     
@@ -329,7 +329,7 @@
         <div class="main-content-wrap">
             <p>hexoとgithubページでブログを構築したので，手順をメモ。<br>githubページに公開するときに少し迷ったので,その点を重点的に。</p>
 <a id="more"></a>
-<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%92%B0%E5%A2%83"><span class="toc-text">環境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="toc-text">Hexoをインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blog%E3%81%AE%E4%BD%9C%E6%88%90"><span class="toc-text">blogの作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-%E3%81%AB-Github-Pages%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E4%BD%9C%E6%88%90"><span class="toc-text">github に Github Pagesのリポジトリを作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="toc-text">SSH公開鍵の登録</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E3%82%92github%E4%B8%8A%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%AB%E7%B4%90%E4%BB%98%E3%81%91"><span class="toc-text">フォルダをgithub上のリポジトリに紐付け</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E3%82%A2%E3%83%83%E3%83%97%E3%83%AD%E3%83%BC%E3%83%89"><span class="toc-text">ファイルをアップロード</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo-%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="toc-text">Hexo コマンド</span></a></li></ol>
+<h1 id="table-of-contents">目次</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#環境"><span class="toc-text">環境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexoをインストール"><span class="toc-text">Hexoをインストール</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blogの作成"><span class="toc-text">blogの作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-に-Github-Pagesのリポジトリを作成"><span class="toc-text">github に Github Pagesのリポジトリを作成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH公開鍵の登録"><span class="toc-text">SSH公開鍵の登録</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#フォルダをgithub上のリポジトリに紐付け"><span class="toc-text">フォルダをgithub上のリポジトリに紐付け</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ファイルをアップロード"><span class="toc-text">ファイルをアップロード</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo-コマンド"><span class="toc-text">Hexo コマンド</span></a></li></ol>
 <h2 id="環境"><a href="#環境" class="headerlink" title="環境"></a>環境</h2><ul>
 <li>Windows8.1</li>
 <li>node.js v0.10.33</li>
@@ -353,20 +353,20 @@
 <p>これでブログが作成されたので，ローカルサーバーを立ち上げ確認</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<p>で立ち上げ,<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000</a>で確認</p>
+<p>で立ち上げ,<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a>で確認</p>
 <h2 id="github-に-Github-Pagesのリポジトリを作成"><a href="#github-に-Github-Pagesのリポジトリを作成" class="headerlink" title="github に Github Pagesのリポジトリを作成"></a>github に Github Pagesのリポジトリを作成</h2><p>new repositoryから，Repository nameを「username.github.io」にして作成。<br>usernameを一致させないと，失敗するっぽい。</p>
 <h2 id="SSH公開鍵の登録"><a href="#SSH公開鍵の登録" class="headerlink" title="SSH公開鍵の登録"></a>SSH公開鍵の登録</h2><p>SSHキーを作成して，ローカルとgithubアカウントを紐付ける。<br>コンソールで作っていくが,GitBashで作った方がうまくいくみたい。<br>コマンドは以下の通り</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.ssh</span><br><span class="line">$ ssh-keygen</span><br><span class="line"> ssh-kygen</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">(以下略)</span><br></pre></td></tr></table></figure>
 <p>途中でパスワードを設定するか聞かれるが,特に設定したくない場合は空白のままenter。</p>
 <p>.sshフォルダにid_rsaとid_rsa.pubというファイルがあれば成功。<br>id_rsa.pubが公開鍵になるので,メモ帳などで開いて内容をコピー。<br>Account settings &gt; SSH keys &gt; Add SSH key で先程コピーした内容を貼付け。<br>登録成功の画面が現われたら登録完了</p>
 <h2 id="フォルダをgithub上のリポジトリに紐付け"><a href="#フォルダをgithub上のリポジトリに紐付け" class="headerlink" title="フォルダをgithub上のリポジトリに紐付け"></a>フォルダをgithub上のリポジトリに紐付け</h2><p>ローカルのblogフォルダとGithbuPagesリポジトリと紐付けるため以下のコマンドを実行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ touch README.md</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;hello github.io!!&quot;</span> &gt; index.html</span><br><span class="line">$ git init</span><br><span class="line">$ git remote add origin git@github.com:/username.github.io.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ touch README.md</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">"hello github.io!!"</span> &gt; index.html</span><br><span class="line">$ git init</span><br><span class="line">$ git remote add origin git@github.com:/username.github.io.git</span><br></pre></td></tr></table></figure>
 
 <h2 id="ファイルをアップロード"><a href="#ファイルをアップロード" class="headerlink" title="ファイルをアップロード"></a>ファイルをアップロード</h2><p>下記のコマンドを実行して，ファイルをアップロード</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;first commit&quot;</span></span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">"first commit"</span></span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
 
-<p>成功すれば，<a target="_blank" rel="noopener" href="http://username.github.io/">http://username.github.io</a>に公開されているはず。</p>
-<h2 id="Hexo-コマンド"><a href="#Hexo-コマンド" class="headerlink" title="Hexo コマンド"></a>Hexo コマンド</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Commands:</span><br><span class="line">  clean     Removed generated files and cache.</span><br><span class="line">  config    Get or <span class="built_in">set</span> configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  <span class="built_in">help</span>      Get <span class="built_in">help</span> on a <span class="built_in">command</span>.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages <span class="keyword">in</span> the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more <span class="built_in">help</span>, you can use <span class="string">&#x27;hexo help [command]&#x27;</span> <span class="keyword">for</span> the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>成功すれば，<a href="http://username.github.io" target="_blank" rel="noopener">http://username.github.io</a>に公開されているはず。</p>
+<h2 id="Hexo-コマンド"><a href="#Hexo-コマンド" class="headerlink" title="Hexo コマンド"></a>Hexo コマンド</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Commands:</span><br><span class="line">  clean     Removed generated files and cache.</span><br><span class="line">  config    Get or <span class="built_in">set</span> configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  <span class="built_in">help</span>      Get <span class="built_in">help</span> on a <span class="built_in">command</span>.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages <span class="keyword">in</span> the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more <span class="built_in">help</span>, you can use <span class="string">'hexo help [command]'</span> <span class="keyword">for</span> the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></table></figure>
 
             
 
@@ -378,7 +378,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">タグ</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/demski/tags/Hexo/" rel="tag">Hexo</a>
+    <a class="tag tag--primary tag--small t-link" href="/demski/tags/Hexo/" rel="tag">Hexo</a>
 
             </div>
         
@@ -405,7 +405,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
+                    href="/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
                     data-tooltip="Hello World"
                     aria-label="次: Hello World"
                 >
@@ -494,7 +494,7 @@
         
             
                 <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
 </div>
             
         
@@ -505,7 +505,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Demski Autio. All Rights Reserved.
+        Copyrights &copy; 2022 Demski Autio. All Rights Reserved.
     </span>
 </footer>
 
@@ -534,7 +534,7 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
+                    href="/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
                     data-tooltip="Hello World"
                     aria-label="次: Hello World"
                 >
@@ -731,7 +731,7 @@
                     <div class="media-body">
                         <a
                             class="link-unstyled"
-                            href="https://demskiautio.github.io/demski/1970/01/01/ckdzp70m4000sigvaf5z26uua/"
+                            href="https://demskiautio.github.io/demski/1970/01/01/ckzgv6wvw00130stva9qggf9b/"
                             aria-label=": Hello World"
                         >
                             <h3 class="media-heading">Hello World</h3>
@@ -743,7 +743,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p></div>
+                        <div class="media-content hide-xs font-merryweather"><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1034,7 +1034,7 @@
 <div id="cover" style="background-image:url('/demski/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
 
-<script src="/demski/assets/js/script-zkg2ltxncv78nizr5pcqwmnabnai8efsnxbzkcq7wrft2fxfobigr7xewtco.min.js"></script>
+<script src="/demski/assets/js/script-kdyicsiinx0v7nldqjnda7ou55sr31zhtklgvjjle8moqrzx1gasxgdqrocp.min.js"></script>
 
 <!--SCRIPTS END-->
 
